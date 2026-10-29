@@ -1,0 +1,2215 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធគ្រប់គ្រងវត្តមាន និងថ្លៃសិក្សា - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Khmer (Kantumruy Pro) -->
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- HTML5-QRCode Scanner Library -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <!-- QRCode Generator Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <!-- SheetJS for XLSX Export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#16a34a',
+                            600: '#15803d',
+                            700: '#166534',
+                            800: '#14532d',
+                        }
+                    },
+                    fontFamily: {
+                        khmer: ['Kantumruy Pro', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Kantumruy Pro', sans-serif; }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; }
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Notification Alert Toast -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-x-full transition-transform duration-300 ease-in-out max-w-md bg-white border-l-4 shadow-xl rounded-lg p-4 flex items-center space-x-3 text-slate-700 no-print">
+        <i id="toast-icon" class="fas fa-check-circle text-2xl text-emerald-500"></i>
+        <div id="toast-message" class="text-sm font-medium">សារដំណឹង...</div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="login-screen" class="fixed inset-0 z-40 bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 flex items-center justify-center p-4">
+        <div class="absolute w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl top-10 left-10 pointer-events-none"></div>
+        <div class="absolute w-96 h-96 bg-blue-500/10 rounded-full blur-3xl bottom-10 right-10 pointer-events-none"></div>
+
+        <div class="relative bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl w-full max-w-md p-8 border border-white/20">
+            <div class="text-center mb-6">
+                <div class="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white mb-3 shadow-lg shadow-emerald-600/30 ring-4 ring-emerald-500/10">
+                    <i class="fas fa-school text-3xl"></i>
+                </div>
+                <h1 class="text-2xl font-black text-slate-800 tracking-tight">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</h1>
+                <p class="text-slate-500 text-xs font-medium mt-1">ប្រព័ន្ធគ្រប់គ្រងវត្តមាន និងថ្លៃសិក្សា (ថ្នាក់ទី ៧-១២)</p>
+            </div>
+
+            <div class="flex bg-slate-100 p-1.5 rounded-xl mb-6 text-xs font-bold text-slate-600">
+                <button type="button" id="role-tab-admin" onclick="selectLoginRole('ADMIN')" class="flex-1 py-2 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 bg-white text-emerald-700 shadow-sm font-bold">
+                    <i class="fas fa-user-shield"></i>
+                    <span>អ្នកគ្រប់គ្រង (Admin)</span>
+                </button>
+                <button type="button" id="role-tab-teacher" onclick="selectLoginRole('TEACHER')" class="flex-1 py-2 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-slate-500 hover:text-slate-800">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>គ្រូបង្រៀន (Teacher)</span>
+                </button>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <input type="hidden" id="login-selected-role" value="ADMIN">
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ឈ្មោះគណនី (Username)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-user text-sm"></i></span>
+                        <input type="text" id="login-username" class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm font-medium bg-slate-50/50" placeholder="បញ្ចូលឈ្មោះគណនី" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ពាក្យសម្ងាត់ (Password)</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400"><i class="fas fa-key text-sm"></i></span>
+                        <input type="password" id="login-password" class="w-full pl-10 pr-10 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm font-medium bg-slate-50/50" placeholder="••••••••" required>
+                        <button type="button" onclick="togglePasswordVisibility('login-password', 'toggle-pass-icon')" class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-slate-400 hover:text-slate-600">
+                            <i id="toggle-pass-icon" class="fas fa-eye text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-emerald-600/25 transition-all duration-200 transform active:scale-[0.99] flex items-center justify-center space-x-2 text-sm">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>ចូលប្រព័ន្ធ</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400 font-medium">
+                <span class="flex items-center"><i class="fas fa-shield-alt text-emerald-500 mr-1.5"></i> ប្រព័ន្ធសុវត្ថិភាពទិន្នន័យ</span>
+                <span> v2.5 វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-30 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2 bg-emerald-600 rounded-lg text-white"><i class="fas fa-graduation-cap text-xl sm:text-2xl"></i></div>
+                    <div>
+                        <div class="font-bold text-base sm:text-lg leading-tight">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</div>
+                        <div class="text-[11px] text-emerald-400">ប្រព័ន្ធគ្រប់គ្រងវត្តមានសិស្ស-គ្រូ និងបង់ថ្លៃសិក្សា</div>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <div class="text-right hidden sm:block">
+                        <div id="user-display-name" class="font-semibold text-sm text-slate-200">អ្នកគ្រប់គ្រង</div>
+                        <div id="user-display-role" class="text-[10px] text-emerald-400 font-bold tracking-wider">ADMIN</div>
+                    </div>
+                    <button onclick="logout()" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg transition" title="ចាកចេញ">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-slate-800 border-t border-slate-700 overflow-x-auto">
+            <div class="max-w-7xl mx-auto px-4 flex space-x-1 sm:space-x-2 text-xs sm:text-sm font-medium py-2">
+                <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition">
+                    <i class="fas fa-tachometer-alt mr-1.5"></i>ផ្ទាំងសង្ខេប
+                </button>
+                <button onclick="switchTab('scanner')" id="nav-scanner" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition bg-emerald-600 text-white">
+                    <i class="fas fa-qrcode mr-1.5"></i>ស្កែន QR Code
+                </button>
+                <button onclick="switchTab('students')" id="nav-students" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition">
+                    <i class="fas fa-user-graduate mr-1.5"></i>សិស្ស (៧-១២)
+                </button>
+                <button onclick="switchTab('teachers')" id="nav-teachers" class="nav-btn admin-only px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition">
+                    <i class="fas fa-chalkboard-teacher mr-1.5"></i>គ្រូបង្រៀន
+                </button>
+                <button onclick="switchTab('payments')" id="nav-payments" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition">
+                    <i class="fas fa-file-invoice-dollar mr-1.5"></i>ការបង់ថ្លៃសិក្សា
+                </button>
+                <button onclick="switchTab('schedule')" id="nav-schedule" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition">
+                    <i class="fas fa-calendar-alt mr-1.5"></i>កាលវិភាគ/ថ្នាក់
+                </button>
+                <button onclick="switchTab('reports')" id="nav-reports" class="nav-btn px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition">
+                    <i class="fas fa-chart-bar mr-1.5"></i>របាយការណ៍
+                </button>
+                <button onclick="switchTab('telegram')" id="nav-telegram" class="nav-btn admin-only px-3 py-2 rounded-md hover:bg-slate-700 whitespace-nowrap transition">
+                    <i class="fas fa-cog mr-1.5"></i>Telegram & សន្តិសុខ
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Body -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- 1. DASHBOARD TAB -->
+        <section id="tab-dashboard" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center space-x-4">
+                    <div class="p-3 bg-blue-100 text-blue-600 rounded-xl"><i class="fas fa-user-graduate text-2xl"></i></div>
+                    <div>
+                        <div class="text-2xl font-bold text-slate-800" id="stat-total-students">0</div>
+                        <div class="text-xs text-slate-500 font-medium">សិស្សសរុប (៧-១២)</div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center space-x-4">
+                    <div class="p-3 bg-emerald-100 text-emerald-600 rounded-xl"><i class="fas fa-check-circle text-2xl"></i></div>
+                    <div>
+                        <div class="text-2xl font-bold text-emerald-600" id="stat-present-today">0</div>
+                        <div class="text-xs text-slate-500 font-medium">វត្តមានថ្ងៃនេះ</div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center space-x-4">
+                    <div class="p-3 bg-amber-100 text-amber-600 rounded-xl"><i class="fas fa-clock text-2xl"></i></div>
+                    <div>
+                        <div class="text-2xl font-bold text-amber-600" id="stat-late-today">0</div>
+                        <div class="text-xs text-slate-500 font-medium">មកយឺតថ្ងៃនេះ</div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center space-x-4">
+                    <div class="p-3 bg-rose-100 text-rose-600 rounded-xl"><i class="fas fa-times-circle text-2xl"></i></div>
+                    <div>
+                        <div class="text-2xl font-bold text-rose-600" id="stat-absent-today">0</div>
+                        <div class="text-xs text-slate-500 font-medium">អវត្តមាន/ច្បាប់</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+                    <h2 class="font-bold text-slate-800 text-base flex items-center">
+                        <i class="fas fa-history text-emerald-600 mr-2"></i>សកម្មភាពវត្តមានថ្ងៃនេះ (Recent Logs)
+                    </h2>
+                    <span id="dashboard-date" class="text-xs font-semibold text-slate-500"></span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-semibold text-xs border-b">
+                            <tr>
+                                <th class="p-3">ម៉ោង</th>
+                                <th class="p-3">ប្រភេទ</th>
+                                <th class="p-3">ឈ្មោះ</th>
+                                <th class="p-3">ថ្នាក់ / មុខវិជ្ជា</th>
+                                <th class="p-3">ស្ថានភាព</th>
+                                <th class="p-3">កំណត់សម្គាល់</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboard-recent-logs" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. QR SCANNER TAB -->
+        <section id="tab-scanner" class="tab-content space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col items-center">
+                    <div class="w-full flex items-center justify-between mb-4 border-b pb-3">
+                        <h2 class="text-base font-bold text-slate-800 flex items-center">
+                            <i class="fas fa-camera text-emerald-600 mr-2"></i>កាមេរ៉ាស្កែន QR Code
+                        </h2>
+                        <select id="scanner-type" class="text-xs border border-slate-300 rounded-lg p-2 focus:ring-emerald-500">
+                            <option value="student">👨‍🎓 ស្កែនសិស្ស (Student)</option>
+                            <option value="teacher">👨‍🏫 ស្កែនគ្រូបង្រៀន (Teacher)</option>
+                        </select>
+                    </div>
+
+                    <div class="w-full max-w-md bg-slate-900 rounded-xl overflow-hidden shadow-inner relative min-h-[280px] flex items-center justify-center">
+                        <div id="reader" class="w-full"></div>
+                    </div>
+
+                    <div class="mt-4 flex space-x-3">
+                        <button onclick="startScanner()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition flex items-center">
+                            <i class="fas fa-play mr-1.5"></i>បើកកាមេរ៉ា
+                        </button>
+                        <button onclick="stopScanner()" class="px-5 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold transition flex items-center">
+                            <i class="fas fa-stop mr-1.5"></i>បិទកាមេរ៉ា
+                        </button>
+                    </div>
+
+                    <div class="mt-6 w-full pt-4 border-t border-slate-200">
+                        <label class="block text-xs font-semibold text-slate-500 mb-2">បញ្ចូល ID ដោយដៃ (ករណីគ្មាន QR Card)</label>
+                        <div class="flex space-x-2">
+                            <input type="text" id="manual-id-input" placeholder="ឧទាហរណ៍: STU-701 ឬ TCH-101" class="flex-grow border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <button onclick="processManualID()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold transition">
+                                កត់វត្តមាន
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-base font-bold text-slate-800 mb-4 border-b pb-3 flex items-center">
+                            <i class="fas fa-id-card text-emerald-600 mr-2"></i>ព័ត៌មានស្កែនចុងក្រោយ
+                        </h2>
+                        <div id="scan-result-card" class="text-center py-8">
+                            <div class="w-20 h-20 bg-slate-100 rounded-full mx-auto flex items-center justify-center text-slate-400 mb-3 border-2 border-dashed border-slate-300">
+                                <i class="fas fa-qrcode text-3xl"></i>
+                            </div>
+                            <p class="text-slate-500 text-xs">សូមបង្ហាញ QR Code ទៅកាន់កាមេរ៉ា</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200">
+                        <button onclick="openAbsentModal()" class="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold rounded-lg text-xs transition flex items-center justify-center space-x-2">
+                            <i class="fas fa-user-slash"></i>
+                            <span>កត់ត្រាការ អវត្តមាន / សុំច្បាប់ ដោយដៃ</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. STUDENTS TAB -->
+        <section id="tab-students" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="font-bold text-slate-800 text-base flex items-center">
+                        <i class="fas fa-users text-emerald-600 mr-2"></i>បញ្ជីឈ្មោះសិស្ស វិទ្យាល័យឥស្លាមស្ទឹងត្រែង
+                    </div>
+                    <select id="filter-grade" onchange="renderStudents()" class="border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-emerald-500">
+                        <option value="ALL">គ្រប់ថ្នាក់ទាំងអស់</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center space-x-2 flex-wrap gap-y-2">
+                    <input type="text" id="search-student" onkeyup="renderStudents()" placeholder="ស្វែងរកឈ្មោះ ឬ ID..." class="border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-emerald-500">
+                    
+                    <!-- Excel Student Importer Button & File Input -->
+                    <label class="admin-only px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition cursor-pointer flex items-center whitespace-nowrap">
+                        <i class="fas fa-file-excel mr-1.5"></i>📥 Upload Excel សិស្ស
+                        <input type="file" id="excel-student-file" accept=".xlsx, .xls, .csv" onchange="importStudentsFromExcel(event)" class="hidden">
+                    </label>
+
+                    <button onclick="printBatchQRCards('student')" class="px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold transition flex items-center whitespace-nowrap">
+                        <i class="fas fa-id-card mr-1.5"></i>🖨️ បោះពុម្ព QR សិស្សទាំងអស់
+                    </button>
+                    <button onclick="openStudentModal()" class="admin-only px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition flex items-center whitespace-nowrap">
+                        <i class="fas fa-plus mr-1"></i>បន្ថែមសិស្ស
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-semibold text-xs border-b">
+                            <tr>
+                                <th class="p-3">ID សិស្ស</th>
+                                <th class="p-3">ឈ្មោះសិស្ស</th>
+                                <th class="p-3">ភេទ</th>
+                                <th class="p-3">ថ្នាក់រៀន</th>
+                                <th class="p-3">លេខទូរស័ព្ទអាណាព្យាបាល</th>
+                                <th class="p-3">QR Card</th>
+                                <th class="p-3 text-center admin-only">សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. TEACHERS TAB -->
+        <section id="tab-teachers" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center justify-between">
+                <h2 class="font-bold text-slate-800 text-base flex items-center">
+                    <i class="fas fa-chalkboard-teacher text-emerald-600 mr-2"></i>គ្រប់គ្រងទិន្នន័យគ្រូបង្រៀន
+                </h2>
+                <div class="flex items-center space-x-2">
+                    <button onclick="printBatchQRCards('teacher')" class="px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold transition flex items-center">
+                        <i class="fas fa-id-card mr-1.5"></i>🖨️ បោះពុម្ព QR គ្រូទាំងអស់
+                    </button>
+                    <button onclick="openTeacherModal()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition flex items-center">
+                        <i class="fas fa-plus mr-1"></i>បន្ថែមគ្រូថ្មី
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-semibold text-xs border-b">
+                            <tr>
+                                <th class="p-3">ID គ្រូ</th>
+                                <th class="p-3">ឈ្មោះគ្រូបង្រៀន</th>
+                                <th class="p-3">ភេទ</th>
+                                <th class="p-3">មុខវិជ្ជាជំនាញ</th>
+                                <th class="p-3">លេខទូរស័ព្ទ</th>
+                                <th class="p-3">QR Card</th>
+                                <th class="p-3 text-center">សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachers-table-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PAYMENTS TAB -->
+        <section id="tab-payments" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-slate-500 font-semibold uppercase">ប្រាក់ទទួលបានសរុប</div>
+                        <div id="stat-total-paid" class="text-xl font-bold text-emerald-600 mt-1">$0.00</div>
+                    </div>
+                    <div class="p-3 bg-emerald-100 text-emerald-600 rounded-xl"><i class="fas fa-wallet text-2xl"></i></div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-slate-500 font-semibold uppercase">ប្រាក់នៅខ្វះ/ជំពាក់</div>
+                        <div id="stat-total-unpaid" class="text-xl font-bold text-rose-600 mt-1">$0.00</div>
+                    </div>
+                    <div class="p-3 bg-rose-100 text-rose-600 rounded-xl"><i class="fas fa-exclamation-triangle text-2xl"></i></div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs text-slate-500 font-semibold uppercase">ប្រតិបត្តិការសរុប</div>
+                        <div id="stat-payment-count" class="text-xl font-bold text-emerald-600 mt-1">0</div>
+                    </div>
+                    <div class="p-3 bg-blue-100 text-blue-600 rounded-xl"><i class="fas fa-receipt text-2xl"></i></div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex flex-wrap items-center gap-3">
+                    <div class="font-bold text-slate-800 text-base flex items-center">
+                        <i class="fas fa-file-invoice-dollar text-emerald-600 mr-2"></i>តារាងបង់ថ្លៃសិក្សា
+                    </div>
+                    <select id="filter-payment-status" onchange="renderPayments()" class="border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-emerald-500">
+                        <option value="ALL">គ្រប់ស្ថានភាព</option>
+                        <option value="PAID">បានបង់រួច (PAID)</option>
+                        <option value="UNPAID">នៅខ្វះ/ជំពាក់ (UNPAID)</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <input type="text" id="search-payment" onkeyup="renderPayments()" placeholder="ស្វែងរក ID ឬឈ្មោះ..." class="border border-slate-300 rounded-lg px-3 py-1.5 text-xs focus:ring-emerald-500">
+                    <button onclick="exportPaymentsToExcel()" class="px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold transition flex items-center whitespace-nowrap">
+                        <i class="fas fa-file-excel mr-1"></i>ទាញយក Excel
+                    </button>
+                    <button onclick="openPaymentModal()" class="admin-only px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition flex items-center whitespace-nowrap">
+                        <i class="fas fa-plus mr-1"></i>កត់ត្រាការបង់ប្រាក់
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table id="payments-table" class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-semibold text-xs border-b">
+                            <tr>
+                                <th class="p-3">កាលបរិច្ឆេទ</th>
+                                <th class="p-3">ID សិស្ស</th>
+                                <th class="p-3">ឈ្មោះសិស្ស</th>
+                                <th class="p-3">ថ្នាក់</th>
+                                <th class="p-3">ប្រភេទបង់</th>
+                                <th class="p-3">វិធីសាស្ត្រ</th>
+                                <th class="p-3">ចំនួនទឹកប្រាក់</th>
+                                <th class="p-3">ស្ថានភាព</th>
+                                <th class="p-3 text-center">បោះពុម្ពវិក្កយបត្រ</th>
+                                <th class="p-3 text-center admin-only">សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payments-table-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SCHEDULE & SUBJECTS TAB -->
+        <section id="tab-schedule" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fas fa-calendar-alt text-xl"></i></div>
+                    <div>
+                        <h2 class="font-bold text-slate-800 text-base">កាលវិភាគសិក្សា និងមុខវិជ្ជាប្រចាំសប្តាហ៍ (៧-១២)</h2>
+                        <p class="text-xs text-slate-500">អ្នកអាចជ្រើសរើស ឬវាយបញ្ចូលមុខវិជ្ជាផ្ទាល់ដៃតាមចន្លោះម៉ោងនីមួយៗ រួចចុច Save ទុកបាន!</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <label class="text-xs font-bold text-slate-700 whitespace-nowrap">ជ្រើសរើសថ្នាក់៖</label>
+                    <select id="schedule-class-select" onchange="renderTimetable()" class="border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-bold text-emerald-700 focus:ring-emerald-500">
+                        <option value="7A">ថ្នាក់ទី 7A</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
+                    <h3 class="font-bold text-slate-800 text-sm flex items-center">
+                        <i class="fas fa-edit text-emerald-600 mr-2"></i>កាលវិភាគប្រចាំសប្តាហ៍ (កែប្រែតាមប្រអប់) - <span id="current-timetable-class" class="text-emerald-700 ml-1">ថ្នាក់ទី 7A</span>
+                    </h3>
+                    <div class="flex items-center space-x-2 admin-only">
+                        <button onclick="saveTimetableMatrix()" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-bold shadow transition flex items-center">
+                            <i class="fas fa-save mr-1.5"></i>រក្សាទុកកាលវិភាគថ្នាក់នេះ
+                        </button>
+                        <button onclick="generateAutoSchedules()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold transition flex items-center">
+                            <i class="fas fa-magic mr-1.5"></i>កំណត់ស្វ័យប្រវត្តិឡើងវិញ
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-center text-xs text-slate-600 border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 font-bold uppercase border-b">
+                            <tr>
+                                <th class="p-3 border w-28">ម៉ោង / ថ្ងៃ</th>
+                                <th class="p-3 border bg-emerald-50/50">ចន្ទ (Mon)</th>
+                                <th class="p-3 border">អង្គារ (Tue)</th>
+                                <th class="p-3 border bg-emerald-50/50">ពុធ (Wed)</th>
+                                <th class="p-3 border">ព្រហស្បតិ៍ (Thu)</th>
+                                <th class="p-3 border bg-emerald-50/50">សុក្រ (Fri)</th>
+                                <th class="p-3 border">សៅរ៍ (Sat)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="timetable-matrix-body" class="divide-y divide-slate-100 font-medium"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                    <div class="flex items-center justify-between mb-4 border-b pb-3">
+                        <h3 class="font-bold text-slate-800 text-base"><i class="fas fa-book text-emerald-600 mr-2"></i>បញ្ជីមុខវិជ្ជាសិក្សា</h3>
+                        <button onclick="openSubjectModal()" class="admin-only px-2.5 py-1 bg-emerald-600 text-white rounded text-xs font-semibold hover:bg-emerald-700">
+                            + បន្ថែមមុខវិជ្ជា
+                        </button>
+                    </div>
+                    <ul id="subjects-list" class="divide-y divide-slate-100 space-y-1"></ul>
+                </div>
+
+                <div class="lg:col-span-7 bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                    <div class="flex items-center justify-between mb-4 border-b pb-3">
+                        <h3 class="font-bold text-slate-800 text-base"><i class="fas fa-clock text-emerald-600 mr-2"></i>កំណត់ម៉ោងចូល/ចេញតាមវេនសិក្សា</h3>
+                        <button onclick="openScheduleModal()" class="admin-only px-2.5 py-1 bg-emerald-600 text-white rounded text-xs font-semibold hover:bg-emerald-700">
+                            + បន្ថែមថ្នាក់រៀន
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-slate-600">
+                            <thead class="bg-slate-100 text-slate-700 uppercase font-semibold text-xs border-b">
+                                <tr>
+                                    <th class="p-3">ថ្នាក់</th>
+                                    <th class="p-3">វេនសិក្សា</th>
+                                    <th class="p-3">ម៉ោងចូលរៀន</th>
+                                    <th class="p-3">ម៉ោងចេញរៀន</th>
+                                    <th class="p-3 text-center admin-only">សកម្មភាព</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-table-body" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. REPORTS TAB -->
+        <section id="tab-reports" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ប្រភេទវត្តមាន</label>
+                        <select id="report-type" onchange="generateReport()" class="w-full border border-slate-300 rounded-lg p-2 text-xs">
+                            <option value="student">👨‍🎓 វត្តមានសិស្ស</option>
+                            <option value="teacher">👨‍🏫 វត្តមានគ្រូ</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ជ្រើសរើសថ្នាក់</label>
+                        <select id="report-grade" onchange="generateReport()" class="w-full border border-slate-300 rounded-lg p-2 text-xs">
+                            <option value="ALL">គ្រប់ថ្នាក់ទាំងអស់</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ចាប់ពីថ្ងៃ</label>
+                        <input type="date" id="report-start-date" onchange="generateReport()" class="w-full border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">ដល់ថ្ងៃ</label>
+                        <input type="date" id="report-end-date" onchange="generateReport()" class="w-full border border-slate-300 rounded-lg p-2 text-xs">
+                    </div>
+                    <div class="flex items-end space-x-2">
+                        <button onclick="exportToExcel()" class="flex-1 py-2 px-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold flex items-center justify-center">
+                            <i class="fas fa-file-excel mr-1"></i>Excel
+                        </button>
+                        <button onclick="printReport()" class="flex-1 py-2 px-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-semibold flex items-center justify-center">
+                            <i class="fas fa-print mr-1"></i>Print
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="printable-report" class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <div class="hidden print-only text-center mb-6">
+                    <h1 class="text-xl font-bold">ព្រះរាជាណាចក្រកម្ពុជា</h1>
+                    <h2 class="text-xs font-semibold">ជាតិ សាសនា ព្រះមហាក្សត្រ</h2>
+                    <h3 class="text-lg font-bold mt-3">របាយការណ៍វត្តមាន - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</h3>
+                    <p id="print-date-range" class="text-xs text-slate-500 mt-1"></p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                        <thead class="bg-slate-100 text-slate-700 uppercase font-semibold text-xs border-b">
+                            <tr>
+                                <th class="p-3 border">កាលបរិច្ឆេទ/ម៉ោង</th>
+                                <th class="p-3 border">ID</th>
+                                <th class="p-3 border">ឈ្មោះ</th>
+                                <th class="p-3 border">ថ្នាក់ / មុខវិជ្ជា</th>
+                                <th class="p-3 border">ស្ថានភាព</th>
+                                <th class="p-3 border">កំណត់សម្គាល់</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-table-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. TELEGRAM & RESET CONTROLS TAB -->
+        <section id="tab-telegram" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                <h2 class="font-bold text-slate-800 text-base border-b pb-3 flex items-center">
+                    <i class="fas fa-user-lock text-emerald-600 mr-2 text-xl"></i>កំណត់គណនី និងពាក្យសម្ងាត់ប្រព័ន្ធ (Account Credentials)
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h3 class="font-bold text-xs text-emerald-800 flex items-center">
+                            <i class="fas fa-user-shield mr-1.5"></i>គណនី Admin (សិទ្ធិគ្រប់គ្រង)
+                        </h3>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Username ថ្មី</label>
+                            <input type="text" id="sys-admin-username" class="w-full border border-slate-300 rounded-lg px-3 py-1.5 text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Password ថ្មី</label>
+                            <input type="password" id="sys-admin-password" class="w-full border border-slate-300 rounded-lg px-3 py-1.5 text-xs" placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <h3 class="font-bold text-xs text-blue-800 flex items-center">
+                            <i class="fas fa-chalkboard-teacher mr-1.5"></i>គណនី Teacher (សិទ្ធិស្កែន/របាយការណ៍)
+                        </h3>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Username ថ្មី</label>
+                            <input type="text" id="sys-teacher-username" class="w-full border border-slate-300 rounded-lg px-3 py-1.5 text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">Password ថ្មី</label>
+                            <input type="password" id="sys-teacher-password" class="w-full border border-slate-300 rounded-lg px-3 py-1.5 text-xs" placeholder="••••••••">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button onclick="saveCredentialsSettings()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow transition flex items-center">
+                        <i class="fas fa-key mr-1.5"></i>រក្សាទុកពាក្យសម្ងាត់ថ្មី
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                <h2 class="font-bold text-slate-800 text-base border-b pb-3 flex items-center">
+                    <i class="fas fa-file-export text-emerald-600 mr-2 text-xl"></i>រក្សាទុក និងស្ដារទិន្នន័យ (Data Backup & Restore)
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200">
+                        <h3 class="font-bold text-xs text-emerald-800 mb-1">📥 ទាញយក Backup (JSON File)</h3>
+                        <p class="text-[11px] text-emerald-700 mb-3">រក្សាទុកទិន្នន័យសិស្ស គ្រូ វត្តមាន និងការបង់ប្រាក់ទាំងអស់ដកទុកក្នុងកុំព្យូទ័រ</p>
+                        <button onclick="exportBackupJSON()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow">
+                            <i class="fas fa-download mr-1.5"></i>ទាញយក Backup File
+                        </button>
+                    </div>
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                        <h3 class="font-bold text-xs text-blue-800 mb-1">📤 ស្ដារទិន្នន័យឡើងវិញ (Restore File)</h3>
+                        <p class="text-[11px] text-blue-700 mb-2">ជ្រើសរើសឯកសារ `.json` ដើម្បីបញ្ចូលទិន្នន័យដែលបាន Backup រួច</p>
+                        <input type="file" id="import-file" accept=".json" onchange="importBackupJSON(event)" class="text-xs text-slate-600">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-amber-900 flex items-center">
+                            <i class="fas fa-database text-amber-600 mr-2"></i>គ្រប់គ្រង និងសម្អាតទិន្នន័យ (Data Management)
+                        </h2>
+                        <p class="text-xs text-amber-700 mt-1">អ្នកអាចលុបទិន្នន័យចាស់ទាំងអស់ចោលឱ្យទំនេរស្អាត ឬបញ្ចូលទិន្នន័យគំរូថ្មីសម្រាប់វិទ្យាល័យឥស្លាមស្ទឹងត្រែង។</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="loadSampleDataOfficial()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow transition flex items-center">
+                            <i class="fas fa-download mr-1.5"></i>បញ្ចូលទិន្នន័យគំរូថ្មី
+                        </button>
+                        <button onclick="resetAllDataOfficial()" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold shadow transition flex items-center">
+                            <i class="fas fa-trash-alt mr-1.5"></i>លុបទិន្នន័យទាំងអស់ (Clear Data)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+                    <h2 class="font-bold text-slate-800 text-base border-b pb-3 flex items-center">
+                        <i class="fab fa-telegram text-sky-500 mr-2 text-xl"></i>Telegram Notification (បែងចែក Chat ID តាមថ្នាក់)
+                    </h2>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Telegram Bot Token (រួម)</label>
+                        <input type="text" id="tg-bot-token" placeholder="bot123456789:ABCdefGh..." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Telegram Chat ID រួម/Default (សម្រាប់គ្រូ ឬថ្នាក់ទូទៅ)</label>
+                        <input type="text" id="tg-chat-id" placeholder="-100123456789" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs">
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100">
+                        <label class="block text-xs font-bold text-slate-800 mb-2">
+                            <i class="fas fa-users-class text-emerald-600 mr-1"></i>កំណត់ Telegram Chat ID ដាច់ដោយឡែកតាមថ្នាក់៖
+                        </label>
+                        <div class="max-h-52 overflow-y-auto border border-slate-200 rounded-lg p-2 bg-slate-50 space-y-2" id="class-chatids-container"></div>
+                    </div>
+
+                    <div class="flex items-center space-x-2 py-1">
+                        <input type="checkbox" id="tg-enable" class="rounded text-emerald-600 focus:ring-emerald-500">
+                        <label for="tg-enable" class="text-xs font-semibold text-slate-700">បើកការផ្ញើសារស្វ័យប្រវត្តិ (Enable Bot)</label>
+                    </div>
+
+                    <button onclick="saveTelegramSettings()" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition shadow">
+                        <i class="fas fa-save mr-1.5"></i>រក្សាទុកការកំណត់ Telegram ទាំងអស់
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-3">
+                    <h2 class="font-bold text-slate-800 text-base border-b pb-3 flex items-center">
+                        <i class="fas fa-server text-emerald-600 mr-2"></i>រចនាសម្ព័ន្ធ MySQL DB (Schema)
+                    </h2>
+                    <p class="text-xs text-slate-500">លោកអ្នកអាចចម្លង SQL Script ខាងក្រោមយកទៅបង្កើតក្នុង MySQL Server៖</p>
+                    <textarea readonly class="w-full h-52 p-3 bg-slate-900 text-emerald-400 font-mono text-[11px] rounded-lg border border-slate-700">
+CREATE DATABASE IF NOT EXISTS stueng_treng_school;
+USE stueng_treng_school;
+
+CREATE TABLE students (
+    student_id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    gender VARCHAR(10),
+    grade VARCHAR(10) NOT NULL,
+    phone VARCHAR(20)
+);
+
+CREATE TABLE tuition_payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id VARCHAR(20),
+    amount DECIMAL(10,2),
+    status ENUM('PAID', 'UNPAID'),
+    payment_date DATE
+);
+                    </textarea>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modals -->
+    <div id="student-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h3 class="text-base font-bold text-slate-800 mb-4 border-b pb-2">បន្ថែម / កែប្រែព័ត៌មានសិស្ស</h3>
+            <form id="student-form" onsubmit="saveStudent(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">ID សិស្ស</label>
+                    <input type="text" id="m-student-id" required class="w-full border rounded-lg p-2">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">ឈ្មោះសិស្ស</label>
+                    <input type="text" id="m-student-name" required class="w-full border rounded-lg p-2">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">ភេទ</label>
+                        <select id="m-student-gender" class="w-full border rounded-lg p-2"><option value="ប្រុស">ប្រុស</option><option value="ស្រី">ស្រី</option></select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">ថ្នាក់ (ឧ. 7A, 12B)</label>
+                        <input type="text" id="m-student-grade" required class="w-full border rounded-lg p-2">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">ទូរស័ព្ទអាណាព្យាបាល</label>
+                    <input type="text" id="m-student-phone" class="w-full border rounded-lg p-2">
+                </div>
+                <div class="flex space-x-2 pt-3">
+                    <button type="button" onclick="closeModal('student-modal')" class="w-1/2 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold">បោះបង់</button>
+                    <button type="submit" class="w-1/2 py-2 bg-emerald-600 text-white rounded-lg font-semibold">រក្សាទុក</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="teacher-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h3 class="text-base font-bold text-slate-800 mb-4 border-b pb-2">បន្ថែម / កែប្រែព័ត៌មានគ្រូបង្រៀន</h3>
+            <form id="teacher-form" onsubmit="saveTeacher(event)" class="space-y-3 text-xs">
+                <div><label class="block font-semibold mb-1">ID គ្រូ</label><input type="text" id="m-teacher-id" required class="w-full border rounded-lg p-2"></div>
+                <div><label class="block font-semibold mb-1">ឈ្មោះគ្រូ</label><input type="text" id="m-teacher-name" required class="w-full border rounded-lg p-2"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block font-semibold mb-1">ភេទ</label><select id="m-teacher-gender" class="w-full border rounded-lg p-2"><option value="ប្រុស">ប្រុស</option><option value="ស្រី">ស្រី</option></select></div>
+                    <div><label class="block font-semibold mb-1">មុខវិជ្ជា</label><input type="text" id="m-teacher-subject" required class="w-full border rounded-lg p-2"></div>
+                </div>
+                <div><label class="block font-semibold mb-1">លេខទូរស័ព្ទ</label><input type="text" id="m-teacher-phone" class="w-full border rounded-lg p-2"></div>
+                <div class="flex space-x-2 pt-3">
+                    <button type="button" onclick="closeModal('teacher-modal')" class="w-1/2 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold">បោះបង់</button>
+                    <button type="submit" class="w-1/2 py-2 bg-emerald-600 text-white rounded-lg font-semibold">រក្សាទុក</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="payment-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h3 class="text-base font-bold text-slate-800 mb-4 border-b pb-2">កត់ត្រាការបង់ថ្លៃសិក្សា</h3>
+            <form id="payment-form" onsubmit="savePayment(event)" class="space-y-3 text-xs">
+                <div><label class="block font-semibold mb-1">ជ្រើសរើសសិស្ស</label><select id="m-payment-student" required class="w-full border rounded-lg p-2"></select></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block font-semibold mb-1">ចំនួន ($)</label><input type="number" step="0.01" id="m-payment-amount" required class="w-full border rounded-lg p-2"></div>
+                    <div><label class="block font-semibold mb-1">ប្រភេទ</label><select id="m-payment-term" class="w-full border rounded-lg p-2"><option value="ប្រចាំខែ">ប្រចាំខែ</option><option value="ប្រចាំឆមាស">ប្រចាំឆមាស</option><option value="ប្រចាំឆ្នាំ">ប្រចាំឆ្នាំ</option></select></div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block font-semibold mb-1">វិធីសាស្ត្រ</label><select id="m-payment-method" class="w-full border rounded-lg p-2"><option value="Cash">សាច់ប្រាក់</option><option value="ABA QR">ABA QR</option><option value="Bank Transfer">វេរធនាគារ</option></select></div>
+                    <div><label class="block font-semibold mb-1">ស្ថានភាព</label><select id="m-payment-status" class="w-full border rounded-lg p-2"><option value="PAID">បានបង់រួច</option><option value="UNPAID">នៅខ្វះ</option></select></div>
+                </div>
+                <div><label class="block font-semibold mb-1">កាលបរិច្ឆេទ</label><input type="date" id="m-payment-date" required class="w-full border rounded-lg p-2"></div>
+                <div><label class="block font-semibold mb-1">ចំណាំ</label><input type="text" id="m-payment-note" class="w-full border rounded-lg p-2"></div>
+                <div class="flex space-x-2 pt-3">
+                    <button type="button" onclick="closeModal('payment-modal')" class="w-1/2 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold">បោះបង់</button>
+                    <button type="submit" class="w-1/2 py-2 bg-emerald-600 text-white rounded-lg font-semibold">រក្សាទុក</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="schedule-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h3 class="text-base font-bold text-slate-800 mb-4 border-b pb-2">កំណត់ថ្នាក់រៀន និងម៉ោង</h3>
+            <form id="schedule-form" onsubmit="saveSchedule(event)" class="space-y-3 text-xs">
+                <div><label class="block font-semibold mb-1">ថ្នាក់រៀន (ឧ. 7A, 12B)</label><input type="text" id="m-schedule-grade" required class="w-full border rounded-lg p-2"></div>
+                <div><label class="block font-semibold mb-1">វេនសិក្សា</label><select id="m-schedule-shift" class="w-full border rounded-lg p-2"><option value="ព្រឹក">ព្រឹក</option><option value="រសៀល">រសៀល</option></select></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block font-semibold mb-1">ម៉ោងចូល</label><input type="time" id="m-schedule-start" required class="w-full border rounded-lg p-2"></div>
+                    <div><label class="block font-semibold mb-1">ម៉ោងចេញ</label><input type="time" id="m-schedule-end" required class="w-full border rounded-lg p-2"></div>
+                </div>
+                <div class="flex space-x-2 pt-3">
+                    <button type="button" onclick="closeModal('schedule-modal')" class="w-1/2 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold">បោះបង់</button>
+                    <button type="submit" class="w-1/2 py-2 bg-emerald-600 text-white rounded-lg font-semibold">រក្សាទុក</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="subject-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h3 class="text-base font-bold text-slate-800 mb-4 border-b pb-2">បន្ថែមមុខវិជ្ជា</h3>
+            <form id="subject-form" onsubmit="saveSubject(event)" class="space-y-3 text-xs">
+                <div><label class="block font-semibold mb-1">កូដមុខវិជ្ជា</label><input type="text" id="m-subject-code" required class="w-full border rounded-lg p-2 uppercase"></div>
+                <div><label class="block font-semibold mb-1">ឈ្មោះមុខវិជ្ជា</label><input type="text" id="m-subject-name" required class="w-full border rounded-lg p-2"></div>
+                <div class="flex space-x-2 pt-3">
+                    <button type="button" onclick="closeModal('subject-modal')" class="w-1/2 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold">បោះបង់</button>
+                    <button type="submit" class="w-1/2 py-2 bg-emerald-600 text-white rounded-lg font-semibold">រក្សាទុក</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="absent-modal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <h3 class="text-base font-bold text-slate-800 mb-4 border-b pb-2">កត់ត្រា អវត្តមាន / សុំច្បាប់</h3>
+            <form id="absent-form" onsubmit="saveAbsent(event)" class="space-y-3 text-xs">
+                <div><label class="block font-semibold mb-1">ប្រភេទ</label><select id="m-absent-type" class="w-full border rounded-lg p-2"><option value="student">សិស្ស</option><option value="teacher">គ្រូបង្រៀន</option></select></div>
+                <div><label class="block font-semibold mb-1">ID</label><input type="text" id="m-absent-id" required class="w-full border rounded-lg p-2"></div>
+                <div><label class="block font-semibold mb-1">ស្ថានភាព</label><select id="m-absent-status" class="w-full border rounded-lg p-2"><option value="PERMISSION">សុំច្បាប់ (Permission)</option><option value="ABSENT">អវត្តមាន (Absent)</option></select></div>
+                <div><label class="block font-semibold mb-1">មូលហេតុ</label><textarea id="m-absent-reason" class="w-full border rounded-lg p-2" rows="2"></textarea></div>
+                <div class="flex space-x-2 pt-3">
+                    <button type="button" onclick="closeModal('absent-modal')" class="w-1/2 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold">បោះបង់</button>
+                    <button type="submit" class="w-1/2 py-2 bg-rose-600 text-white rounded-lg font-semibold">រក្សាទុក</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="qr-print-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 text-center">
+            <div id="printable-card" class="p-4 border-2 border-slate-800 rounded-xl bg-slate-50">
+                <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</div>
+                <div id="card-name" class="text-base font-bold text-slate-800">---</div>
+                <div id="card-sub" class="text-xs font-semibold text-emerald-600 mb-3">---</div>
+                <div id="card-qrcode" class="flex justify-center mb-3"></div>
+                <div id="card-id" class="text-sm font-mono font-bold text-slate-700">---</div>
+            </div>
+            <div class="flex space-x-2 mt-4 no-print">
+                <button onclick="closeModal('qr-print-modal')" class="w-1/3 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">បិទ</button>
+                <button onclick="downloadQRCodeImage()" class="w-1/3 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold"><i class="fas fa-download mr-1"></i>ទាញយក PNG</button>
+                <button onclick="window.print()" class="w-1/3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-semibold">បោះពុម្ព</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Printable Payment Receipt Modal -->
+    <div id="payment-receipt-modal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative">
+            <div id="receipt-printable-area" class="bg-white p-6 rounded-xl border border-slate-200 space-y-4">
+                <div class="text-center border-b pb-4">
+                    <div class="flex justify-center mb-2">
+                        <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-white text-xl">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <h2 class="font-bold text-slate-800 text-base">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</h2>
+                    <p class="text-[11px] text-slate-500">ប័ណ្ណទូទាត់ប្រាក់ / PAYMENT RECEIPT</p>
+                    <div class="mt-2 inline-block px-3 py-0.5 bg-slate-100 rounded-full text-[10px] font-mono font-bold text-slate-600" id="receipt-no">
+                        REC-000000
+                    </div>
+                </div>
+
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">កាលបរិច្ឆេទ៖</span>
+                        <span id="receipt-date" class="font-bold text-slate-800">---</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">ID សិស្ស៖</span>
+                        <span id="receipt-student-id" class="font-mono font-bold text-slate-800">---</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">ឈ្មោះសិស្ស៖</span>
+                        <span id="receipt-student-name" class="font-bold text-emerald-700">---</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">ថ្នាក់រៀន៖</span>
+                        <span id="receipt-grade" class="font-bold text-slate-800">---</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">ប្រភេទបង់៖</span>
+                        <span id="receipt-term" class="font-medium text-slate-800">---</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">វិធីសាស្ត្របង់៖</span>
+                        <span id="receipt-method" class="font-medium text-slate-800">---</span>
+                    </div>
+                    <div class="flex justify-between border-b pb-1.5">
+                        <span class="text-slate-500">ស្ថានភាព៖</span>
+                        <span id="receipt-status" class="font-bold">---</span>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 rounded-xl p-3 text-center border border-emerald-200">
+                    <span class="text-[11px] font-bold text-emerald-800 uppercase block">ចំនួនទឹកប្រាក់ទទួលបានសរុប</span>
+                    <span id="receipt-amount" class="text-2xl font-black text-emerald-600">$0.00</span>
+                </div>
+
+                <div class="text-[11px] text-slate-500 italic text-center" id="receipt-note"></div>
+
+                <div class="pt-6 grid grid-cols-2 gap-4 text-center text-[11px] text-slate-600">
+                    <div>
+                        <p class="font-bold">ហត្ថលេខាអ្នកបង់ប្រាក់</p>
+                        <div class="h-12"></div>
+                        <p class="text-slate-400">............................</p>
+                    </div>
+                    <div>
+                        <p class="font-bold">ហត្ថលេខាអ្នកទទួលប្រាក់</p>
+                        <div class="h-12"></div>
+                        <p class="text-slate-400">............................</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex space-x-2 mt-4 no-print">
+                <button onclick="closeModal('payment-receipt-modal')" class="w-1/2 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-semibold transition">
+                    បិទ
+                </button>
+                <button onclick="printPaymentReceipt()" class="w-1/2 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold transition shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-1.5">
+                    <i class="fas fa-print"></i>
+                    <span>បោះពុម្ពវិក្កយបត្រ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script>
+        let currentUser = null;
+        let html5QrcodeScanner = null;
+        let currentQRInstance = null;
+        let activeCardData = { id: '', name: '', sub: '' };
+
+        const officialSampleStudents = [
+            { id: "STU-701", name: "អាំម៉ាដ សុខា", gender: "ប្រុស", grade: "7A", phone: "012345678" },
+            { id: "STU-702", name: "ហ្វាទីម៉ា ហាសាន", gender: "ស្រី", grade: "7A", phone: "098765432" },
+            { id: "STU-801", name: "អាយុប អូស្មាន", gender: "ប្រុស", grade: "8A", phone: "011223344" },
+            { id: "STU-901", name: "ម៉ារីយ៉ាំ អាលី", gender: "ស្រី", grade: "9A", phone: "088990011" },
+            { id: "STU-1001", name: "អ៊ីប្រាហ៊ីម សលីម", gender: "ប្រុស", grade: "10A", phone: "077112233" },
+            { id: "STU-1101", name: "អាស៊ីយ៉ាស់ សារ៉ា", gender: "ស្រី", grade: "11A", phone: "066445566" },
+            { id: "STU-1201", name: "យូសុហ្វ ហាសាន", gender: "ប្រុស", grade: "12A", phone: "012889900" },
+            { id: "STU-1202", name: "អាអ៊ីសះ មូសា", gender: "ស្រី", grade: "12B", phone: "0971122334" }
+        ];
+
+        const officialSampleTeachers = [
+            { id: "TCH-101", name: "លោកគ្រូ ហាសាន អូម៉ារ", gender: "ប្រុស", subject: "គណិតវិទ្យា", phone: "012111222" },
+            { id: "TCH-102", name: "អ្នកគ្រូ សារ៉ា អាលី", gender: "ស្រី", subject: "ភាសាខ្មែរ", phone: "012333444" },
+            { id: "TCH-103", name: "លោកគ្រូ អាប់ឌុល ឡាតិហ្វ", gender: "ប្រុស", subject: "រូបវិទ្យា", phone: "012555666" },
+            { id: "TCH-104", name: "អ្នកគ្រូ ហ្វាទីម៉ា ហ្សាហារ៉ា", gender: "ស្រី", subject: "ភាសាអង់គឡេស", phone: "012777888" }
+        ];
+
+        const officialSampleSubjects = [
+            { code: "KHM", name: "ភាសាខ្មែរ" },
+            { code: "MATH", name: "គណិតវិទ្យា" },
+            { code: "PHYS", name: "រូបវិទ្យា" },
+            { code: "CHEM", name: "គីមីវិទ្យា" },
+            { code: "ENG", name: "ភាសាអង់គឡេស" },
+            { code: "ISL", name: "ឥស្លាមសាសនា" }
+        ];
+
+        const officialSampleSchedules = [
+            { grade: "7A", shift: "ព្រឹក", start: "07:00", end: "11:00" },
+            { grade: "7B", shift: "ព្រឹក", start: "07:00", end: "11:00" },
+            { grade: "8A", shift: "ព្រឹក", start: "07:00", end: "11:00" },
+            { grade: "9A", shift: "ព្រឹក", start: "07:00", end: "11:00" },
+            { grade: "10A", shift: "រសៀល", start: "13:00", end: "17:00" },
+            { grade: "11A", shift: "រសៀល", start: "13:00", end: "17:00" },
+            { grade: "12A", shift: "រសៀល", start: "13:00", end: "17:00" },
+            { grade: "12B", shift: "រសៀល", start: "13:00", end: "17:00" }
+        ];
+
+        const officialSamplePayments = [
+            { id: 1, studentId: "STU-701", studentName: "អាំម៉ាដ សុខា", grade: "7A", amount: 50.00, term: "ប្រចាំខែ", method: "ABA QR", status: "PAID", date: "2026-10-01", note: "បង់ថ្លៃខែ១០" },
+            { id: 2, studentId: "STU-1201", studentName: "យូសុហ្វ ហាសាន", grade: "12A", amount: 150.00, term: "ប្រចាំឆមាស", method: "Cash", status: "PAID", date: "2026-10-05", note: "ឆមាសទី១" },
+            { id: 3, studentId: "STU-801", studentName: "អាយុប អូស្មាន", grade: "8A", amount: 50.00, term: "ប្រចាំខែ", method: "Cash", status: "UNPAID", date: "2026-10-15", note: "ជំពាក់" }
+        ];
+
+        function getData(key, def) {
+            try {
+                const val = localStorage.getItem(key);
+                return val ? JSON.parse(val) : def;
+            } catch(e) {
+                return def;
+            }
+        }
+
+        function saveData(key, val) {
+            try {
+                localStorage.setItem(key, JSON.stringify(val));
+            } catch(e) {
+                console.error('Storage save error:', e);
+            }
+        }
+
+        function showToast(msg, success = true) {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            const message = document.getElementById('toast-message');
+
+            if (!toast || !icon || !message) return;
+
+            toast.className = `fixed top-5 right-5 z-50 transform transition-transform duration-300 ease-in-out max-w-md bg-white border-l-4 shadow-xl rounded-lg p-4 flex items-center space-x-3 text-slate-700 no-print ${success ? 'border-emerald-500' : 'border-rose-500'}`;
+            icon.className = `fas ${success ? 'fa-check-circle text-emerald-500' : 'fa-exclamation-circle text-rose-500'} text-2xl`;
+            message.textContent = msg;
+
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => toast.classList.add('translate-x-full'), 3000);
+        }
+
+        function selectLoginRole(role) {
+            document.getElementById('login-selected-role').value = role;
+            const tabAdmin = document.getElementById('role-tab-admin');
+            const tabTeacher = document.getElementById('role-tab-teacher');
+            if (role === 'ADMIN') {
+                tabAdmin.className = "flex-1 py-2 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 bg-white text-emerald-700 shadow-sm font-bold";
+                tabTeacher.className = "flex-1 py-2 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-slate-500 hover:text-slate-800 font-bold";
+            } else {
+                tabTeacher.className = "flex-1 py-2 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 bg-white text-emerald-700 shadow-sm font-bold";
+                tabAdmin.className = "flex-1 py-2 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 text-slate-500 hover:text-slate-800 font-bold";
+            }
+        }
+
+        function togglePasswordVisibility(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash text-sm';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye text-sm';
+            }
+        }
+
+        window.onload = function() {
+            if (!localStorage.getItem('sys_students')) saveData('sys_students', officialSampleStudents);
+            if (!localStorage.getItem('sys_teachers')) saveData('sys_teachers', officialSampleTeachers);
+            if (!localStorage.getItem('sys_subjects')) saveData('sys_subjects', officialSampleSubjects);
+            if (!localStorage.getItem('sys_schedules')) saveData('sys_schedules', officialSampleSchedules);
+            if (!localStorage.getItem('sys_payments')) saveData('sys_payments', officialSamplePayments);
+            if (!localStorage.getItem('sys_attendance')) saveData('sys_attendance', []);
+
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const role = document.getElementById('login-selected-role').value;
+                    const user = document.getElementById('login-username').value.trim();
+                    const pass = document.getElementById('login-password').value.trim();
+
+                    const creds = getData('sys_credentials', { adminUser: 'admin', adminPass: '123', teacherUser: 'teacher', teacherPass: '123' });
+
+                    if (role === 'ADMIN' && user === creds.adminUser && pass === creds.adminPass) {
+                        currentUser = { role: 'ADMIN', name: 'អ្នកគ្រប់គ្រង' };
+                    } else if (role === 'TEACHER' && user === creds.teacherUser && pass === creds.teacherPass) {
+                        currentUser = { role: 'TEACHER', name: 'គ្រូបង្រៀន' };
+                    } else if (user === 'admin' && pass === '123') {
+                        currentUser = { role: 'ADMIN', name: 'អ្នកគ្រប់គ្រង' };
+                    } else if (user === 'teacher' && pass === '123') {
+                        currentUser = { role: 'TEACHER', name: 'គ្រូបង្រៀន' };
+                    } else {
+                        return showToast('ឈ្មោះគណនី ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវ!', false);
+                    }
+
+                    document.getElementById('login-screen').classList.add('hidden');
+                    document.getElementById('user-display-name').textContent = currentUser.name;
+                    document.getElementById('user-display-role').textContent = currentUser.role;
+
+                    if (currentUser.role === 'TEACHER') {
+                        document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
+                    }
+
+                    initApp();
+                });
+            }
+        };
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        function initApp() {
+            populateGradeDropdowns();
+            renderDashboard();
+            renderStudents();
+            renderTeachers();
+            renderPayments();
+            renderSchedules();
+            renderTimetable();
+            generateReport();
+            renderClassTelegramInputs();
+            
+            const creds = getData('sys_credentials', { adminUser: 'admin', adminPass: '123', teacherUser: 'teacher', teacherPass: '123' });
+            if (document.getElementById('sys-admin-username')) {
+                document.getElementById('sys-admin-username').value = creds.adminUser;
+                document.getElementById('sys-admin-password').value = creds.adminPass;
+                document.getElementById('sys-teacher-username').value = creds.teacherUser;
+                document.getElementById('sys-teacher-password').value = creds.teacherPass;
+            }
+
+            const tgConfig = getData('sys_telegram', { botToken: '', chatId: '', enabled: false, classChatIds: {} });
+            if (document.getElementById('tg-bot-token')) {
+                document.getElementById('tg-bot-token').value = tgConfig.botToken || '';
+                document.getElementById('tg-chat-id').value = tgConfig.chatId || '';
+                document.getElementById('tg-enable').checked = !!tgConfig.enabled;
+            }
+        }
+
+        function renderClassTelegramInputs() {
+            const students = getData('sys_students', []);
+            const grades = [...new Set(students.map(s => s.grade))].sort();
+            const tgConfig = getData('sys_telegram', { classChatIds: {} });
+            const classChatIds = tgConfig.classChatIds || {};
+
+            const container = document.getElementById('class-chatids-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            if (!grades.length) {
+                container.innerHTML = '<div class="text-xs text-slate-400 p-2 text-center">គ្មានទិន្នន័យថ្នាក់រៀន</div>';
+                return;
+            }
+
+            grades.forEach(g => {
+                const val = classChatIds[g] || '';
+                container.innerHTML += `
+                    <div class="flex items-center space-x-2 bg-white p-2 rounded-md border border-slate-200">
+                        <span class="text-xs font-bold text-emerald-800 w-24">ថ្នាក់ទី ${g}៖</span>
+                        <input type="text" data-class="${g}" class="class-chatid-input flex-grow border border-slate-300 rounded px-2.5 py-1 text-xs font-mono" placeholder="Chat ID (ឧ. -100987654321)" value="${val}">
+                    </div>
+                `;
+            });
+        }
+
+        function sendTelegramAttendanceNotification(log, statusText) {
+            const tgConfig = getData('sys_telegram', { botToken: '', chatId: '', enabled: false, classChatIds: {} });
+            if (!tgConfig.enabled || !tgConfig.botToken) return;
+
+            let targetChatId = tgConfig.chatId;
+            if (log.type === 'student' && log.grade && tgConfig.classChatIds && tgConfig.classChatIds[log.grade]) {
+                targetChatId = tgConfig.classChatIds[log.grade];
+            }
+
+            if (!targetChatId) return;
+
+            const message = `🔔 *[វត្តមានស្វ័យប្រវត្តិ]*
+🏫 *វិទ្យាល័យឥស្លាមស្ទឹងត្រែង*
+---------------------------------
+👤 *ឈ្មោះ៖* ${log.name} (${log.personId})
+📚 *ថ្នាក់/មុខវិជ្ជា៖* ${log.grade !== '---' ? 'ថ្នាក់ទី ' + log.grade : ''} - ${log.sub}
+⏰ *ម៉ោងស្កែន៖* ${log.time}
+📊 *ស្ថានភាព៖* ${statusText}
+---------------------------------
+📅 *កាលបរិច្ឆេទ៖* ${log.date}`;
+
+            const url = `https://api.telegram.org/bot${tgConfig.botToken}/sendMessage`;
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: targetChatId,
+                    text: message,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(err => console.log('Telegram send error:', err));
+        }
+
+        function saveTelegramSettings() {
+            const botToken = document.getElementById('tg-bot-token').value.trim();
+            const chatId = document.getElementById('tg-chat-id').value.trim();
+            const enabled = document.getElementById('tg-enable').checked;
+
+            const classChatIds = {};
+            document.querySelectorAll('.class-chatid-input').forEach(input => {
+                const c = input.getAttribute('data-class');
+                const v = input.value.trim();
+                if (c && v) classChatIds[c] = v;
+            });
+
+            saveData('sys_telegram', { botToken, chatId, enabled, classChatIds });
+            showToast('រក្សាទុកការកំណត់ Telegram តាមថ្នាក់រួចរាល់!');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('bg-emerald-600', 'text-white'));
+
+            const targetTab = document.getElementById(`tab-${tab}`);
+            const targetNav = document.getElementById(`nav-${tab}`);
+            if (targetTab) targetTab.classList.remove('hidden');
+            if (targetNav) targetNav.classList.add('bg-emerald-600', 'text-white');
+
+            if (tab === 'scanner') startScanner();
+            else stopScanner();
+        }
+
+        function populateGradeDropdowns() {
+            const students = getData('sys_students', []);
+            const grades = [...new Set(students.map(s => s.grade))].sort();
+
+            const fGrade = document.getElementById('filter-grade');
+            const rGrade = document.getElementById('report-grade');
+            const sSelect = document.getElementById('schedule-class-select');
+
+            if (fGrade) fGrade.innerHTML = '<option value="ALL">គ្រប់ថ្នាក់ទាំងអស់</option>';
+            if (rGrade) rGrade.innerHTML = '<option value="ALL">គ្រប់ថ្នាក់ទាំងអស់</option>';
+            if (sSelect) sSelect.innerHTML = '';
+
+            grades.forEach(g => {
+                if (fGrade) fGrade.innerHTML += `<option value="${g}">ថ្នាក់ទី ${g}</option>`;
+                if (rGrade) rGrade.innerHTML += `<option value="${g}">ថ្នាក់ទី ${g}</option>`;
+                if (sSelect) sSelect.innerHTML += `<option value="${g}">ថ្នាក់ទី ${g}</option>`;
+            });
+        }
+
+        function renderDashboard() {
+            const students = getData('sys_students', []);
+            const logs = getData('sys_attendance', []);
+            const today = new Date().toISOString().split('T')[0];
+            const dateEl = document.getElementById('dashboard-date');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('km-KH');
+
+            const todayLogs = logs.filter(l => l.date === today);
+            if (document.getElementById('stat-total-students')) document.getElementById('stat-total-students').textContent = students.length;
+            if (document.getElementById('stat-present-today')) document.getElementById('stat-present-today').textContent = todayLogs.filter(l => l.status === 'PRESENT').length;
+            if (document.getElementById('stat-late-today')) document.getElementById('stat-late-today').textContent = todayLogs.filter(l => l.status === 'LATE').length;
+            if (document.getElementById('stat-absent-today')) document.getElementById('stat-absent-today').textContent = todayLogs.filter(l => l.status === 'ABSENT' || l.status === 'PERMISSION').length;
+
+            const tbody = document.getElementById('dashboard-recent-logs');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            logs.slice(-8).reverse().forEach(l => {
+                const badge = l.status === 'PRESENT' ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs">មក</span>' :
+                              l.status === 'LATE' ? '<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded-full text-xs">មកយឺត</span>' :
+                              '<span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded-full text-xs">អវត្តមាន</span>';
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3 font-mono">${l.time}</td>
+                        <td class="p-3">${l.type === 'student' ? 'សិស្ស' : 'គ្រូ'}</td>
+                        <td class="p-3 font-bold">${l.name}</td>
+                        <td class="p-3">${l.sub || l.grade || '---'}</td>
+                        <td class="p-3">${badge}</td>
+                        <td class="p-3 text-xs text-slate-400">${l.note || ''}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderStudents() {
+            const students = getData('sys_students', []);
+            const filterEl = document.getElementById('filter-grade');
+            const searchEl = document.getElementById('search-student');
+            const filter = filterEl ? filterEl.value : 'ALL';
+            const search = searchEl ? searchEl.value.toLowerCase() : '';
+
+            const tbody = document.getElementById('students-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            students.filter(s => (filter === 'ALL' || s.grade === filter) && (s.name.toLowerCase().includes(search) || s.id.toLowerCase().includes(search)))
+            .forEach(s => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3 font-mono font-bold text-slate-700">${s.id}</td>
+                        <td class="p-3 font-bold text-slate-800">${s.name}</td>
+                        <td class="p-3">${s.gender}</td>
+                        <td class="p-3 font-bold text-emerald-700">ថ្នាក់ទី ${s.grade}</td>
+                        <td class="p-3 font-mono">${s.phone || '---'}</td>
+                        <td class="p-3">
+                            <button onclick="openQRModal('${s.id}', '${s.name}', 'ថ្នាក់ទី ${s.grade}')" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 text-xs">
+                                <i class="fas fa-qrcode mr-1"></i>QR Card
+                            </button>
+                        </td>
+                        <td class="p-3 text-center admin-only space-x-1">
+                            <button onclick="deleteStudent('${s.id}')" class="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderTeachers() {
+            const teachers = getData('sys_teachers', []);
+            const tbody = document.getElementById('teachers-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            teachers.forEach(t => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3 font-mono font-bold">${t.id}</td>
+                        <td class="p-3 font-bold">${t.name}</td>
+                        <td class="p-3">${t.gender}</td>
+                        <td class="p-3 font-bold text-blue-700">${t.subject}</td>
+                        <td class="p-3 font-mono">${t.phone || '---'}</td>
+                        <td class="p-3">
+                            <button onclick="openQRModal('${t.id}', '${t.name}', '${t.subject}')" class="p-1.5 bg-slate-100 hover:bg-slate-200 rounded text-slate-700 text-xs">
+                                <i class="fas fa-qrcode mr-1"></i>QR Card
+                            </button>
+                        </td>
+                        <td class="p-3 text-center space-x-1">
+                            <button onclick="deleteTeacher('${t.id}')" class="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderPayments() {
+            const payments = getData('sys_payments', []);
+            const filterEl = document.getElementById('filter-payment-status');
+            const searchEl = document.getElementById('search-payment');
+            const statusFilter = filterEl ? filterEl.value : 'ALL';
+            const search = searchEl ? searchEl.value.toLowerCase() : '';
+
+            const tbody = document.getElementById('payments-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            let paidSum = 0, unpaidSum = 0;
+
+            payments.forEach(p => {
+                if (p.status === 'PAID') paidSum += parseFloat(p.amount || 0);
+                else unpaidSum += parseFloat(p.amount || 0);
+
+                if ((statusFilter === 'ALL' || p.status === statusFilter) && (p.studentName.toLowerCase().includes(search) || p.studentId.toLowerCase().includes(search))) {
+                    const statusBadge = p.status === 'PAID' ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold">បានបង់រួច</span>' : '<span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded-full text-xs font-bold">នៅខ្វះ</span>';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="p-3 font-mono text-xs">${p.date}</td>
+                            <td class="p-3 font-mono font-bold">${p.studentId}</td>
+                            <td class="p-3 font-bold text-slate-800">${p.studentName}</td>
+                            <td class="p-3">ថ្នាក់ទី ${p.grade}</td>
+                            <td class="p-3">${p.term}</td>
+                            <td class="p-3">${p.method}</td>
+                            <td class="p-3 font-bold text-emerald-600">$${parseFloat(p.amount || 0).toFixed(2)}</td>
+                            <td class="p-3">${statusBadge}</td>
+                            <td class="p-3 text-center">
+                                <button onclick="openPaymentReceiptModal(${p.id})" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-900 text-white rounded text-xs font-semibold transition flex items-center justify-center mx-auto space-x-1">
+                                    <i class="fas fa-print"></i>
+                                    <span>វិក្កយបត្រ</span>
+                                </button>
+                            </td>
+                            <td class="p-3 text-center admin-only">
+                                <button onclick="deletePayment(${p.id})" class="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+
+            if (document.getElementById('stat-total-paid')) document.getElementById('stat-total-paid').textContent = `$${paidSum.toFixed(2)}`;
+            if (document.getElementById('stat-total-unpaid')) document.getElementById('stat-total-unpaid').textContent = `$${unpaidSum.toFixed(2)}`;
+            if (document.getElementById('stat-payment-count')) document.getElementById('stat-payment-count').textContent = payments.length;
+        }
+
+        function openPaymentReceiptModal(paymentId) {
+            const payments = getData('sys_payments', []);
+            const payment = payments.find(p => p.id === paymentId);
+
+            if (!payment) return showToast('រកមិនឃើញព័ត៌មានទូទាត់ប្រាក់នេះទេ!', false);
+
+            document.getElementById('receipt-no').textContent = `REC-${payment.id}`;
+            document.getElementById('receipt-date').textContent = payment.date;
+            document.getElementById('receipt-student-id').textContent = payment.studentId;
+            document.getElementById('receipt-student-name').textContent = payment.studentName;
+            document.getElementById('receipt-grade').textContent = `ថ្នាក់ទី ${payment.grade}`;
+            document.getElementById('receipt-term').textContent = payment.term;
+            document.getElementById('receipt-method').textContent = payment.method;
+            document.getElementById('receipt-amount').textContent = `$${parseFloat(payment.amount || 0).toFixed(2)}`;
+            
+            const statusEl = document.getElementById('receipt-status');
+            if (payment.status === 'PAID') {
+                statusEl.className = 'font-bold text-emerald-600';
+                statusEl.textContent = 'បានបង់រួច (PAID)';
+            } else {
+                statusEl.className = 'font-bold text-rose-600';
+                statusEl.textContent = 'នៅខ្វះ (UNPAID)';
+            }
+
+            document.getElementById('receipt-note').textContent = payment.note ? `ចំណាំ៖ ${payment.note}` : '';
+
+            openModal('payment-receipt-modal');
+        }
+
+        function printPaymentReceipt() {
+            const printableArea = document.getElementById('receipt-printable-area').innerHTML;
+            const printWin = window.open('', '', 'width=600,height=700');
+            printWin.document.write(`
+                <html lang="km">
+                <head>
+                    <title>Print Payment Receipt</title>
+                    <script src="https://cdn.tailwindcss.com"><\/script>
+                    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                    <style>
+                        body { font-family: 'Kantumruy Pro', sans-serif; padding: 20px; background: white; }
+                    </style>
+                </head>
+                <body>
+                    <div class="max-w-md mx-auto border p-6 rounded-xl">
+                        ${printableArea}
+                    </div>
+                    <script>
+                        window.onload = function() {
+                            setTimeout(() => { window.print(); window.close(); }, 400);
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWin.document.close();
+        }
+
+        function exportPaymentsToExcel() {
+            const payments = getData('sys_payments', []);
+            if (!payments.length) return showToast('គ្មានទិន្នន័យបង់ប្រាក់សម្រាប់ទាញយកទេ!', false);
+
+            const exportData = payments.map(p => ({
+                "កាលបរិច្ឆេទ": p.date,
+                "ID សិស្ស": p.studentId,
+                "ឈ្មោះសិស្ស": p.studentName,
+                "ថ្នាក់": `ថ្នាក់ទី ${p.grade}`,
+                "ប្រភេទបង់": p.term,
+                "វិធីសាស្ត្រ": p.method,
+                "ចំនួនទឹកប្រាក់ ($)": parseFloat(p.amount || 0),
+                "ស្ថានភាព": p.status === 'PAID' ? 'បានបង់រួច' : 'នៅខ្វះ',
+                "កំណត់ចំណាំ": p.note || ''
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(exportData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Tuition_Payments");
+            XLSX.writeFile(workbook, `Tuition_Payments_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showToast('ទាញយក Excel ជោគជ័យ!');
+        }
+
+        function renderSchedules() {
+            const schedules = getData('sys_schedules', []);
+            const subjects = getData('sys_subjects', []);
+
+            const sTable = document.getElementById('schedule-table-body');
+            if (sTable) {
+                sTable.innerHTML = '';
+                schedules.forEach(s => {
+                    sTable.innerHTML += `
+                        <tr>
+                            <td class="p-3 font-bold text-emerald-700">ថ្នាក់ទី ${s.grade}</td>
+                            <td class="p-3">${s.shift}</td>
+                            <td class="p-3 font-mono">${s.start}</td>
+                            <td class="p-3 font-mono">${s.end}</td>
+                            <td class="p-3 text-center admin-only">
+                                <button onclick="deleteSchedule('${s.grade}')" class="p-1 text-rose-600 hover:text-rose-800"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+
+            const subList = document.getElementById('subjects-list');
+            if (subList) {
+                subList.innerHTML = '';
+                subjects.forEach(s => {
+                    subList.innerHTML += `
+                        <li class="py-2 flex justify-between items-center text-xs">
+                            <span class="font-bold text-slate-700">${s.name} (${s.code})</span>
+                            <button onclick="deleteSubject('${s.code}')" class="text-rose-500 hover:text-rose-700 admin-only"><i class="fas fa-times"></i></button>
+                        </li>
+                    `;
+                });
+            }
+        }
+
+        function renderTimetable() {
+            const selectEl = document.getElementById('schedule-class-select');
+            const grade = selectEl ? selectEl.value : '7A';
+            const titleEl = document.getElementById('current-timetable-class');
+            if (titleEl) titleEl.textContent = `ថ្នាក់ទី ${grade}`;
+
+            const matrix = document.getElementById('timetable-matrix-body');
+            if (!matrix) return;
+
+            const subjects = getData('sys_subjects', officialSampleSubjects);
+            const subjectNames = subjects.map(s => s.name);
+
+            const allTimetables = getData('sys_timetable_matrices', {});
+            const currentMatrix = allTimetables[grade] || {};
+
+            const times = ["07:00 - 08:00", "08:00 - 09:00", "09:15 - 10:15", "10:15 - 11:00", "13:00 - 14:00", "14:00 - 15:00", "15:15 - 16:15", "16:15 - 17:00"];
+            const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+            matrix.innerHTML = '';
+            times.forEach((t, timeIdx) => {
+                let row = `<tr><td class="p-2 border font-mono font-bold bg-slate-50">${t}</td>`;
+                days.forEach((d, dayIdx) => {
+                    const cellKey = `${timeIdx}_${dayIdx}`;
+                    const defaultSub = subjectNames[(timeIdx + dayIdx) % subjectNames.length] || 'គណិតវិទ្យា';
+                    const selectedSub = currentMatrix[cellKey] || defaultSub;
+
+                    let optionsHTML = '';
+                    subjectNames.forEach(sub => {
+                        optionsHTML += `<option value="${sub}" ${sub === selectedSub ? 'selected' : ''}>${sub}</option>`;
+                    });
+
+                    row += `
+                        <td class="p-1 border hover:bg-emerald-50">
+                            <select data-key="${cellKey}" class="matrix-cell-select w-full bg-transparent border-0 text-xs font-semibold text-slate-800 focus:ring-1 focus:ring-emerald-500 rounded p-1 text-center">
+                                ${optionsHTML}
+                            </select>
+                        </td>
+                    `;
+                });
+                row += `</tr>`;
+                matrix.innerHTML += row;
+            });
+        }
+
+        function saveTimetableMatrix() {
+            const selectEl = document.getElementById('schedule-class-select');
+            const grade = selectEl ? selectEl.value : '7A';
+
+            const matrixData = {};
+            document.querySelectorAll('.matrix-cell-select').forEach(sel => {
+                const key = sel.getAttribute('data-key');
+                matrixData[key] = sel.value;
+            });
+
+            const allTimetables = getData('sys_timetable_matrices', {});
+            allTimetables[grade] = matrixData;
+            saveData('sys_timetable_matrices', allTimetables);
+
+            showToast(`បានរក្សាទុកកាលវិភាគសម្រាប់ «ថ្នាក់ទី ${grade}» រួចរាល់!`);
+        }
+
+        function generateAutoSchedules() {
+            saveData('sys_schedules', officialSampleSchedules);
+            saveData('sys_subjects', officialSampleSubjects);
+            saveData('sys_timetable_matrices', {});
+            renderSchedules();
+            renderTimetable();
+            showToast('បានរៀបចំកាលវិភាគស្វ័យប្រវត្តិរួចរាល់!');
+        }
+
+        function startScanner() {
+            if (html5QrcodeScanner) return;
+            html5QrcodeScanner = new Html5Qrcode("reader");
+            html5QrcodeScanner.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, onScanSuccess)
+            .catch(err => showToast('មិនអាចបើកកាមេរ៉ាបានទេ!', false));
+        }
+
+        function stopScanner() {
+            if (html5QrcodeScanner) {
+                html5QrcodeScanner.stop().then(() => {
+                    html5QrcodeScanner = null;
+                    const r = document.getElementById('reader');
+                    if (r) r.innerHTML = '';
+                }).catch(() => { html5QrcodeScanner = null; });
+            }
+        }
+
+        function onScanSuccess(decodedText) {
+            processScanID(decodedText.trim());
+        }
+
+        function processManualID() {
+            const input = document.getElementById('manual-id-input');
+            const id = input ? input.value.trim() : '';
+            if (!id) return showToast('សូមបញ្ចូល ID!', false);
+            processScanID(id);
+            if (input) input.value = '';
+        }
+
+        function processScanID(id) {
+            const students = getData('sys_students', []);
+            const teachers = getData('sys_teachers', []);
+            const typeEl = document.getElementById('scanner-type');
+            const type = typeEl ? typeEl.value : 'student';
+
+            let person = type === 'student' ? students.find(s => s.id === id) : teachers.find(t => t.id === id);
+
+            if (!person) return showToast(`រកមិនឃើញ ID: ${id} ឡើយ!`, false);
+
+            const now = new Date();
+            const timeStr = now.toTimeString().split(' ')[0].substring(0,5);
+            const dateStr = now.toISOString().split('T')[0];
+
+            const hour = now.getHours();
+            let currentSub = person.subject || 'មុខវិជ្ជាទូទៅ';
+
+            if (type === 'student' && person.grade) {
+                const allTimetables = getData('sys_timetable_matrices', {});
+                const classMatrix = allTimetables[person.grade] || {};
+                const dayIdx = (now.getDay() + 6) % 7; // Mon:0, Tue:1... Sat:5
+                let timeIdx = 0;
+                if (hour >= 7 && hour < 8) timeIdx = 0;
+                else if (hour >= 8 && hour < 9) timeIdx = 1;
+                else if (hour >= 9 && hour < 10) timeIdx = 2;
+                else if (hour >= 10 && hour < 11) timeIdx = 3;
+                else if (hour >= 13 && hour < 14) timeIdx = 4;
+                else if (hour >= 14 && hour < 15) timeIdx = 5;
+                else if (hour >= 15 && hour < 16) timeIdx = 6;
+                else timeIdx = 7;
+
+                const key = `${timeIdx}_${dayIdx}`;
+                if (classMatrix[key]) currentSub = classMatrix[key];
+            }
+
+            let status = 'PRESENT';
+            let statusText = 'មកទាន់ពេល ✅';
+            if ((hour === 7 && now.getMinutes() > 15) || (hour === 13 && now.getMinutes() > 15) || hour === 8 || hour === 14) {
+                status = 'LATE';
+                statusText = 'មកយឺត 🟡';
+            }
+
+            const log = {
+                id: Date.now(),
+                type,
+                personId: person.id,
+                name: person.name,
+                grade: person.grade || '---',
+                sub: currentSub,
+                date: dateStr,
+                time: timeStr,
+                status,
+                note: status === 'LATE' ? 'មកយឺត' : 'ទាន់ពេល'
+            };
+
+            const logs = getData('sys_attendance', []);
+            logs.push(log);
+            saveData('sys_attendance', logs);
+
+            sendTelegramAttendanceNotification(log, statusText);
+
+            const card = document.getElementById('scan-result-card');
+            if (card) {
+                card.innerHTML = `
+                    <div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-center">
+                        <i class="fas fa-check-circle text-4xl text-emerald-600 mb-2"></i>
+                        <h3 class="text-base font-bold text-slate-800">${person.name}</h3>
+                        <p class="text-xs font-mono font-bold text-emerald-700">${person.id} - ${person.grade ? 'ថ្នាក់ទី '+person.grade : person.subject}</p>
+                        <p class="text-xs font-bold text-blue-600 mt-1">📚 មុខវិជ្ជា៖ ${currentSub}</p>
+                        <div class="mt-2 text-xs font-bold text-slate-600">ម៉ោងកត់វត្តមាន: ${timeStr} (${statusText})</div>
+                    </div>
+                `;
+            }
+
+            showToast(`កត់វត្តមានជោគជ័យ: ${person.name}`);
+            renderDashboard();
+        }
+
+        function saveCredentialsSettings() {
+            const adminUser = document.getElementById('sys-admin-username').value.trim();
+            const adminPass = document.getElementById('sys-admin-password').value.trim();
+            const teacherUser = document.getElementById('sys-teacher-username').value.trim();
+            const teacherPass = document.getElementById('sys-teacher-password').value.trim();
+
+            if (!adminUser || !adminPass || !teacherUser || !teacherPass) {
+                return showToast('សូមបញ្ចូលព័ត៌មានគណនីឲ្យបានគ្រប់គ្រាន់!', false);
+            }
+
+            saveData('sys_credentials', { adminUser, adminPass, teacherUser, teacherPass });
+            showToast('ផ្លាស់ប្តូរពាក្យសម្ងាត់ជោគជ័យ!');
+        }
+
+        function loadSampleDataOfficial() {
+            saveData('sys_students', officialSampleStudents);
+            saveData('sys_teachers', officialSampleTeachers);
+            saveData('sys_subjects', officialSampleSubjects);
+            saveData('sys_schedules', officialSampleSchedules);
+            saveData('sys_payments', officialSamplePayments);
+            saveData('sys_attendance', []);
+            saveData('sys_timetable_matrices', {});
+            initApp();
+            showToast('បញ្ចូលទិន្នន័យគំរូថ្មីរៀបរយ!');
+        }
+
+        function resetAllDataOfficial() {
+            if (confirm('តើអ្នកប្រាកដជាចង់លុបទិន្នន័យទាំងអស់ចោលមែនទេ?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        function openQRModal(id, name, sub) {
+            activeCardData = { id, name, sub };
+            document.getElementById('card-name').textContent = name;
+            document.getElementById('card-sub').textContent = sub;
+            document.getElementById('card-id').textContent = id;
+
+            const qrContainer = document.getElementById('card-qrcode');
+            qrContainer.innerHTML = '';
+            currentQRInstance = new QRCode(qrContainer, {
+                text: id,
+                width: 160,
+                height: 160
+            });
+
+            openModal('qr-print-modal');
+        }
+
+        function downloadQRCodeImage() {
+            const img = document.querySelector('#card-qrcode img');
+            if (img && img.src) {
+                const a = document.createElement('a');
+                a.href = img.src;
+                a.download = `QR_${activeCardData.id}_${activeCardData.name}.png`;
+                a.click();
+                showToast('ទាញយក PNG រួចរាល់!');
+            } else {
+                showToast('មិនទាន់មាន QR Code សម្រាប់ទាញយកទេ!', false);
+            }
+        }
+
+        function printBatchQRCards(type = 'student') {
+            const list = type === 'student' ? getData('sys_students', []) : getData('sys_teachers', []);
+            if (!list.length) return showToast('គ្មានទិន្នន័យសម្រាប់បោះពុម្ព!', false);
+
+            const printWin = window.open('', '', 'width=800,height=600');
+            let cardsHTML = `<html lang="km"><head><title>Print QR Cards</title>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+            <style>
+                body { font-family: sans-serif; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 20px; }
+                .card { border: 2px solid #334155; border-radius: 12px; padding: 12px; text-align: center; background: #f8fafc; }
+                .school { font-size: 10px; font-weight: bold; color: #64748b; text-transform: uppercase; }
+                .name { font-size: 14px; font-weight: bold; color: #0f172a; margin: 4px 0; }
+                .sub { font-size: 11px; font-weight: bold; color: #059669; margin-bottom: 8px; }
+                .qr { display: flex; justify-content: center; margin-bottom: 6px; }
+                .id { font-family: monospace; font-size: 12px; font-weight: bold; color: #334155; }
+            </style></head><body>`;
+
+            list.forEach((item, i) => {
+                const subText = type === 'student' ? `ថ្នាក់ទី ${item.grade}` : item.subject;
+                cardsHTML += `
+                    <div class="card">
+                        <div class="school">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</div>
+                        <div class="name">${item.name}</div>
+                        <div class="sub">${subText}</div>
+                        <div class="qr" id="batch-qr-${i}"></div>
+                        <div class="id">${item.id}</div>
+                    </div>
+                `;
+            });
+
+            cardsHTML += `<script>
+                window.onload = function() {
+                    const list = ${JSON.stringify(list)};
+                    list.forEach((item, i) => {
+                        new QRCode(document.getElementById('batch-qr-' + i), { text: item.id, width: 110, height: 110 });
+                    });
+                    setTimeout(() => { window.print(); window.close(); }, 500);
+                };
+            <\/script></body></html>`;
+
+            printWin.document.write(cardsHTML);
+            printWin.document.close();
+        }
+
+        function exportBackupJSON() {
+            const data = {
+                students: getData('sys_students', []),
+                teachers: getData('sys_teachers', []),
+                subjects: getData('sys_subjects', []),
+                schedules: getData('sys_schedules', []),
+                payments: getData('sys_payments', []),
+                attendance: getData('sys_attendance', []),
+                matrices: getData('sys_timetable_matrices', {})
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ST_HighSchool_Backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            showToast('ទាញយក Backup JSON រួចរាល់!');
+        }
+
+        function importBackupJSON(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if (data.students) saveData('sys_students', data.students);
+                    if (data.teachers) saveData('sys_teachers', data.teachers);
+                    if (data.subjects) saveData('sys_subjects', data.subjects);
+                    if (data.schedules) saveData('sys_schedules', data.schedules);
+                    if (data.payments) saveData('sys_payments', data.payments);
+                    if (data.attendance) saveData('sys_attendance', data.attendance);
+                    if (data.matrices) saveData('sys_timetable_matrices', data.matrices);
+                    showToast('ស្ដារទិន្នន័យឡើងវិញជោគជ័យ!');
+                    location.reload();
+                } catch(err) {
+                    showToast('ឯកសារមិនត្រឹមត្រូវ!', false);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- NEW: Import Students from Excel File ---
+        function importStudentsFromExcel(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = new Uint8Array(evt.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonRows = XLSX.utils.sheet_to_json(worksheet);
+
+                    if (!jsonRows || jsonRows.length === 0) {
+                        return showToast('ឯកសារ Excel គ្មានទិន្នន័យទេ!', false);
+                    }
+
+                    let students = getData('sys_students', []);
+                    let importedCount = 0;
+
+                    jsonRows.forEach(row => {
+                        const id = String(row.student_id || row.ID || row.id || `STU-${Math.floor(1000 + Math.random() * 9000)}`).trim();
+                        const name = String(row.name || row.Name || row.ឈ្មោះ || '').trim();
+                        const gender = String(row.gender || row.Gender || row.ភេទ || 'ប្រុស').trim();
+                        const grade = String(row.grade || row.Grade || row.ថ្នាក់ || '7A').trim();
+                        const phone = String(row.phone || row.Phone || row.ទូរស័ព្ទ || '').trim();
+
+                        if (name) {
+                            const existingIdx = students.findIndex(s => s.id === id);
+                            const newStudent = { id, name, gender, grade, phone };
+                            if (existingIdx >= 0) {
+                                students[existingIdx] = newStudent;
+                            } else {
+                                students.push(newStudent);
+                            }
+                            importedCount++;
+                        }
+                    });
+
+                    saveData('sys_students', students);
+                    renderStudents();
+                    populateGradeDropdowns();
+                    renderClassTelegramInputs();
+
+                    showToast(`បានបញ្ចូលទិន្នន័យសិស្សចំនួន ${importedCount} នាក់ដោយជោគជ័យ!`);
+                    e.target.value = '';
+                } catch(err) {
+                    console.error(err);
+                    showToast('មានបញ្ហាក្នុងការអានឯកសារ Excel!', false);
+                }
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        }
+
+        function openStudentModal() {
+            document.getElementById('student-form').reset();
+            document.getElementById('m-student-id').value = `STU-${Math.floor(1000 + Math.random() * 9000)}`;
+            openModal('student-modal');
+        }
+
+        function saveStudent(e) {
+            e.preventDefault();
+            const id = document.getElementById('m-student-id').value.trim();
+            const name = document.getElementById('m-student-name').value.trim();
+            const gender = document.getElementById('m-student-gender').value;
+            const grade = document.getElementById('m-student-grade').value.trim();
+            const phone = document.getElementById('m-student-phone').value.trim();
+
+            let students = getData('sys_students', []);
+            const idx = students.findIndex(s => s.id === id);
+            if (idx >= 0) {
+                students[idx] = { id, name, gender, grade, phone };
+            } else {
+                students.push({ id, name, gender, grade, phone });
+            }
+
+            saveData('sys_students', students);
+            closeModal('student-modal');
+            renderStudents();
+            populateGradeDropdowns();
+            renderClassTelegramInputs();
+            showToast('រក្សាទុកព័ត៌មានសិស្សជោគជ័យ!');
+        }
+
+        function deleteStudent(id) {
+            if (confirm('តើអ្នកប្រាកដជាចង់លុបសិស្សនេះមែនទេ?')) {
+                let students = getData('sys_students', []);
+                students = students.filter(s => s.id !== id);
+                saveData('sys_students', students);
+                renderStudents();
+                populateGradeDropdowns();
+                renderClassTelegramInputs();
+                showToast('លុបសិស្សជោគជ័យ!');
+            }
+        }
+
+        function openTeacherModal() {
+            document.getElementById('teacher-form').reset();
+            document.getElementById('m-teacher-id').value = `TCH-${Math.floor(100 + Math.random() * 900)}`;
+            openModal('teacher-modal');
+        }
+
+        function saveTeacher(e) {
+            e.preventDefault();
+            const id = document.getElementById('m-teacher-id').value.trim();
+            const name = document.getElementById('m-teacher-name').value.trim();
+            const gender = document.getElementById('m-teacher-gender').value;
+            const subject = document.getElementById('m-teacher-subject').value.trim();
+            const phone = document.getElementById('m-teacher-phone').value.trim();
+
+            let teachers = getData('sys_teachers', []);
+            const idx = teachers.findIndex(t => t.id === id);
+            if (idx >= 0) {
+                teachers[idx] = { id, name, gender, subject, phone };
+            } else {
+                teachers.push({ id, name, gender, subject, phone });
+            }
+
+            saveData('sys_teachers', teachers);
+            closeModal('teacher-modal');
+            renderTeachers();
+            showToast('រក្សាទុកព័ត៌មានគ្រូជោគជ័យ!');
+        }
+
+        function deleteTeacher(id) {
+            if (confirm('តើអ្នកប្រាកដជាចង់លុបគ្រូបង្រៀននេះមែនទេ?')) {
+                let teachers = getData('sys_teachers', []);
+                teachers = teachers.filter(t => t.id !== id);
+                saveData('sys_teachers', teachers);
+                renderTeachers();
+                showToast('លុបគ្រូបង្រៀនជោគជ័យ!');
+            }
+        }
+
+        function openPaymentModal() {
+            document.getElementById('payment-form').reset();
+            const students = getData('sys_students', []);
+            const sel = document.getElementById('m-payment-student');
+            sel.innerHTML = '';
+            students.forEach(s => {
+                sel.innerHTML += `<option value="${s.id}">${s.name} (ថ្នាក់ទី ${s.grade} - ${s.id})</option>`;
+            });
+            document.getElementById('m-payment-date').value = new Date().toISOString().split('T')[0];
+            openModal('payment-modal');
+        }
+
+        function savePayment(e) {
+            e.preventDefault();
+            const studentId = document.getElementById('m-payment-student').value;
+            const students = getData('sys_students', []);
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            const amount = parseFloat(document.getElementById('m-payment-amount').value);
+            const term = document.getElementById('m-payment-term').value;
+            const method = document.getElementById('m-payment-method').value;
+            const status = document.getElementById('m-payment-status').value;
+            const date = document.getElementById('m-payment-date').value;
+            const note = document.getElementById('m-payment-note').value.trim();
+
+            let payments = getData('sys_payments', []);
+            const newPayment = {
+                id: Date.now(),
+                studentId: student.id,
+                studentName: student.name,
+                grade: student.grade,
+                amount,
+                term,
+                method,
+                status,
+                date,
+                note
+            };
+            payments.push(newPayment);
+            saveData('sys_payments', payments);
+            closeModal('payment-modal');
+            renderPayments();
+            showToast('កត់ត្រាការបង់ប្រាក់ជោគជ័យ!');
+        }
+
+        function deletePayment(id) {
+            if (confirm('តើអ្នកប្រាកដជាចង់លុបប្រតិបត្តិការនេះមែនទេ?')) {
+                let payments = getData('sys_payments', []);
+                payments = payments.filter(p => p.id !== id);
+                saveData('sys_payments', payments);
+                renderPayments();
+                showToast('លុបប្រតិបត្តិការជោគជ័យ!');
+            }
+        }
+
+        function openScheduleModal() {
+            document.getElementById('schedule-form').reset();
+            openModal('schedule-modal');
+        }
+
+        function saveSchedule(e) {
+            e.preventDefault();
+            const grade = document.getElementById('m-schedule-grade').value.trim();
+            const shift = document.getElementById('m-schedule-shift').value;
+            const start = document.getElementById('m-schedule-start').value;
+            const end = document.getElementById('m-schedule-end').value;
+
+            let schedules = getData('sys_schedules', []);
+            const idx = schedules.findIndex(s => s.grade === grade);
+            if (idx >= 0) {
+                schedules[idx] = { grade, shift, start, end };
+            } else {
+                schedules.push({ grade, shift, start, end });
+            }
+
+            saveData('sys_schedules', schedules);
+            closeModal('schedule-modal');
+            renderSchedules();
+            showToast('រក្សាទុកម៉ោងសិក្សាជោគជ័យ!');
+        }
+
+        function deleteSchedule(grade) {
+            if (confirm(`តើអ្នកប្រាកដជាចង់លុបម៉ោងសិក្សាថ្នាក់ទី ${grade} មែនទេ?`)) {
+                let schedules = getData('sys_schedules', []);
+                schedules = schedules.filter(s => s.grade !== grade);
+                saveData('sys_schedules', schedules);
+                renderSchedules();
+                showToast('លុបម៉ោងសិក្សាជោគជ័យ!');
+            }
+        }
+
+        function openSubjectModal() {
+            document.getElementById('subject-form').reset();
+            openModal('subject-modal');
+        }
+
+        function saveSubject(e) {
+            e.preventDefault();
+            const code = document.getElementById('m-subject-code').value.trim().toUpperCase();
+            const name = document.getElementById('m-subject-name').value.trim();
+
+            let subjects = getData('sys_subjects', []);
+            if (!subjects.some(s => s.code === code)) {
+                subjects.push({ code, name });
+                saveData('sys_subjects', subjects);
+            }
+            closeModal('subject-modal');
+            renderSchedules();
+            renderTimetable();
+            showToast('បន្ថែមមុខវិជ្ជាជោគជ័យ!');
+        }
+
+        function deleteSubject(code) {
+            if (confirm(`តើអ្នកចង់លុបមុខវិជ្ជា ${code} មែនទេ?`)) {
+                let subjects = getData('sys_subjects', []);
+                subjects = subjects.filter(s => s.code !== code);
+                saveData('sys_subjects', subjects);
+                renderSchedules();
+                renderTimetable();
+                showToast('លុបមុខវិជ្ជាជោគជ័យ!');
+            }
+        }
+
+        function openAbsentModal() {
+            document.getElementById('absent-form').reset();
+            openModal('absent-modal');
+        }
+
+        function saveAbsent(e) {
+            e.preventDefault();
+            const type = document.getElementById('m-absent-type').value;
+            const id = document.getElementById('m-absent-id').value.trim();
+            const status = document.getElementById('m-absent-status').value;
+            const reason = document.getElementById('m-absent-reason').value.trim();
+
+            const students = getData('sys_students', []);
+            const teachers = getData('sys_teachers', []);
+            const person = type === 'student' ? students.find(s => s.id === id) : teachers.find(t => t.id === id);
+
+            if (!person) return showToast('រកមិនឃើញ ID នេះទេ!', false);
+
+            const now = new Date();
+            const log = {
+                id: Date.now(),
+                type,
+                personId: person.id,
+                name: person.name,
+                grade: person.grade || '---',
+                sub: person.subject || '---',
+                date: now.toISOString().split('T')[0],
+                time: now.toTimeString().split(' ')[0].substring(0,5),
+                status,
+                note: reason || (status === 'PERMISSION' ? 'សុំច្បាប់' : 'អវត្តមាន')
+            };
+
+            const logs = getData('sys_attendance', []);
+            logs.push(log);
+            saveData('sys_attendance', logs);
+            closeModal('absent-modal');
+            renderDashboard();
+            showToast('កត់ត្រាអវត្តមានជោគជ័យ!');
+        }
+
+        function generateReport() {
+            const type = document.getElementById('report-type').value;
+            const grade = document.getElementById('report-grade').value;
+            const startDate = document.getElementById('report-start-date').value;
+            const endDate = document.getElementById('report-end-date').value;
+
+            const logs = getData('sys_attendance', []);
+            const tbody = document.getElementById('report-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            logs.filter(l => {
+                if (l.type !== type) return false;
+                if (grade !== 'ALL' && l.grade !== grade) return false;
+                if (startDate && l.date < startDate) return false;
+                if (endDate && l.date > endDate) return false;
+                return true;
+            }).forEach(l => {
+                const badge = l.status === 'PRESENT' ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded text-xs">មក</span>' :
+                              l.status === 'LATE' ? '<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded text-xs">មកយឺត</span>' :
+                              '<span class="px-2 py-0.5 bg-rose-100 text-rose-800 rounded text-xs">អវត្តមាន/ច្បាប់</span>';
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-2 border font-mono">${l.date} ${l.time}</td>
+                        <td class="p-2 border font-mono">${l.personId}</td>
+                        <td class="p-2 border font-bold">${l.name}</td>
+                        <td class="p-2 border">${l.sub || 'ថ្នាក់ទី '+l.grade}</td>
+                        <td class="p-2 border">${badge}</td>
+                        <td class="p-2 border">${l.note || ''}</td>
+                    </tr>
+                `;
+            });
+
+            const rangeEl = document.getElementById('print-date-range');
+            if (rangeEl) rangeEl.textContent = `កាលបរិច្ឆេទចាប់ពី ${startDate || 'ដើមរៀងមក'} ដល់ ${endDate || 'ថ្ងៃនេះ'}`;
+        }
+
+        function exportToExcel() {
+            const logs = getData('sys_attendance', []);
+            if (!logs.length) return showToast('គ្មានទិន្នន័យសម្រាប់ទាញយកទេ!', false);
+
+            const ws = XLSX.utils.json_to_sheet(logs);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Attendance_Report");
+            XLSX.writeFile(wb, `Attendance_Report_${new Date().toISOString().split('T')[0]}.xlsx`);
+            showToast('ទាញយក Excel ជោគជ័យ!');
+        }
+
+        function printReport() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
