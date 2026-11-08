@@ -27,56 +27,56 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased">
 
     <!-- Header -->
-    <header class="bg-emerald-900 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
-            <div class="flex items-center space-x-3 mb-3 md:mb-0">
-                <div class="bg-white p-2 rounded-xl text-emerald-800 shadow">
-                    <i class="fa-solid fa-school text-2xl"></i>
+    <header class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white shadow-lg sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 md:py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/10 backdrop-blur-md p-2.5 rounded-2xl text-white shadow border border-white/20">
+                    <i class="fa-solid fa-school text-xl md:text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold tracking-wide">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</h1>
-                    <p class="text-xs text-emerald-200">ប្រព័ន្ធគ្រប់គ្រងវត្តមានស្វ័យប្រវត្ត និងកាលវិភាគសិក្សា</p>
+                    <h1 class="text-base md:text-xl font-bold tracking-wide">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</h1>
+                    <p class="text-[11px] md:text-xs text-emerald-200">ប្រព័ន្ធគ្រប់គ្រងវត្តមានស្វ័យប្រវត្ត និងកាលវិភាគសិក្សា</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <div id="dbStatusIndicator" class="flex items-center space-x-2 bg-emerald-800 px-3 py-1.5 rounded-full text-xs border border-emerald-700">
+            <div class="flex items-center space-x-2">
+                <div id="dbStatusIndicator" class="flex items-center space-x-2 bg-emerald-950/60 backdrop-blur-md px-3 py-1.5 rounded-full text-xs border border-emerald-700/50 shadow-inner">
                     <span id="dbDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-                    <span id="dbStatusText">កំពុងតភ្ជាប់ Cloud...</span>
+                    <span id="dbStatusText" class="text-emerald-100 font-medium">កំពុងតភ្ជាប់ Cloud...</span>
                 </div>
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
-        <nav class="bg-emerald-800 text-sm no-print">
-            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-1">
-                <button onclick="switchTab('scan')" id="tab-scan" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 border-b-2 border-white text-white whitespace-nowrap">
-                    <i class="fa-solid fa-qrcode"></i> <span>ស្កេនវត្តមាន</span>
+        <!-- Navigation Tabs (Mobile Optimized Horizontal Scroll & Touch Friendly) -->
+        <nav class="bg-emerald-950/80 backdrop-blur-md text-sm no-print border-t border-emerald-800/60">
+            <div class="max-w-7xl mx-auto px-2 flex overflow-x-auto space-x-1.5 py-2 scrollbar-none">
+                <button onclick="switchTab('scan')" id="tab-scan" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 bg-white text-emerald-900 shadow-sm whitespace-nowrap transition-all duration-200">
+                    <i class="fa-solid fa-qrcode text-emerald-700"></i> <span>ស្កេនវត្តមាន</span>
                 </button>
-                <button onclick="switchTab('students')" id="tab-students" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-emerald-200 hover:text-white whitespace-nowrap">
+                <button onclick="switchTab('students')" id="tab-students" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
                     <i class="fa-solid fa-users"></i> <span>គ្រប់គ្រងសិស្ស</span>
                 </button>
-                <button onclick="switchTab('classes')" id="tab-classes" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-emerald-200 hover:text-white whitespace-nowrap">
+                <button onclick="switchTab('classes')" id="tab-classes" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
                     <i class="fa-solid fa-door-open"></i> <span>គ្រប់គ្រងថ្នាក់</span>
                 </button>
-                <button onclick="switchTab('teachers')" id="tab-teachers" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-emerald-200 hover:text-white whitespace-nowrap">
+                <button onclick="switchTab('teachers')" id="tab-teachers" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
                     <i class="fa-solid fa-chalkboard-user"></i> <span>គ្រប់គ្រងគ្រូ</span>
                 </button>
-                <button onclick="switchTab('timetable')" id="tab-timetable" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-emerald-200 hover:text-white whitespace-nowrap">
+                <button onclick="switchTab('timetable')" id="tab-timetable" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
                     <i class="fa-solid fa-calendar-days"></i> <span>កាលវិភាគ</span>
                 </button>
-                <button onclick="switchTab('monthly-report')" id="tab-monthly-report" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-emerald-200 hover:text-white whitespace-nowrap">
-                    <i class="fa-solid fa-file-invoice"></i> <span>របាយការណ៍ប្រចាំខែ</span>
+                <button onclick="switchTab('monthly-report')" id="tab-monthly-report" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
+                    <i class="fa-solid fa-file-invoice"></i> <span>របាយការណ៍ខែ</span>
                 </button>
-                <button onclick="switchTab('telegram')" id="tab-telegram" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-emerald-200 hover:text-white whitespace-nowrap">
-                    <i class="fa-paper-plane fa-solid"></i> <span>Telegram Bot</span>
+                <button onclick="switchTab('telegram')" id="tab-telegram" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
+                    <i class="fa-paper-plane fa-solid text-sky-400"></i> <span>Telegram Bot</span>
                 </button>
-                <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-emerald-200 hover:text-white whitespace-nowrap">
+                <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
                     <i class="fa-solid fa-chart-pie"></i> <span>ស្ថិតិសរុប</span>
                 </button>
-                <button type="button" onclick="openAdminAuthModal()" id="tab-admin" class="tab-btn py-2.5 px-4 font-medium flex items-center space-x-2 text-amber-300 hover:text-white whitespace-nowrap cursor-pointer z-10 relative">
+                <button type="button" onclick="handleAdminTabClick(event)" id="tab-admin" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-amber-300 hover:bg-amber-400/20 whitespace-nowrap cursor-pointer z-10 relative transition-all duration-200">
                     <i class="fa-solid fa-shield-halved"></i> <span id="adminAuthLabel">ចូល Admin</span>
                 </button>
             </div>
@@ -84,50 +84,69 @@
     </header>
 
     <!-- Main Container -->
-    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6">
+    <main class="flex-grow max-w-7xl w-full mx-auto p-3 sm:p-6 space-y-6">
 
         <!-- 1. SCAN TAB -->
         <section id="section-scan" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Scanner Card -->
-                <div class="md:col-span-2 bg-white rounded-2xl shadow-sm p-6 border border-slate-100 flex flex-col items-center">
-                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
-                        <i class="fa-solid fa-camera text-emerald-600"></i>
+                <div class="lg:col-span-2 bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100 flex flex-col items-center">
+                    <h2 class="text-lg md:text-xl font-bold text-slate-800 mb-4 flex items-center space-x-2 self-start">
+                        <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-camera"></i></div>
                         <span>កាមេរ៉ាស្កេន QR Code វត្តមាន</span>
                     </h2>
-                    <div id="reader" class="w-full max-w-md rounded-xl overflow-hidden bg-slate-900 border border-slate-200 min-h-[300px]"></div>
-                    <div id="scannerStatus" class="text-xs text-slate-500 mt-2 font-medium">កំពុងចាប់ផ្តើមកាមេរ៉ា...</div>
-                    <div class="mt-4 w-full flex flex-col sm:flex-row gap-2 justify-center">
-                        <input type="text" id="manualScanInput" placeholder="បញ្ចូលអត្តលេខសិស្សដោយដៃ..." class="border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full sm:w-72">
-                        <button onclick="handleManualScan()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-2 rounded-xl text-sm transition">
+
+                    <!-- Attendance Mode & Check-in/Out Selectors -->
+                    <div class="w-full max-w-md grid grid-cols-2 gap-3 mb-4">
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">ប្រភេទស្កេន</label>
+                            <select id="scanTargetType" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-emerald-800 bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <option value="student">👨‍🎓 ស្កេនវត្តមានសិស្ស</option>
+                                <option value="teacher">👩‍🏫 ស្កេនវត្តមានគ្រូ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">ម៉ោងចូល / ចេញ</label>
+                            <select id="scanCheckType" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-sky-800 bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                                <option value="ចូលរៀន">🟢 ម៉ោងចូល (Check-in)</option>
+                                <option value="ចេញពីសាលា">🔴 ម៉ោងចេញ (Check-out)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="reader" class="w-full max-w-md rounded-2xl overflow-hidden bg-slate-900 border-2 border-slate-200 shadow-inner min-h-[280px]"></div>
+                    <div id="scannerStatus" class="text-xs text-slate-500 mt-3 font-medium text-center">កំពុងចាប់ផ្តើមកាមេរ៉ា...</div>
+                    <div class="mt-4 w-full flex flex-col sm:flex-row gap-3 justify-center max-w-md">
+                        <input type="text" id="manualScanInput" placeholder="បញ្ចូលអត្តលេខសិស្ស ឬគ្រូដោយដៃ..." class="border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 w-full shadow-sm">
+                        <button onclick="handleManualScan()" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-medium px-6 py-3 rounded-2xl text-sm transition shadow-md shadow-emerald-600/20 whitespace-nowrap">
                             ស្កេនបញ្ជាក់
                         </button>
                     </div>
                     <!-- Manual Attendance Checkboxes status section -->
-                    <div class="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-700">
-                        <label class="flex items-center space-x-1.5 cursor-pointer">
-                            <input type="radio" name="attendanceStatus" value="មកវត្តមាន" checked class="text-emerald-600 focus:ring-emerald-500">
-                            <span class="text-emerald-700">មកវត្តមាន</span>
+                    <div class="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs font-semibold text-slate-700 bg-slate-50 p-3 rounded-2xl border w-full max-w-md">
+                        <label class="flex items-center space-x-2 cursor-pointer p-1">
+                            <input type="radio" name="attendanceStatus" value="មកវត្តមាន" checked class="w-4 h-4 text-emerald-600 focus:ring-emerald-500">
+                            <span class="text-emerald-700 font-bold">មកវត្តមាន</span>
                         </label>
-                        <label class="flex items-center space-x-1.5 cursor-pointer">
-                            <input type="radio" name="attendanceStatus" value="ច្បាប់" class="text-amber-600 focus:ring-amber-500">
-                            <span class="text-amber-600">សុំច្បាប់</span>
+                        <label class="flex items-center space-x-2 cursor-pointer p-1">
+                            <input type="radio" name="attendanceStatus" value="ច្បាប់" class="w-4 h-4 text-amber-600 focus:ring-amber-500">
+                            <span class="text-amber-600 font-bold">សុំច្បាប់</span>
                         </label>
-                        <label class="flex items-center space-x-1.5 cursor-pointer">
-                            <input type="radio" name="attendanceStatus" value="អវត្តមាន" class="text-rose-600 focus:ring-rose-500">
-                            <span class="text-rose-600">អវត្តមាន (អត់ច្បាប់)</span>
+                        <label class="flex items-center space-x-2 cursor-pointer p-1">
+                            <input type="radio" name="attendanceStatus" value="អវត្តមាន" class="w-4 h-4 text-rose-600 focus:ring-rose-500">
+                            <span class="text-rose-600 font-bold">អវត្តមាន</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Recent Logs Card -->
-                <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 flex flex-col">
-                    <h2 class="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2">
-                        <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i>
+                <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100 flex flex-col">
+                    <h2 class="text-lg md:text-xl font-bold text-slate-800 mb-4 flex items-center space-x-2">
+                        <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-clock-rotate-left"></i></div>
                         <span>វត្តមានទើបស្កេនថ្មីៗ</span>
                     </h2>
-                    <div id="recentLogsContainer" class="flex-grow overflow-y-auto space-y-3 max-h-[400px]">
-                        <div class="text-center text-slate-400 py-10 text-sm">មិនទាន់មានកំណត់ត្រាស្កេននៅថ្ងៃនេះ</div>
+                    <div id="recentLogsContainer" class="flex-grow overflow-y-auto space-y-3 max-h-[450px] pr-1">
+                        <div class="text-center text-slate-400 py-12 text-sm">មិនទាន់មានកំណត់ត្រាស្កេននៅថ្ងៃនេះ</div>
                     </div>
                 </div>
             </div>
@@ -135,32 +154,32 @@
 
         <!-- 2. STUDENTS TAB -->
         <section id="section-students" class="space-y-6 hidden">
-            <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">បញ្ជីឈ្មោះសិស្សសរុប</h2>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">បញ្ជីឈ្មោះសិស្សសរុប</h2>
                         <p class="text-xs text-slate-500">គ្រប់គ្រងព័ត៌មានសិស្ស និងបង្កើត QR Code</p>
                     </div>
-                    <button onclick="openStudentModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-sm flex items-center space-x-2">
+                    <button onclick="openStudentModal()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
                         <i class="fa-solid fa-user-plus"></i>
                         <span>បញ្ចូលសិស្សថ្មី</span>
                     </button>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
-                            <tr class="bg-slate-50 text-slate-600 border-b">
-                                <th class="py-3 px-4 font-semibold">អត្តលេខ</th>
-                                <th class="py-3 px-4 font-semibold">ឈ្មោះពេញ</th>
-                                <th class="py-3 px-4 font-semibold">ភេទ</th>
-                                <th class="py-3 px-4 font-semibold">ថ្នាក់រៀន</th>
-                                <th class="py-3 px-4 font-semibold">លេខទូរសព្ទ</th>
-                                <th class="py-3 px-4 font-semibold text-center">QR Code</th>
-                                <th class="py-3 px-4 font-semibold text-center">សកម្មភាព</th>
+                            <tr class="bg-slate-50 text-slate-700 border-b">
+                                <th class="py-3.5 px-4 font-bold">អត្តលេខ</th>
+                                <th class="py-3.5 px-4 font-bold">ឈ្មោះពេញ</th>
+                                <th class="py-3.5 px-4 font-bold">ភេទ</th>
+                                <th class="py-3.5 px-4 font-bold">ថ្នាក់រៀន</th>
+                                <th class="py-3.5 px-4 font-bold">លេខទូរសព្ទ</th>
+                                <th class="py-3.5 px-4 font-bold text-center">QR Code</th>
+                                <th class="py-3.5 px-4 font-bold text-center">សកម្មភាព</th>
                             </tr>
                         </thead>
                         <tbody id="studentsTable">
-                            <tr><td colspan="7" class="text-center py-6 text-slate-400">កំពុងទាញទិន្នន័យ...</td></tr>
+                            <tr><td colspan="7" class="text-center py-8 text-slate-400">កំពុងទាញទិន្នន័យ...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -169,24 +188,24 @@
 
         <!-- 3. CLASSES TAB -->
         <section id="section-classes" class="space-y-6 hidden">
-            <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">គ្រប់គ្រងថ្នាក់រៀន</h2>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">គ្រប់គ្រងថ្នាក់រៀន</h2>
                         <p class="text-xs text-slate-500">បញ្ជីថ្នាក់រៀនទាំងអស់ភ្ជាប់ជាមួយប្រព័ន្ធស្វ័យប្រវត្តិ</p>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="openClassModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-sm flex items-center space-x-2">
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <button onclick="openClassModal()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
                             <i class="fa-solid fa-circle-plus"></i>
                             <span>បន្ថែមថ្នាក់រៀន</span>
                         </button>
-                        <button onclick="confirmResetAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-sm flex items-center space-x-2">
+                        <button onclick="confirmResetAllData()" class="flex-1 sm:flex-none bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-rose-600/20 flex items-center justify-center space-x-2 transition">
                             <i class="fa-solid fa-triangle-exclamation"></i>
                             <span>លុបទិន្នន័យទាំងអស់</span>
                         </button>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="classesGrid">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="classesGrid">
                     <!-- Populated by JS -->
                 </div>
             </div>
@@ -194,31 +213,31 @@
 
         <!-- 4. TEACHERS TAB -->
         <section id="section-teachers" class="space-y-6 hidden">
-            <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">បញ្ជីឈ្មោះគ្រូបង្រៀន</h2>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">បញ្ជីឈ្មោះគ្រូបង្រៀន</h2>
                         <p class="text-xs text-slate-500">គ្រប់គ្រងព័ត៌មានគ្រូ និង QR ស្កេនវត្តមានគ្រូ</p>
                     </div>
-                    <button onclick="openTeacherModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2.5 rounded-xl shadow-sm flex items-center space-x-2">
+                    <button onclick="openTeacherModal()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
                         <i class="fa-solid fa-chalkboard-user"></i>
                         <span>បន្ថែមគ្រូបង្រៀន</span>
                     </button>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
-                            <tr class="bg-slate-50 text-slate-600 border-b">
-                                <th class="py-3 px-4 font-semibold">អត្តលេខគ្រូ</th>
-                                <th class="py-3 px-4 font-semibold">ឈ្មោះគ្រូ</th>
-                                <th class="py-3 px-4 font-semibold">មុខវិជ្ជាបង្រៀន</th>
-                                <th class="py-3 px-4 font-semibold">លេខទូរសព្ទ</th>
-                                <th class="py-3 px-4 font-semibold text-center">QR Code</th>
-                                <th class="py-3 px-4 font-semibold text-center">សកម្មភាព</th>
+                            <tr class="bg-slate-50 text-slate-700 border-b">
+                                <th class="py-3.5 px-4 font-bold">អត្តលេខគ្រូ</th>
+                                <th class="py-3.5 px-4 font-bold">ឈ្មោះគ្រូ</th>
+                                <th class="py-3.5 px-4 font-bold">មុខវិជ្ជាបង្រៀន</th>
+                                <th class="py-3.5 px-4 font-bold">លេខទូរសព្ទ</th>
+                                <th class="py-3.5 px-4 font-bold text-center">QR Code</th>
+                                <th class="py-3.5 px-4 font-bold text-center">សកម្មភាព</th>
                             </tr>
                         </thead>
                         <tbody id="teachersTable">
-                            <tr><td colspan="6" class="text-center py-6 text-slate-400">កំពុងទាញទិន្នន័យ...</td></tr>
+                            <tr><td colspan="6" class="text-center py-8 text-slate-400">កំពុងទាញទិន្នន័យ...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -227,41 +246,41 @@
 
         <!-- 5. TIMETABLE TAB (Monday to Saturday) -->
         <section id="section-timetable" class="space-y-6 hidden">
-            <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">កាលវិភាគសិក្សា និងកំណត់វេន (ចន្ទ - សៅរ៍)</h2>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">កាលវិភាគសិក្សា និងកំណត់វេន (ចន្ទ - សៅរ៍)</h2>
                         <p class="text-xs text-slate-500">កាលវិភាគប្រចាំសប្តាហ៍តាមថ្នាក់រៀន កំណត់វេនព្រឹក/រសៀល និងមុខវិជ្ជាដោយសេរី ឬស្វ័យប្រវត្តិ</p>
                     </div>
-                    <div class="flex flex-wrap items-center gap-3">
-                        <select id="timetableGradeSelect" onchange="renderTimetable()" class="border rounded-xl px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <select id="timetableGradeSelect" onchange="renderTimetable()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white shadow-sm flex-1 sm:flex-none">
                             <!-- Dynamically populated from classesData -->
                         </select>
-                        <select id="timetableShiftSelect" onchange="renderTimetable()" class="border rounded-xl px-4 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <select id="timetableShiftSelect" onchange="renderTimetable()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white shadow-sm flex-1 sm:flex-none">
                             <option value="all">គ្រប់វេនទាំងអស់</option>
                             <option value="morning">វេនព្រឹក</option>
                             <option value="afternoon">វេនរសៀល</option>
                         </select>
-                        <button onclick="openTimetableSlotModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 rounded-xl flex items-center space-x-2">
-                            <i class="fa-solid fa-plus"></i> <span>បន្ថែមម៉ោងសិក្សាថ្មី</span>
+                        <button onclick="openTimetableSlotModal()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2 shadow-md shadow-emerald-600/20">
+                            <i class="fa-solid fa-plus"></i> <span>បន្ថែមម៉ោងសិក្សា</span>
                         </button>
-                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white text-sm px-4 py-2 rounded-xl flex items-center space-x-2">
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-print"></i> <span>ព្រីន</span>
                         </button>
                     </div>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
                     <table class="w-full text-center border-collapse text-sm">
                         <thead>
                             <tr class="bg-emerald-800 text-white">
-                                <th class="p-3 border">វេន / ម៉ោងសិក្សា</th>
-                                <th class="p-3 border">ថ្ងៃចន្ទ</th>
-                                <th class="p-3 border">ថ្ងៃអង្គារ</th>
-                                <th class="p-3 border">ថ្ងៃពុធ</th>
-                                <th class="p-3 border">ថ្ងៃព្រហស្បតិ៍</th>
-                                <th class="p-3 border">ថ្ងៃសុក្រ</th>
-                                <th class="p-3 border">ថ្ងៃសៅរ៍</th>
-                                <th class="p-3 border no-print">សកម្មភាព</th>
+                                <th class="p-3.5 border-emerald-700 border">វេន / ម៉ោងសិក្សា</th>
+                                <th class="p-3.5 border-emerald-700 border">ថ្ងៃចន្ទ</th>
+                                <th class="p-3.5 border-emerald-700 border">ថ្ងៃអង្គារ</th>
+                                <th class="p-3.5 border-emerald-700 border">ថ្ងៃពុធ</th>
+                                <th class="p-3.5 border-emerald-700 border">ថ្ងៃព្រហស្បតិ៍</th>
+                                <th class="p-3.5 border-emerald-700 border">ថ្ងៃសុក្រ</th>
+                                <th class="p-3.5 border-emerald-700 border">ថ្ងៃសៅរ៍</th>
+                                <th class="p-3.5 border-emerald-700 border no-print">សកម្មភាព</th>
                             </tr>
                         </thead>
                         <tbody id="timetableBody">
@@ -274,38 +293,38 @@
 
         <!-- 6. MONTHLY REPORT TAB -->
         <section id="section-monthly-report" class="space-y-6 hidden">
-            <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100">
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg font-bold text-slate-800">របាយការណ៍វត្តមានប្រចាំខែ (សរុបស្វ័យប្រវត្តិ)</h2>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">របាយការណ៍វត្តមានប្រចាំខែ (សរុបស្វ័យប្រត្តិ)</h2>
                         <p class="text-xs text-slate-500" id="printMonthTitle">សរុបវត្តមានសិស្សតាមខែ និងទាញយកជា CSV</p>
                     </div>
-                    <div class="flex flex-wrap items-center gap-3 no-print">
-                        <input type="month" id="monthlyReportFilter" onchange="generateMonthlyReport()" class="border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                        <button onclick="exportMonthlyReportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-2 rounded-xl flex items-center space-x-2">
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto no-print">
+                        <input type="month" id="monthlyReportFilter" onchange="generateMonthlyReport()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white shadow-sm flex-1 sm:flex-none">
+                        <button onclick="exportMonthlyReportCSV()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2 shadow-md shadow-emerald-600/20">
                             <i class="fa-solid fa-file-csv"></i> <span>ទាញយក CSV</span>
                         </button>
-                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white text-sm px-4 py-2 rounded-xl flex items-center space-x-2">
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-file-pdf"></i> <span>ព្រីន / PDF</span>
                         </button>
                     </div>
                 </div>
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
-                            <tr class="bg-slate-50 text-slate-600 border-b">
-                                <th class="py-3 px-4 font-semibold">អត្តលេខ</th>
-                                <th class="py-3 px-4 font-semibold">ឈ្មោះសិស្ស</th>
-                                <th class="py-3 px-4 font-semibold">ថ្នាក់</th>
-                                <th class="py-3 px-4 font-semibold text-center">មកវត្តមាន</th>
-                                <th class="py-3 px-4 font-semibold text-center">សុំច្បាប់</th>
-                                <th class="py-3 px-4 font-semibold text-center">អវត្តមាន</th>
-                                <th class="py-3 px-4 font-semibold text-center">សរុបស្កេន</th>
-                                <th class="py-3 px-4 font-semibold text-center">ស្កេនចុងក្រោយ</th>
+                            <tr class="bg-slate-50 text-slate-700 border-b">
+                                <th class="py-3.5 px-4 font-bold">អត្តលេខ</th>
+                                <th class="py-3.5 px-4 font-bold">ឈ្មោះសិស្ស</th>
+                                <th class="py-3.5 px-4 font-bold">ថ្នាក់</th>
+                                <th class="py-3.5 px-4 font-bold text-center">មកវត្តមាន</th>
+                                <th class="py-3.5 px-4 font-bold text-center">សុំច្បាប់</th>
+                                <th class="py-3.5 px-4 font-bold text-center">អវត្តមាន</th>
+                                <th class="py-3.5 px-4 font-bold text-center">សរុបស្កេន</th>
+                                <th class="py-3.5 px-4 font-bold text-center">ស្កេនចុងក្រោយ</th>
                             </tr>
                         </thead>
                         <tbody id="monthlyReportTable">
-                            <tr><td colspan="8" class="text-center py-6 text-slate-400">សូមជ្រើសរើសខែដើម្បីមើលរបាយការណ៍</td></tr>
+                            <tr><td colspan="8" class="text-center py-8 text-slate-400">សូមជ្រើសរើសខែដើម្បីមើលរបាយការណ៍</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -314,28 +333,28 @@
 
         <!-- 7. TELEGRAM BOT CONFIG TAB -->
         <section id="section-telegram" class="space-y-6 hidden">
-            <div class="bg-white rounded-2xl shadow-sm p-6 border border-slate-100 max-w-2xl mx-auto">
-                <h2 class="text-lg font-bold text-slate-800 mb-2 flex items-center space-x-2">
-                    <i class="fa-brands fa-telegram text-sky-500 text-xl"></i>
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-6 md:p-8 border border-slate-100 max-w-2xl mx-auto">
+                <h2 class="text-lg md:text-xl font-bold text-slate-800 mb-2 flex items-center space-x-2">
+                    <div class="p-2 bg-sky-100 text-sky-600 rounded-xl"><i class="fa-brands fa-telegram text-xl"></i></div>
                     <span>ការកំណត់ Telegram Bot ជូនដំណឹងវត្តមាន</span>
                 </h2>
                 <p class="text-xs text-slate-500 mb-6">កំណត់ Telegram Bot Token និង Chat ID តាមថ្នាក់រៀនទាំងអស់ ដើម្បីឱ្យប្រព័ន្ធផ្ញើសារស្វ័យប្រវត្តិពេលសិស្សស្កេន។</p>
                 
-                <div class="space-y-4">
+                <div class="space-y-5">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">Telegram Bot Token</label>
-                        <input type="text" id="telegramBotToken" placeholder="ឧ. 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">Telegram Bot Token</label>
+                        <input type="text" id="telegramBotToken" placeholder="ឧ. 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm">
                     </div>
 
-                    <div class="border-t pt-4">
-                        <h3 class="font-semibold text-sm text-slate-800 mb-3">Telegram Chat ID តាមថ្នាក់រៀន (ស្វ័យប្រវត្តិតามថ្នាក់ដែលបានបង្កើត)</h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="telegramChatIdContainer">
+                    <div class="border-t pt-5">
+                        <h3 class="font-bold text-sm text-slate-800 mb-3">Telegram Chat ID តាមថ្នាក់រៀន (ស្វ័យប្រវត្តិតាមថ្នាក់ដែលបានបង្កើត)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="telegramChatIdContainer">
                             <!-- Populated dynamically by JS -->
                         </div>
                     </div>
 
-                    <div class="pt-4">
-                        <button onclick="saveTelegramConfig()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-xl text-sm transition shadow-sm">
+                    <div class="pt-3">
+                        <button onclick="saveTelegramConfig()" class="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold py-3.5 rounded-2xl text-sm transition shadow-lg shadow-emerald-600/20">
                             រក្សាទុកការកំណត់ Telegram Bot
                         </button>
                     </div>
@@ -345,41 +364,41 @@
 
         <!-- 8. STATS TAB -->
         <section id="section-reports" class="space-y-6 hidden">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4">
-                    <div class="bg-emerald-100 text-emerald-700 p-4 rounded-xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex items-center space-x-4">
+                    <div class="bg-emerald-100 text-emerald-700 p-4 rounded-2xl shadow-inner">
                         <i class="fa-solid fa-users text-2xl"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-500 font-medium">សិស្សសរុប</p>
-                        <h3 id="statTotalStudents" class="text-2xl font-bold text-slate-800">0</h3>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">សិស្សសរុប</p>
+                        <h3 id="statTotalStudents" class="text-2xl font-black text-slate-800">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4">
-                    <div class="bg-sky-100 text-sky-700 p-4 rounded-xl">
+                <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex items-center space-x-4">
+                    <div class="bg-sky-100 text-sky-700 p-4 rounded-2xl shadow-inner">
                         <i class="fa-solid fa-chalkboard-user text-2xl"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-500 font-medium">គ្រូបង្រៀនសរុប</p>
-                        <h3 id="statTotalTeachers" class="text-2xl font-bold text-slate-800">0</h3>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">គ្រូបង្រៀនសរុប</p>
+                        <h3 id="statTotalTeachers" class="text-2xl font-black text-slate-800">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4">
-                    <div class="bg-amber-100 text-amber-700 p-4 rounded-xl">
+                <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex items-center space-x-4">
+                    <div class="bg-amber-100 text-amber-700 p-4 rounded-2xl shadow-inner">
                         <i class="fa-solid fa-circle-check text-2xl"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-500 font-medium">វត្តមានថ្ងៃនេះ</p>
-                        <h3 id="statTodayAttendance" class="text-2xl font-bold text-slate-800">0</h3>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">វត្តមានថ្ងៃនេះ</p>
+                        <h3 id="statTodayAttendance" class="text-2xl font-black text-slate-800">0</h3>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center space-x-4">
-                    <div class="bg-indigo-100 text-indigo-700 p-4 rounded-xl">
+                <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex items-center space-x-4">
+                    <div class="bg-indigo-100 text-indigo-700 p-4 rounded-2xl shadow-inner">
                         <i class="fa-solid fa-door-open text-2xl"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-slate-500 font-medium">ថ្នាក់រៀនសរុប</p>
-                        <h3 id="statTotalClasses" class="text-2xl font-bold text-slate-800">6</h3>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">ថ្នាក់រៀនសរុប</p>
+                        <h3 id="statTotalClasses" class="text-2xl font-black text-slate-800">6</h3>
                     </div>
                 </div>
             </div>
@@ -390,126 +409,126 @@
     <!-- MODALS -->
 
     <!-- Student Modal -->
-    <div id="studentModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
-            <div class="flex justify-between items-center mb-4">
+    <div id="studentModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 md:p-8 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-5">
                 <h3 id="studentModalTitle" class="text-lg font-bold text-slate-800">បញ្ចូលព័ត៌មានសិស្សថ្មី</h3>
-                <button onclick="closeStudentModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeStudentModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="studentForm" onsubmit="saveStudent(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">អត្តលេខសិស្ស (ID)</label>
-                    <input type="text" id="stuId" required placeholder="ឧ. STU001" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">អត្តលេខសិស្ស (ID)</label>
+                    <input type="text" id="stuId" required placeholder="ឧ. STU001" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ឈ្មោះពេញ</label>
-                    <input type="text" id="stuName" required placeholder="ឈ្មោះខ្មែរ ឬឡាតាំង" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ឈ្មោះពេញ</label>
+                    <input type="text" id="stuName" required placeholder="ឈ្មោះខ្មែរ ឬឡាតាំង" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ភេទ</label>
-                    <select id="stuGender" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ភេទ</label>
+                    <select id="stuGender" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
                         <option value="ប្រុស">ប្រុស</option>
                         <option value="ស្រី">ស្រី</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ថ្នាក់រៀន</label>
-                    <select id="stuGrade" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ថ្នាក់រៀន</label>
+                    <select id="stuGrade" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
                         <!-- Populated dynamically from classesData -->
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">លេខទូរសព្ទអាណាព្យាបាល</label>
-                    <input type="text" id="stuPhone" placeholder="012345678" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">លេខទូរសព្ទអាណាព្យាបាល</label>
+                    <input type="text" id="stuPhone" placeholder="012345678" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeStudentModal()" class="px-4 py-2 border rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">បោះបង់</button>
-                    <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium shadow">រក្សាទុក</button>
+                <div class="flex items-center space-x-3 pt-4">
+                    <button type="button" onclick="closeStudentModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុក</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Teacher Modal -->
-    <div id="teacherModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
-            <div class="flex justify-between items-center mb-4">
+    <div id="teacherModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 md:p-8 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-5">
                 <h3 id="teacherModalTitle" class="text-lg font-bold text-slate-800">បញ្ចូលព័ត៌មានគ្រូបង្រៀន</h3>
-                <button onclick="closeTeacherModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeTeacherModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="teacherForm" onsubmit="saveTeacher(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">អត្តលេខគ្រូ</label>
-                    <input type="text" id="teaId" required placeholder="ឧ. TEA001" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">អត្តលេខគ្រូ</label>
+                    <input type="text" id="teaId" required placeholder="ឧ. TEA001" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ឈ្មោះគ្រូ</label>
-                    <input type="text" id="teaName" required placeholder="ឈ្មោះពេញ" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ឈ្មោះគ្រូ</label>
+                    <input type="text" id="teaName" required placeholder="ឈ្មោះពេញ" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">មុខវិជ្ជាបង្រៀន</label>
-                    <input type="text" id="teaSubject" required placeholder="ឧ. គណិតវិទ្យា" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">មុខវិជ្ជាបង្រៀន</label>
+                    <input type="text" id="teaSubject" required placeholder="ឧ. គណិតវិទ្យា" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">លេខទូរសព្ទ</label>
-                    <input type="text" id="teaPhone" placeholder="012345678" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">លេខទូរសព្ទ</label>
+                    <input type="text" id="teaPhone" placeholder="012345678" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeTeacherModal()" class="px-4 py-2 border rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">បោះបង់</button>
-                    <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium shadow">រក្សាទុក</button>
+                <div class="flex items-center space-x-3 pt-4">
+                    <button type="button" onclick="closeTeacherModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុក</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Class Edit Modal -->
-    <div id="classModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
-            <div class="flex justify-between items-center mb-4">
+    <div id="classModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 md:p-8 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-5">
                 <h3 id="classModalTitle" class="text-lg font-bold text-slate-800">បន្ថែម/កែប្រែថ្នាក់រៀន</h3>
-                <button onclick="closeClassModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeClassModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="classForm" onsubmit="saveClass(event)" class="space-y-4">
                 <input type="hidden" id="clsKey">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ឈ្មោះថ្នាក់រៀន</label>
-                    <input type="text" id="clsName" required placeholder="ឧ. ថ្នាក់ទី ៧ ក" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ឈ្មោះថ្នាក់រៀន</label>
+                    <input type="text" id="clsName" required placeholder="ឧ. ថ្នាក់ទី ៧ ក" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">បន្ទប់រៀន</label>
-                    <input type="text" id="clsRoom" placeholder="ឧ. បន្ទប់ ១០១" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">បន្ទប់រៀន</label>
+                    <input type="text" id="clsRoom" placeholder="ឧ. បន្ទប់ ១០១" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">គ្រូបន្ទុកថ្នាក់</label>
-                    <input type="text" id="clsTeacher" placeholder="ឧ. លោកគ្រូ អុីប្រាហ៊ីម" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">គ្រូបន្ទុកថ្នាក់</label>
+                    <input type="text" id="clsTeacher" placeholder="ឧ. លោកគ្រូ អុីប្រាហ៊ីម" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
-                <div class="flex justify-end space-x-3 pt-4">
-                    <button type="button" onclick="closeClassModal()" class="px-4 py-2 border rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">បោះបង់</button>
-                    <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium shadow">រក្សាទុក</button>
+                <div class="flex items-center space-x-3 pt-4">
+                    <button type="button" onclick="closeClassModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុក</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Timetable Slot Modal (Add/Edit Timetable Slot) -->
-    <div id="timetableModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6">
-            <div class="flex justify-between items-center mb-4">
+    <div id="timetableModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6 md:p-8 max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-5">
                 <h3 id="timetableModalTitle" class="text-lg font-bold text-slate-800">បន្ថែម/កែប្រែម៉ោងសិក្សា និងវេន</h3>
-                <button onclick="closeTimetableSlotModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeTimetableSlotModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="timetableForm" onsubmit="saveTimetableSlot(event)" class="space-y-4">
                 <input type="hidden" id="ttIndex">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ជ្រើសរើសវេនសិក្សា</label>
-                    <select id="ttShift" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-2">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ជ្រើសរើសវេនសិក្សា</label>
+                    <select id="ttShift" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white mb-2">
                         <option value="morning">វេនព្រឹក</option>
                         <option value="afternoon">វេនរសៀល</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">ជ្រើសរើសម៉ោង ឬកំណត់ពេលដោយសេរី</label>
-                    <select id="ttTimePreset" onchange="onTimetablePresetChange(this)" class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 mb-2">
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ជ្រើសរើសម៉ោង ឬកំណត់ពេលដោយសេរី</label>
+                    <select id="ttTimePreset" onchange="onTimetablePresetChange(this)" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white mb-2">
                         <option value="">-- ជ្រើសរើសម៉ោងស្តង់ដារ --</option>
                         <option value="វេនព្រឹក - ម៉ោងទី ១ (07:00 - 07:50)">វេនព្រឹក - ម៉ោងទី ១ (07:00 - 07:50)</option>
                         <option value="វេនព្រឹក - ម៉ោងទី ២ (07:50 - 08:40)">វេនព្រឹក - ម៉ោងទី ២ (07:50 - 08:40)</option>
@@ -520,74 +539,74 @@
                         <option value="វេនរសៀល - ម៉ោងទី ៣ (14:55 - 15:45)">វេនរសៀល - ម៉ោងទី ៣ (14:55 - 15:45)</option>
                         <option value="វេនរសៀល - ម៉ោងទី ៤ (15:45 - 16:35)">វេនរសៀល - ម៉ោងទី ៤ (15:45 - 16:35)</option>
                     </select>
-                    <input type="text" id="ttTimeName" required placeholder="ឬវាយបញ្ចូលឈ្មោះម៉ោងដោយសេរី..." class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <input type="text" id="ttTimeName" required placeholder="ឬវាយបញ្ចូលឈ្មោះម៉ោងដោយសេរី..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
 
                 <div class="border-t pt-3">
-                    <label class="block text-xs font-semibold text-slate-700 mb-2">កំណត់មុខវិជ្ជាតាមថ្ងៃនីមួយៗ (អាចជ្រើសរើសរហ័ស ឬបញ្ចូលផ្ទាល់)</label>
+                    <label class="block text-xs font-bold text-slate-700 mb-2">កំណត់មុខវិជ្ជាតាមថ្ងៃនីមួយៗ</label>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
-                            <label class="block text-[11px] text-slate-600 mb-0.5">ថ្ងៃចន្ទ</label>
-                            <input type="text" id="tt_1" placeholder="មុខវិជ្ជា ថ្ងៃចន្ទ" class="w-full border rounded-xl px-3 py-1.5 text-sm">
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃចន្ទ</label>
+                            <input type="text" id="tt_1" placeholder="មុខវិជ្ជា ថ្ងៃចន្ទ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-600 mb-0.5">ថ្ងៃអង្គារ</label>
-                            <input type="text" id="tt_2" placeholder="មុខវិជ្ជា ថ្ងៃអង្គារ" class="w-full border rounded-xl px-3 py-1.5 text-sm">
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃអង្គារ</label>
+                            <input type="text" id="tt_2" placeholder="មុខវិជ្ជា ថ្ងៃអង្គារ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-600 mb-0.5">ថ្ងៃពុធ</label>
-                            <input type="text" id="tt_3" placeholder="មុខវិជ្ជា ថ្ងៃពុធ" class="w-full border rounded-xl px-3 py-1.5 text-sm">
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃពុធ</label>
+                            <input type="text" id="tt_3" placeholder="មុខវិជ្ជា ថ្ងៃពុធ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-600 mb-0.5">ថ្ងៃព្រហស្បតិ៍</label>
-                            <input type="text" id="tt_4" placeholder="មុខវិជ្ជា ថ្ងៃព្រហស្បតិ៍" class="w-full border rounded-xl px-3 py-1.5 text-sm">
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃព្រហស្បតិ៍</label>
+                            <input type="text" id="tt_4" placeholder="មុខវិជ្ជា ថ្ងៃព្រហស្បតិ៍" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-600 mb-0.5">ថ្ងៃសុក្រ</label>
-                            <input type="text" id="tt_5" placeholder="មុខវិជ្ជា ថ្ងៃសុក្រ" class="w-full border rounded-xl px-3 py-1.5 text-sm">
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃសុក្រ</label>
+                            <input type="text" id="tt_5" placeholder="មុខវិជ្ជា ថ្ងៃសុក្រ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
                         </div>
                         <div>
-                            <label class="block text-[11px] text-slate-600 mb-0.5">ថ្ងៃសៅរ៍</label>
-                            <input type="text" id="tt_6" placeholder="មុខវិជ្ជា ថ្ងៃសៅរ៍" class="w-full border rounded-xl px-3 py-1.5 text-sm">
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃសៅរ៍</label>
+                            <input type="text" id="tt_6" placeholder="មុខវិជ្ជា ថ្ងៃសៅរ៍" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
                         </div>
                     </div>
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-3">
-                    <button type="button" onclick="closeTimetableSlotModal()" class="px-4 py-2 border rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">បោះបង់</button>
-                    <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium shadow">រក្សាទុក</button>
+                <div class="flex items-center space-x-3 pt-3">
+                    <button type="button" onclick="closeTimetableSlotModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុក</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- QR Code Modal -->
-    <div id="qrModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 text-center">
+    <div id="qrModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center animate-in fade-in zoom-in duration-200">
             <h3 id="qrModalTitle" class="text-base font-bold text-slate-800 mb-4">QR Code</h3>
-            <div id="qrcodeContainer" class="flex justify-center p-4 bg-slate-50 rounded-xl border mb-4 inline-block"></div>
+            <div id="qrcodeContainer" class="flex justify-center p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 mb-5 inline-block"></div>
             <div>
-                <button onclick="closeQrModal()" class="w-full py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-sm font-medium">បិទ</button>
+                <button onclick="closeQrModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-md transition">បិទ</button>
             </div>
         </div>
     </div>
 
     <!-- Admin Authentication Modal -->
-    <div id="adminAuthModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
+    <div id="adminAuthModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 md:p-8 animate-in fade-in zoom-in duration-200">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold text-slate-800 flex items-center space-x-2">
-                    <i class="fa-solid fa-lock text-emerald-600"></i>
-                    <span>ផ្ទៀងផ្ទាត់សិទ្ធិអ្នកគ្រប់គ្រង</span>
+                    <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-lock"></i></div>
+                    <span>ផ្ទៀងផ្ទាត់សិទ្ធិ Admin</span>
                 </h3>
-                <button onclick="closeAdminAuthModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button onclick="closeAdminAuthModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <p class="text-xs text-slate-500 mb-4">សូមបញ្ចូលពាក្យសម្ងាត់ Admin ដើម្បីអនុវត្តសិទ្ធិកែប្រែទិន្នន័យ (ពាក្យសម្ងាត់ដើម: <strong>12345</strong>)</p>
-            <div class="space-y-3">
-                <input type="password" id="adminPasswordInput" placeholder="បញ្ចូលពាក្យសម្ងាត់..." class="w-full border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                <div class="flex justify-end space-x-3 pt-2">
-                    <button type="button" onclick="closeAdminAuthModal()" class="px-4 py-2 border rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-50">បោះបង់</button>
-                    <button type="button" onclick="verifyAdminPassword()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium shadow">បញ្ជាក់</button>
+            <p class="text-xs text-slate-500 mb-4 leading-relaxed">សូមបញ្ចូលពាក្យសម្ងាត់ Admin ដើម្បីអនុវត្តសិទ្ធិកែប្រែទិន្នន័យ (ពាក្យសម្ងាត់ដើម: <strong class="text-emerald-700">12345</strong>)</p>
+            <div class="space-y-4">
+                <input type="password" id="adminPasswordInput" placeholder="បញ្ចូលពាក្យសម្ងាត់..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <div class="flex items-center space-x-3 pt-2">
+                    <button type="button" onclick="closeAdminAuthModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="button" onclick="verifyAdminPassword()" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">បញ្ជាក់</button>
                 </div>
             </div>
         </div>
@@ -611,41 +630,27 @@
         let isConnected = false;
         let studentsData = {};
         let teachersData = {};
-        let classesData = {
-            "7": { name: "ថ្នាក់ទី ៧", room: "បន្ទប់ ១០១", teacher: "លោកគ្រូ អុីប្រាហ៊ីម" },
-            "8": { name: "ថ្នាក់ទី ៨", room: "បន្ទប់ ១០២", teacher: "អ្នកគ្រូ អាហ្សាម៉ា" },
-            "9": { name: "ថ្នាក់ទី ៩", room: "បន្ទប់ ១០៣", teacher: "លោកគ្រូ ម៉ាត់ សេឡេះ" },
-            "10": { name: "ថ្នាក់ទី ១០", room: "បន្ទប់ ២០១", teacher: "លោកគ្រូ យូសុប" },
-            "11": { name: "ថ្នាក់ទី ១១", room: "បន្ទប់ ២០២", teacher: "អ្នកគ្រូ ហាស្ណះ" },
-            "12": { name: "ថ្នាក់ទី ១២", room: "បន្ទប់ ២០៣", teacher: "លោកគ្រូ អុីស្មាអែល" }
-        };
+        let classesData = {}; // Completely empty default classes data
         let scanLogsData = [];
         let telegramConfig = { botToken: "", chatIds: {} };
         let isAdminAuthenticated = false;
-        let timetablesData = {
-            "7": [
-                { shift: "morning", time: "វេនព្រឹក - ម៉ោងទី ១ (07:00 - 07:50)", days: { 1: "គណិតវិទ្យា", 2: "ភាសាខ្មែរ", 3: "រូបវិទ្យា", 4: "គីមីវិទ្យា", 5: "ជីវវិទ្យា", 6: "អង់គ្លេស" } },
-                { shift: "morning", time: "វេនព្រឹក - ម៉ោងទី ២ (07:50 - 08:40)", days: { 1: "ភាសាខ្មែរ", 2: "គណិតវិទ្យា", 3: "ប្រវត្តិវិទ្យា", 4: "ភូមិវិទ្យា", 5: "អង់គ្លេស", 6: "សីលធម៌" } },
-                { shift: "afternoon", time: "វេនរសៀល - ម៉ោងទី ១ (13:00 - 13:50)", days: { 1: "រូបវិទ្យា", 2: "គីមីវិទ្យា", 3: "គណិតវិទ្យា", 4: "ភាសាខ្មែរ", 5: "ប្រវត្តិវិទ្យា", 6: "កីឡា" } }
-            ]
-        };
+        let timetablesData = {};
 
         let html5QrCode = null;
 
-        // Initialize Firebase & UI safely
         window.addEventListener('DOMContentLoaded', () => {
             try {
                 if (typeof firebase !== 'undefined') {
                     firebase.initializeApp(firebaseConfig);
                     db = firebase.database();
-                    updateDbStatus(true, "តភ្ជាប់ Cloud Realtime Database រួចរាល់");
+                    updateDbStatus(true, "តភ្ជាប់ Cloud រួចរាល់");
                     initFirebaseListeners();
                 } else {
-                    updateDbStatus(false, "Offline Mode (មិនទាន់ផ្ទុក Firebase)");
+                    updateDbStatus(false, "Offline Mode");
                 }
             } catch (err) {
                 console.error("Firebase init error:", err);
-                updateDbStatus(false, "កំហុសតភ្ជាប់ Cloud");
+                updateDbStatus(false, "កំហុសតភ្ជាប់");
             }
 
             initScanner();
@@ -674,16 +679,27 @@
 
         function switchTab(tabId) {
             document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById('section-' + tabId).classList.remove('hidden');
+            document.getElementById('section-' + tabId)?.classList.remove('hidden');
 
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('border-b-2', 'border-white', 'text-white');
-                btn.classList.add('text-emerald-200');
+                if (btn.id !== 'tab-admin') {
+                    btn.classList.remove('bg-white', 'text-emerald-900', 'shadow-sm');
+                    btn.classList.add('text-emerald-200', 'hover:bg-white/10');
+                }
             });
             const activeBtn = document.getElementById('tab-' + tabId);
-            if (activeBtn) {
-                activeBtn.classList.add('border-b-2', 'border-white', 'text-white');
-                activeBtn.classList.remove('text-emerald-200');
+            if (activeBtn && tabId !== 'admin') {
+                activeBtn.classList.add('bg-white', 'text-emerald-900', 'shadow-sm');
+                activeBtn.classList.remove('text-emerald-200', 'hover:bg-white/10');
+            }
+        }
+
+        function handleAdminTabClick(e) {
+            e.preventDefault();
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal();
+            } else {
+                alert("✅ អ្នកបានចូលសិទ្ធិជា Admin រួចហើយ!");
             }
         }
 
@@ -691,22 +707,22 @@
             if (!db) return;
 
             db.ref('students').on('value', (snapshot) => {
-                studentsData = snapshot.val() || {};
+                const val = snapshot.val();
+                studentsData = val || {};
                 renderStudents();
                 updateStats();
             });
 
             db.ref('teachers').on('value', (snapshot) => {
-                teachersData = snapshot.val() || {};
+                const val = snapshot.val();
+                teachersData = val || {};
                 renderTeachers();
                 updateStats();
             });
 
             db.ref('classes').on('value', (snapshot) => {
                 const val = snapshot.val();
-                if (val) {
-                    classesData = val;
-                }
+                classesData = val || {};
                 updateClassSelects();
                 renderClasses();
                 renderTimetable();
@@ -727,7 +743,7 @@
 
             db.ref('timetables').on('value', (snapshot) => {
                 const val = snapshot.val();
-                if (val) timetablesData = val;
+                timetablesData = val || {};
                 renderTimetable();
             });
         }
@@ -736,7 +752,7 @@
             const scannerStatus = document.getElementById('scannerStatus');
             try {
                 html5QrCode = new Html5Qrcode("reader");
-                const config = { fps: 5, qrbox: { width: 250, height: 250 } };
+                const config = { fps: 5, qrbox: { width: 230, height: 230 } };
                 
                 html5QrCode.start(
                     { facingMode: "environment" },
@@ -744,7 +760,7 @@
                     onScanSuccess,
                     (error) => {}
                 ).then(() => {
-                    if (scannerStatus) scannerStatus.textContent = "កាមេរ៉ាកំពុងដំណើរការ (ល្បឿនមធ្យម ត្រៀមស្កេន)...";
+                    if (scannerStatus) scannerStatus.textContent = "កាមេរ៉ាកំពុងដំណើរការ (ត្រៀមស្កេន)...";
                 }).catch(err => {
                     if (scannerStatus) scannerStatus.textContent = "មិនអាចបើកកាមេរ៉ាបាន (សូមប្រើប្រាស់ការបញ្ចូលដោយដៃ)";
                 });
@@ -765,10 +781,45 @@
             }
         }
 
-        function processAttendance(studentId) {
-            const student = studentsData[studentId];
+        function processAttendance(scannedId) {
+            const targetTypeSelect = document.getElementById('scanTargetType');
+            const checkTypeSelect = document.getElementById('scanCheckType');
+            const targetType = targetTypeSelect ? targetTypeSelect.value : 'student';
+            const checkType = checkTypeSelect ? checkTypeSelect.value : 'ចូលរៀន';
+
+            if (targetType === 'teacher') {
+                const teacher = teachersData[scannedId];
+                if (!teacher) {
+                    alert("រកមិនឃើញអត្តលេខគ្រូបង្រៀននេះក្នុងប្រព័ន្ធទេ: " + scannedId);
+                    return;
+                }
+
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('km-KH');
+                const timeStr = now.toLocaleTimeString('km-KH');
+                const timestamp = dateStr + ' ' + timeStr;
+
+                const logItem = {
+                    id: teacher.id,
+                    name: teacher.name,
+                    role: 'teacher',
+                    subject: teacher.subject,
+                    checkType: checkType,
+                    status: 'មកវត្តមាន',
+                    timestamp
+                };
+
+                scanLogsData.unshift(logItem);
+                renderLogs();
+                updateStats();
+                alert(`✅ កត់ត្រាគ្រូបង្រៀន [${checkType}] បានជោគជ័យ: លោកគ្រូ/អ្នកគ្រូ ${teacher.name}`);
+                return;
+            }
+
+            // Student scan processing
+            const student = studentsData[scannedId];
             if (!student) {
-                alert("រកមិនឃើញអត្តលេខសិស្សនេះក្នុងប្រព័ន្ធទេ: " + studentId);
+                alert("រកមិនឃើញអត្តលេខសិស្សនេះក្នុងប្រព័ន្ធទេ: " + scannedId);
                 return;
             }
 
@@ -780,14 +831,15 @@
             const timeStr = now.toLocaleTimeString('km-KH');
             const timestamp = dateStr + ' ' + timeStr;
 
-            // Intelligent schedule-aware lookup based on current day, grade timetable, and time slot
             const scheduleInfo = getCurrentScheduleInfo(student.grade, now);
 
             const logItem = { 
                 id: student.id, 
                 name: student.name, 
+                role: 'student',
                 grade: student.grade, 
                 status: statusText, 
+                checkType: checkType,
                 timestamp,
                 subject: scheduleInfo.subject,
                 period: scheduleInfo.period,
@@ -795,15 +847,16 @@
             };
 
             if (db && isConnected) {
-                db.ref('scanLogs').push(logItem);
-            } else {
-                scanLogsData.unshift(logItem);
-                renderLogs();
-                updateStats();
+                db.ref('scanLogs').push(logItem).catch(err => {
+                    console.error("Firebase push error:", err);
+                });
             }
+            scanLogsData.unshift(logItem);
+            renderLogs();
+            updateStats();
 
-            sendTelegramNotification(student, statusText, timestamp, scheduleInfo);
-            alert(`✅ កត់ត្រាវត្តមាន (${statusText}) [មុខវិជ្ជា: ${scheduleInfo.subject}] បានជោគជ័យ: ${student.name} (គ្រូ: ${scheduleInfo.teacher})`);
+            sendTelegramNotification(student, statusText, checkType, timestamp, scheduleInfo);
+            alert(`✅ កត់ត្រាវត្តមានសិស្ស (${statusText} - ${checkType}) [មុខវិជ្ជា: ${scheduleInfo.subject}] បានជោគជ័យ: ${student.name}`);
         }
 
         function getCurrentScheduleInfo(gradeKey, now) {
@@ -820,7 +873,6 @@
 
             for (let slot of gradeSlots) {
                 if (slot.days && slot.days[dayIndex]) {
-                    // Match standard morning or afternoon timetable periods
                     if (slot.time.includes("07:00") && hoursMinutes >= 420 && hoursMinutes < 470) matchedSlot = slot;
                     else if (slot.time.includes("07:50") && hoursMinutes >= 470 && hoursMinutes < 520) matchedSlot = slot;
                     else if (slot.time.includes("08:55") && hoursMinutes >= 535 && hoursMinutes < 585) matchedSlot = slot;
@@ -837,10 +889,10 @@
                 subjectName = matchedSlot.days[dayIndex];
             } else {
                 if (hoursMinutes >= 420 && hoursMinutes < 635) {
-                    periodName = "វេនព្រឹក (ម៉ោងសិក្សាស្វ័យប្រវត្តិ)";
+                    periodName = "វេនព្រឹក";
                     subjectName = "មុខវិជ្ជាតាមតារាងវេនព្រឹក";
                 } else if (hoursMinutes >= 780 && hoursMinutes < 1010) {
-                    periodName = "វេនរសៀល (ម៉ោងសិក្សាស្វ័យប្រវត្តិ)";
+                    periodName = "វេនរសៀល";
                     subjectName = "មុខវិជ្ជាតាមតារាងវេនរសៀល";
                 }
             }
@@ -861,31 +913,70 @@
             if (!container) return;
 
             if (scanLogsData.length === 0) {
-                container.innerHTML = `<div class="text-center text-slate-400 py-10 text-sm">មិនទាន់មានកំណត់ត្រាស្កេននៅថ្ងៃនេះ</div>`;
+                container.innerHTML = `<div class="text-center text-slate-400 py-12 text-sm">មិនទាន់មានកំណត់ត្រាស្កេននៅថ្ងៃនេះ</div>`;
                 return;
             }
 
-            container.innerHTML = scanLogsData.slice().reverse().slice(0, 10).map(log => {
+            container.innerHTML = scanLogsData.slice().reverse().map((log, originalIdx) => {
+                const actualIdx = scanLogsData.length - 1 - originalIdx;
+
                 let badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
                 if (log.status === "ច្បាប់") badgeColor = "bg-amber-50 text-amber-700 border-amber-200";
                 if (log.status === "អវត្តមាន") badgeColor = "bg-rose-50 text-rose-700 border-rose-200";
 
+                const isTeacher = log.role === 'teacher';
+                const checkTypeBadge = log.checkType === 'ចេញពីសាលា' ? 'bg-purple-100 text-purple-700 border-purple-200' : 'bg-sky-100 text-sky-700 border-sky-200';
+
+                let gradeDisplay = log.grade || '';
+                if (classesData[log.grade]) {
+                    gradeDisplay = classesData[log.grade].name;
+                } else if (log.grade) {
+                    const foundClassKey = Object.keys(classesData).find(k => k === log.grade || classesData[k].name === log.grade);
+                    if (foundClassKey) {
+                        gradeDisplay = classesData[foundClassKey].name;
+                    }
+                }
+
                 return `
-                    <div class="bg-slate-50 border border-slate-100 p-3 rounded-xl flex justify-between items-center">
+                    <div class="bg-slate-50 border border-slate-100 p-3.5 rounded-2xl flex justify-between items-center shadow-sm">
                         <div>
                             <div class="flex items-center space-x-2">
                                 <h4 class="font-bold text-slate-800 text-sm">${log.name}</h4>
-                                <span class="text-[10px] px-2 py-0.5 rounded-md border ${badgeColor}">${log.status || 'មកវត្តមាន'}</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-lg border font-bold ${isTeacher ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : badgeColor}">${isTeacher ? 'គ្រូបង្រៀន' : (log.status || 'មកវត្តមាន')}</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-lg border font-bold ${checkTypeBadge}">${log.checkType || 'ចូលរៀន'}</span>
                             </div>
-                            <p class="text-xs text-slate-500">អត្តលេខ: ${log.id} | ថ្នាក់: ${log.grade}</p>
+                            <p class="text-xs text-slate-500 mt-0.5">អត្តលេខ: ${log.id} ${isTeacher ? '| មុខវិជ្ជា: ' + log.subject : '| ថ្នាក់: ' + gradeDisplay}</p>
+                            ${!isTeacher ? `<p class="text-[11px] text-slate-400 mt-0.5">មុខវិជ្ជា: ${log.subject || 'សិក្សាទូទៅ'}</p>` : ''}
                         </div>
-                        <span class="text-xs font-semibold text-slate-600 bg-white px-2.5 py-1 rounded-lg border">${log.timestamp.split(' ')[1] || log.timestamp}</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-xl border shadow-sm">${log.timestamp.split(' ')[1] || log.timestamp}</span>
+                            <button onclick="deleteScanLog(${actualIdx})" class="text-rose-500 hover:text-rose-700 p-1.5 bg-white border border-rose-200 rounded-xl shadow-sm transition" title="លុបកំណត់ត្រានេះ"><i class="fa-solid fa-trash text-xs"></i></button>
+                        </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Students Management
+        function deleteScanLog(index) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => deleteScanLog(index));
+                return;
+            }
+            if (confirm("តើអ្នកពិតជាចង់លុបកំណត់ត្រាស្កេននេះមែនទេ?")) {
+                scanLogsData.splice(index, 1);
+                if (db && isConnected) {
+                    // Re-sync entire scanLogs array to Firebase or update
+                    db.ref('scanLogs').set(scanLogsData).then(() => {
+                        renderLogs();
+                        updateStats();
+                    });
+                } else {
+                    renderLogs();
+                    updateStats();
+                }
+            }
+        }
+
         let editingStudentId = null;
         function openStudentModal(id = null) {
             if (!isAdminAuthenticated) {
@@ -958,31 +1049,46 @@
 
             const list = Object.values(studentsData);
             if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = list.map(s => `
-                <tr class="border-b hover:bg-slate-50">
-                    <td class="py-3 px-4 font-semibold text-emerald-700">${s.id}</td>
-                    <td class="py-3 px-4 font-medium text-slate-800">${s.name}</td>
-                    <td class="py-3 px-4">${s.gender}</td>
-                    <td class="py-3 px-4">ទី ${s.grade}</td>
-                    <td class="py-3 px-4">${s.phone || '-'}</td>
-                    <td class="py-3 px-4 text-center">
-                        <button onclick="showQrModal('${s.id}', '${s.name}')" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 px-3 py-1.5 rounded-lg text-xs font-semibold">
-                            <i class="fa-solid fa-qrcode"></i> មើល QR
+            tbody.innerHTML = list.map(s => {
+                // Determine correct grade/class display name
+                let gradeDisplay = s.grade;
+                if (classesData[s.grade]) {
+                    gradeDisplay = classesData[s.grade].name;
+                } else {
+                    // Fallback search in classesData by name or key
+                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || classesData[k].name === s.grade);
+                    if (foundClassKey) {
+                        gradeDisplay = classesData[foundClassKey].name;
+                    } else if (!String(s.grade).startsWith("ទី")) {
+                        gradeDisplay = "ទី " + s.grade;
+                    }
+                }
+
+                return `
+                <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id}</td>
+                    <td class="py-3.5 px-4 font-bold text-slate-800">${s.name}</td>
+                    <td class="py-3.5 px-4 text-slate-600">${s.gender}</td>
+                    <td class="py-3.5 px-4 text-slate-600">${gradeDisplay}</td>
+                    <td class="py-3.5 px-4 text-slate-600">${s.phone || '-'}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <button onclick="showQrModal('${s.id}', '${s.name}')" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-qrcode mr-1"></i> មើល QR
                         </button>
                     </td>
-                    <td class="py-3 px-4 text-center space-x-2">
-                        <button onclick="openStudentModal('${s.id}')" class="text-sky-600 hover:text-sky-800 p-1" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteStudent('${s.id}')" class="text-red-500 hover:text-red-700 p-1" title="លុប"><i class="fa-solid fa-trash"></i></button>
+                    <td class="py-3.5 px-4 text-center space-x-2">
+                        <button onclick="openStudentModal('${s.id}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteStudent('${s.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
-            `).join('');
+            `;
+            }).join('');
         }
 
-        // Teachers Management
         let editingTeacherId = null;
         function openTeacherModal(id = null) {
             if (!isAdminAuthenticated) {
@@ -1053,53 +1159,57 @@
 
             const list = Object.values(teachersData);
             if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-6 text-slate-400">មិនទាន់មានទិន្នន័យគ្រូបង្រៀនទេ</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យគ្រូបង្រៀនទេ</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = list.map(t => `
-                <tr class="border-b hover:bg-slate-50">
-                    <td class="py-3 px-4 font-semibold text-emerald-700">${t.id}</td>
-                    <td class="py-3 px-4 font-medium text-slate-800">${t.name}</td>
-                    <td class="py-3 px-4">${t.subject}</td>
-                    <td class="py-3 px-4">${t.phone || '-'}</td>
-                    <td class="py-3 px-4 text-center">
-                        <button onclick="showQrModal('${t.id}', 'លោកគ្រូ/អ្នកគ្រូ: ${t.name}')" class="bg-sky-100 text-sky-800 hover:bg-sky-200 px-3 py-1.5 rounded-lg text-xs font-semibold">
-                            <i class="fa-solid fa-qrcode"></i> មើល QR
+                <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="py-3.5 px-4 font-bold text-emerald-700">${t.id}</td>
+                    <td class="py-3.5 px-4 font-bold text-slate-800">${t.name}</td>
+                    <td class="py-3.5 px-4 text-slate-600">${t.subject}</td>
+                    <td class="py-3.5 px-4 text-slate-600">${t.phone || '-'}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <button onclick="showQrModal('${t.id}', 'លោកគ្រូ/អ្នកគ្រូ: ${t.name}')" class="bg-sky-100 text-sky-800 hover:bg-sky-200 px-3 py-1.5 rounded-xl text-xs font-bold transition">
+                            <i class="fa-solid fa-qrcode mr-1"></i> មើល QR
                         </button>
                     </td>
-                    <td class="py-3 px-4 text-center space-x-2">
-                        <button onclick="openTeacherModal('${t.id}')" class="text-sky-600 hover:text-sky-800 p-1" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteTeacher('${t.id}')" class="text-red-500 hover:text-red-700 p-1" title="លុប"><i class="fa-solid fa-trash"></i></button>
+                    <td class="py-3.5 px-4 text-center space-x-2">
+                        <button onclick="openTeacherModal('${t.id}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteTeacher('${t.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        // Classes Management & Dynamic Select Sync
         function renderClasses() {
             const grid = document.getElementById('classesGrid');
             if (!grid) return;
 
             const keys = Object.keys(classesData);
+            if (keys.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 text-sm">មិនទាន់មានថ្នាក់រៀនក្នុងប្រព័ន្ធទេ (សូមចុចបន្ថែមថ្នាក់រៀន)</div>`;
+                return;
+            }
+
             grid.innerHTML = keys.map(k => {
                 const c = classesData[k];
-                const count = Object.values(studentsData).filter(s => s.grade === k || s.grade === c.name).length;
+                const count = Object.values(studentsData).filter(s => s.grade === k || s.grade === c.name || String(s.grade).includes(c.name)).length;
                 return `
-                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-100 flex flex-col justify-between">
+                    <div class="bg-slate-50/80 p-5 rounded-2xl border-2 border-slate-100 flex flex-col justify-between shadow-sm hover:border-emerald-200 transition">
                         <div>
-                            <div class="flex justify-between items-start mb-2">
+                            <div class="flex justify-between items-start mb-3">
                                 <h3 class="font-bold text-slate-800 text-base">${c.name}</h3>
-                                <span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full font-semibold">${count} សិស្ស</span>
+                                <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-xl font-bold shadow-sm">${count} សិស្ស</span>
                             </div>
-                            <p class="text-xs text-slate-500 mb-1"><i class="fa-solid fa-location-dot mr-1"></i> ${c.room || 'បន្ទប់ទូទៅ'}</p>
-                            <p class="text-xs text-slate-500"><i class="fa-solid fa-user-tie mr-1"></i> គ្រូបន្ទុក: ${c.teacher || 'មិនទាន់មាន'}</p>
+                            <p class="text-xs text-slate-600 mb-1.5 flex items-center"><i class="fa-solid fa-location-dot mr-2 text-emerald-600"></i> ${c.room || 'បន្ទប់ទូទៅ'}</p>
+                            <p class="text-xs text-slate-600 flex items-center"><i class="fa-solid fa-user-tie mr-2 text-emerald-600"></i> គ្រូបន្ទុក: ${c.teacher || 'មិនទាន់មាន'}</p>
                         </div>
-                        <div class="mt-4 pt-3 border-t flex justify-end space-x-2">
-                            <button onclick="openClassModal('${k}')" class="text-sky-600 hover:text-sky-800 text-xs flex items-center space-x-1 px-2 py-1 bg-white border rounded-lg">
+                        <div class="mt-5 pt-3 border-t flex justify-end space-x-2">
+                            <button onclick="openClassModal('${k}')" class="text-sky-600 hover:text-sky-800 text-xs font-bold flex items-center space-x-1 px-3 py-1.5 bg-white border-2 border-slate-200 rounded-xl shadow-sm transition">
                                 <i class="fa-solid fa-pen-to-square"></i> <span>កែប្រែ</span>
                             </button>
-                            <button onclick="deleteClass('${k}')" class="text-red-500 hover:text-red-700 text-xs flex items-center space-x-1 px-2 py-1 bg-white border rounded-lg">
+                            <button onclick="deleteClass('${k}')" class="text-rose-500 hover:text-rose-700 text-xs font-bold flex items-center space-x-1 px-3 py-1.5 bg-white border-2 border-slate-200 rounded-xl shadow-sm transition">
                                 <i class="fa-solid fa-trash"></i> <span>លុប</span>
                             </button>
                         </div>
@@ -1113,7 +1223,9 @@
             const timeGradeSelect = document.getElementById('timetableGradeSelect');
             
             const keys = Object.keys(classesData);
-            const optionsHtml = keys.map(k => `<option value="${k}">${classesData[k].name}</option>`).join('');
+            const optionsHtml = keys.length > 0 
+                ? keys.map(k => `<option value="${k}">${classesData[k].name}</option>`).join('')
+                : `<option value="">-- គ្មានថ្នាក់រៀន (សូមបន្ថែមថ្នាក់) --</option>`;
 
             if (stuGradeSelect) stuGradeSelect.innerHTML = optionsHtml;
             if (timeGradeSelect) timeGradeSelect.innerHTML = optionsHtml;
@@ -1130,8 +1242,8 @@
                 const existingVal = (telegramConfig && telegramConfig.chatIds && telegramConfig.chatIds[k]) ? telegramConfig.chatIds[k] : "";
                 return `
                     <div>
-                        <label class="block text-xs text-slate-600 mb-1">${c.name} (${k})</label>
-                        <input type="text" id="chatId_${k}" value="${existingVal}" placeholder="Chat ID សម្រាប់ ${c.name}" class="w-full border rounded-xl px-3 py-1.5 text-sm">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">${c.name} (${k})</label>
+                        <input type="text" id="chatId_${k}" value="${existingVal}" placeholder="Chat ID សម្រាប់ ${c.name}" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm">
                     </div>
                 `;
             }).join('');
@@ -1222,7 +1334,6 @@
             }
         }
 
-        // Timetable Rendering with Shift filter (Morning/Afternoon)
         function renderTimetable() {
             const tbody = document.getElementById('timetableBody');
             const gradeSelect = document.getElementById('timetableGradeSelect');
@@ -1232,10 +1343,7 @@
             if (!tbody) return;
 
             if (!timetablesData[gradeKey]) {
-                timetablesData[gradeKey] = [
-                    { shift: "morning", time: "វេនព្រឹក - ម៉ោងទី ១ (07:00 - 07:50)", days: { 1: "គណិតវិទ្យា", 2: "ភាសាខ្មែរ", 3: "រូបវិទ្យា", 4: "គីមីវិទ្យា", 5: "ជីវវិទ្យា", 6: "អង់គ្លេស" } },
-                    { shift: "afternoon", time: "វេនរសៀល - ម៉ោងទី ១ (13:00 - 13:50)", days: { 1: "រូបវិទ្យា", 2: "គីមីវិទ្យា", 3: "គណិតវិទ្យា", 4: "ភាសាខ្មែរ", 5: "ប្រវត្តិវិទ្យា", 6: "កីឡា" } }
-                ];
+                timetablesData[gradeKey] = [];
             }
 
             let slots = timetablesData[gradeKey];
@@ -1244,27 +1352,27 @@
             }
 
             if (slots.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400">មិនមានកាលវិភាគសម្រាប់វេននេះទេ</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">មិនទាន់មានកាលវិភាគសិក្សាទេ (សូមចុចបន្ថែមម៉ោងសិក្សា)</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = slots.map((slot, index) => `
-                <tr class="border-b hover:bg-slate-50">
-                    <td class="p-3 bg-slate-50 font-semibold text-xs border">
-                        <span class="inline-block px-2 py-0.5 rounded text-[10px] ${slot.shift === 'morning' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'} mb-1">
+                <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="p-3.5 bg-slate-50 font-bold text-xs border">
+                        <span class="inline-block px-2.5 py-1 rounded-xl text-[10px] font-bold ${slot.shift === 'morning' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'} mb-1 shadow-sm">
                             ${slot.shift === 'morning' ? 'វេនព្រឹក' : 'វេនរសៀល'}
                         </span><br>
                         ${slot.time}
                     </td>
-                    <td class="p-3 border text-xs">${slot.days[1] || '-'}</td>
-                    <td class="p-3 border text-xs">${slot.days[2] || '-'}</td>
-                    <td class="p-3 border text-xs">${slot.days[3] || '-'}</td>
-                    <td class="p-3 border text-xs">${slot.days[4] || '-'}</td>
-                    <td class="p-3 border text-xs">${slot.days[5] || '-'}</td>
-                    <td class="p-3 border text-xs">${slot.days[6] || '-'}</td>
-                    <td class="p-3 border text-center no-print space-x-1">
-                        <button onclick="openTimetableSlotModal(${index})" class="text-sky-600 hover:text-sky-800 p-1" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteTimetableSlot(${index})" class="text-red-500 hover:text-red-700 p-1" title="លុប"><i class="fa-solid fa-trash"></i></button>
+                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[1] || '-'}</td>
+                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[2] || '-'}</td>
+                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[3] || '-'}</td>
+                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[4] || '-'}</td>
+                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[5] || '-'}</td>
+                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[6] || '-'}</td>
+                    <td class="p-3.5 border text-center no-print space-x-1">
+                        <button onclick="openTimetableSlotModal(${index})" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteTimetableSlot(${index})" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -1361,7 +1469,6 @@
             }
         }
 
-        // Monthly Report Generation
         function generateMonthlyReport() {
             const filterInput = document.getElementById('monthlyReportFilter');
             const tbody = document.getElementById('monthlyReportTable');
@@ -1373,28 +1480,45 @@
 
             const studentList = Object.values(studentsData);
             if (studentList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = studentList.map(s => {
-                const studentLogs = scanLogsData.filter(l => l.id === s.id && l.timestamp.includes(selectedYM));
+                // Filter logs strictly for this student and this month, excluding any teacher logs
+                const studentLogs = scanLogsData.filter(l => 
+                    String(l.id).trim() === String(s.id).trim() && 
+                    String(l.timestamp).includes(selectedYM) &&
+                    (!l.role || l.role === 'student')
+                );
                 const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
                 const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
                 const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
                 const totalCount = studentLogs.length;
                 const lastLog = totalCount > 0 ? studentLogs[studentLogs.length - 1].timestamp : '-';
 
+                let gradeDisplay = s.grade;
+                if (classesData[s.grade]) {
+                    gradeDisplay = classesData[s.grade].name;
+                } else {
+                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || classesData[k].name === s.grade);
+                    if (foundClassKey) {
+                        gradeDisplay = classesData[foundClassKey].name;
+                    } else if (!String(s.grade).startsWith("ទី")) {
+                        gradeDisplay = "ទី " + s.grade;
+                    }
+                }
+
                 return `
-                    <tr class="border-b hover:bg-slate-50">
-                        <td class="py-3 px-4 font-semibold text-emerald-700">${s.id}</td>
-                        <td class="py-3 px-4 font-medium text-slate-800">${s.name}</td>
-                        <td class="py-3 px-4">ទី ${s.grade}</td>
-                        <td class="py-3 px-4 text-center font-bold text-emerald-600">${presentCount}</td>
-                        <td class="py-3 px-4 text-center font-bold text-amber-600">${permissionCount}</td>
-                        <td class="py-3 px-4 text-center font-bold text-rose-600">${absentCount}</td>
-                        <td class="py-3 px-4 text-center font-semibold text-slate-700">${totalCount}</td>
-                        <td class="py-3 px-4 text-center text-xs text-slate-500">${lastLog}</td>
+                    <tr class="border-b hover:bg-slate-50 transition">
+                        <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800">${s.name}</td>
+                        <td class="py-3.5 px-4 text-slate-600">${gradeDisplay}</td>
+                        <td class="py-3.5 px-4 text-center font-black text-emerald-600">${presentCount}</td>
+                        <td class="py-3.5 px-4 text-center font-black text-amber-600">${permissionCount}</td>
+                        <td class="py-3.5 px-4 text-center font-black text-rose-600">${absentCount}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-700">${totalCount}</td>
+                        <td class="py-3.5 px-4 text-center text-xs text-slate-500">${lastLog}</td>
                     </tr>
                 `;
             }).join('');
@@ -1408,14 +1532,19 @@
             let csvContent = "\uFEFFអត្តលេខ,ឈ្មោះសិស្ស,ថ្នាក់,មកវត្តមាន,សុំច្បាប់,អវត្តមាន,សរុបស្កេន,ស្កេនចុងក្រោយ\n";
 
             studentList.forEach(s => {
-                const studentLogs = scanLogsData.filter(l => l.id === s.id && l.timestamp.includes(selectedYM));
+                const studentLogs = scanLogsData.filter(l => 
+                    String(l.id).trim() === String(s.id).trim() && 
+                    String(l.timestamp).includes(selectedYM) &&
+                    (!l.role || l.role === 'student')
+                );
                 const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
                 const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
                 const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
                 const totalCount = studentLogs.length;
                 const lastLog = totalCount > 0 ? studentLogs[studentLogs.length - 1].timestamp : '-';
+                const gradeDisplay = classesData[s.grade] ? classesData[s.grade].name : (`ទី ${s.grade}`);
 
-                csvContent += `"${s.id}","${s.name}","ទី ${s.grade}",${presentCount},${permissionCount},${absentCount},${totalCount},"${lastLog}"\n`;
+                csvContent += `"${s.id}","${s.name}","${gradeDisplay}",${presentCount},${permissionCount},${absentCount},${totalCount},"${lastLog}"\n`;
             });
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1428,83 +1557,15 @@
             document.body.removeChild(a);
         }
 
-        // Telegram Notification with Schedule and Teacher details
-        function sendTelegramNotification(student, statusText, timestamp, scheduleInfo) {
+        function sendTelegramNotification(student, statusText, checkType, timestamp, scheduleInfo) {
             const token = telegramConfig.botToken;
             const chatId = telegramConfig.chatIds?.[student.grade] || telegramConfig.chatIds?.[Object.keys(classesData).find(k => classesData[k].name === student.grade)];
             if (!token || !chatId) return;
 
-            const message = `🚨 ដំណឹងវត្តមានសិស្ស - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង\n👤 ឈ្មោះ: ${student.name}\n🆔 អត្តលេខ: ${student.id}\n🏫 ថ្នាក់: ${student.grade}\n📌 ស្ថានភាព: ${statusText}\n📅 ថ្ងៃ: ${scheduleInfo.day} | ${scheduleInfo.period}\n📚 មុខវិជ្ជា: ${scheduleInfo.subject}\n👨‍🏫 គ្រូបង្រៀន: ${scheduleInfo.teacher}\n⏰ ម៉ោងស្កេន: ${timestamp}`;
+            const message = `🚨 ដំណឹងវត្តមានសិស្ស (${checkType}) - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង\n👤 ឈ្មោះ: ${student.name}\n🆔 អត្តលេខ: ${student.id}\n🏫 ថ្នាក់: ${student.grade}\n📌 ស្ថានភាព: ${statusText} [${checkType}]\n📅 ថ្ងៃ: ${scheduleInfo.day} | ${scheduleInfo.period}\n📚 មុខវិជ្ជា: ${scheduleInfo.subject}\n👨‍🏫 គ្រូបង្រៀន: ${scheduleInfo.teacher}\n⏰ ម៉ោងស្កេន: ${timestamp}`;
             
             const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=` + encodeURIComponent(message);
             fetch(url).catch(err => console.log("Telegram API error:", err));
-        }
-
-        function saveTelegramConfig() {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(saveTelegramConfig);
-                return;
-            }
-            const botToken = document.getElementById('telegramBotToken').value.trim();
-            const chatIds = {};
-            ['7', '8', '9', '10', '11', '12'].forEach(g => {
-                const val = document.getElementById('chatId_' + g)?.value.trim();
-                if (val) chatIds[g] = val;
-            });
-
-            const config = { botToken, chatIds };
-            if (db && isConnected) {
-                db.ref('telegramConfig').set(config);
-                alert("បានរក្សាទុកការកំណត់ Telegram ដោយជោគជ័យ!");
-            } else {
-                telegramConfig = config;
-                alert("បានរក្សាទុកក្នុង Local Mode!");
-            }
-        }
-
-        // Admin Auth Flow
-        let pendingAdminAction = null;
-        function openAdminAuthModal(callback = null) {
-            console.log("Opening admin auth modal...");
-            if (isAdminAuthenticated) {
-                if (callback) callback();
-                return;
-            }
-            pendingAdminAction = callback;
-            const modal = document.getElementById('adminAuthModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    const pwdInput = document.getElementById('adminPasswordInput');
-                    if (pwdInput) pwdInput.focus();
-                }, 100);
-            }
-        }
-
-        function closeAdminAuthModal() {
-            const modal = document.getElementById('adminAuthModal');
-            if (modal) modal.classList.add('hidden');
-            const pwdInput = document.getElementById('adminPasswordInput');
-            if (pwdInput) pwdInput.value = "";
-            pendingAdminAction = null;
-        }
-
-        function verifyAdminPassword() {
-            const pwd = document.getElementById('adminPasswordInput').value;
-            if (pwd === "12345") {
-                isAdminAuthenticated = true;
-                document.getElementById('adminAuthLabel').textContent = "Admin (បានចូល)";
-                document.getElementById('tab-admin').classList.remove('text-amber-300');
-                document.getElementById('tab-admin').classList.add('text-emerald-300');
-                alert("✅ ផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ Admin បានជោគជ័យ!");
-                closeAdminAuthModal();
-                if (pendingAdminAction) {
-                    pendingAdminAction();
-                    pendingAdminAction = null;
-                }
-            } else {
-                alert("❌ ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ! (ពាក្យសម្ងាត់ដើមគឺ: 12345)");
-            }
         }
 
         function loadTelegramConfigUI() {
@@ -1538,9 +1599,78 @@
             }
         }
 
-        // Admin Auth Flow
+        function openAdminAuthModal(callback = null) {
+            if (isAdminAuthenticated) {
+                if (callback) callback();
+                return;
+            }
+            pendingAdminAction = callback;
+            const modal = document.getElementById('adminAuthModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    const pwdInput = document.getElementById('adminPasswordInput');
+                    if (pwdInput) pwdInput.focus();
+                }, 100);
+            }
+        }
 
-        // Stats Updates
+        function closeAdminAuthModal() {
+            const modal = document.getElementById('adminAuthModal');
+            if (modal) modal.classList.add('hidden');
+            const pwdInput = document.getElementById('adminPasswordInput');
+            if (pwdInput) pwdInput.value = "";
+            pendingAdminAction = null;
+        }
+
+        let pendingAdminAction = null;
+        function verifyAdminPassword() {
+            const pwd = document.getElementById('adminPasswordInput').value;
+            if (pwd === "12345") {
+                isAdminAuthenticated = true;
+                const adminLabel = document.getElementById('adminAuthLabel');
+                if (adminLabel) adminLabel.textContent = "Admin (បានចូល)";
+                const tabAdmin = document.getElementById('tab-admin');
+                if (tabAdmin) {
+                    tabAdmin.classList.remove('text-amber-300');
+                    tabAdmin.classList.add('bg-white', 'text-emerald-900', 'shadow-sm');
+                }
+                alert("✅ ផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ Admin បានជោគជ័យ!");
+                closeAdminAuthModal();
+                if (pendingAdminAction) {
+                    pendingAdminAction();
+                    pendingAdminAction = null;
+                }
+            } else {
+                alert("❌ ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ! (ពាក្យសម្ងាត់ដើមគឺ: 12345)");
+            }
+        }
+
+        function showQrModal(id, titleText) {
+            const modal = document.getElementById('qrModal');
+            const container = document.getElementById('qrcodeContainer');
+            const title = document.getElementById('qrModalTitle');
+            if (!modal || !container || !title) return;
+
+            container.innerHTML = "";
+            title.textContent = titleText + " (" + id + ")";
+            modal.classList.remove('hidden');
+
+            new QRCode(container, {
+                text: id,
+                width: 200,
+                height: 200,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        function closeQrModal() {
+            const modal = document.getElementById('qrModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
         function updateStats() {
             const totalStu = Object.keys(studentsData).length;
             const totalTea = Object.keys(teachersData).length;
