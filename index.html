@@ -79,6 +79,9 @@
                 <button type="button" onclick="handleAdminTabClick(event)" id="tab-admin" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-amber-300 hover:bg-amber-400/20 whitespace-nowrap cursor-pointer z-10 relative transition-all duration-200">
                     <i class="fa-solid fa-shield-halved"></i> <span id="adminAuthLabel">ចូល Admin</span>
                 </button>
+                <button type="button" id="tab-admin-logout" onclick="logoutAdmin()" class="hidden py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-rose-300 hover:bg-rose-500/20 whitespace-nowrap cursor-pointer transition-all duration-200" title="ចាកចេញពី Admin">
+                    <i class="fa-solid fa-lock text-rose-400"></i> <span>ចាក់សោ Admin</span>
+                </button>
             </div>
         </nav>
     </header>
@@ -91,10 +94,17 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Scanner Card -->
                 <div class="lg:col-span-2 bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100 flex flex-col items-center">
-                    <h2 class="text-lg md:text-xl font-bold text-slate-800 mb-4 flex items-center space-x-2 self-start">
-                        <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-camera"></i></div>
-                        <span>កាមេរ៉ាស្កេន QR Code វត្តមាន</span>
-                    </h2>
+                    <div class="w-full flex justify-between items-center mb-4">
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800 flex items-center space-x-2">
+                            <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-camera"></i></div>
+                            <span>កាមេរ៉ាស្កេន QR Code វត្តមាន</span>
+                        </h2>
+                        <!-- Toggle Camera Button -->
+                        <button id="toggleCamBtn" onclick="toggleCamera()" class="bg-rose-100 hover:bg-rose-200 text-rose-700 px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 shadow-sm">
+                            <i id="toggleCamIcon" class="fa-solid fa-video-slash"></i>
+                            <span id="toggleCamText">បិទកាមេរ៉ា</span>
+                        </button>
+                    </div>
 
                     <!-- Attendance Mode & Check-in/Out Selectors -->
                     <div class="w-full max-w-md grid grid-cols-2 gap-3 mb-4">
@@ -160,26 +170,32 @@
                         <h2 class="text-lg md:text-xl font-bold text-slate-800">បញ្ជីឈ្មោះសិស្សសរុប</h2>
                         <p class="text-xs text-slate-500">គ្រប់គ្រងព័ត៌មានសិស្ស និងបង្កើត QR Code</p>
                     </div>
-                    <button onclick="openStudentModal()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
-                        <i class="fa-solid fa-user-plus"></i>
-                        <span>បញ្ចូលសិស្សថ្មី</span>
-                    </button>
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <button onclick="printAllStudentQRs()" class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-900 active:scale-95 text-white text-sm font-medium px-4 py-3 rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-print"></i>
+                            <span>🖨️ បោះពុម្ព QR សិស្សទាំងអស់</span>
+                        </button>
+                        <button onclick="openStudentModal()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>បញ្ចូលសិស្សថ្មី</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-slate-100">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
                             <tr class="bg-slate-50 text-slate-700 border-b">
                                 <th class="py-3.5 px-4 font-bold">អត្តលេខ</th>
-                                <th class="py-3.5 px-4 font-bold">ឈ្មោះពេញ</th>
+                                <th class="py-3.5 px-4 font-bold">ឈ្មោះសិស្ស</th>
                                 <th class="py-3.5 px-4 font-bold">ភេទ</th>
-                                <th class="py-3.5 px-4 font-bold">ថ្នាក់រៀន</th>
+                                <th class="py-3.5 px-4 font-bold">ថ្នាក់</th>
                                 <th class="py-3.5 px-4 font-bold">លេខទូរសព្ទ</th>
                                 <th class="py-3.5 px-4 font-bold text-center">QR Code</th>
-                                <th class="py-3.5 px-4 font-bold text-center">សកម្មភាព</th>
+                                <th class="py-3.5 px-4 font-bold text-center no-print">សកម្មភាព</th>
                             </tr>
                         </thead>
                         <tbody id="studentsTable">
-                            <tr><td colspan="7" class="text-center py-8 text-slate-400">កំពុងទាញទិន្នន័យ...</td></tr>
+                            <tr><td colspan="7" class="text-center py-8 text-slate-400">កំពុងទាញយកទិន្នន័យ...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -192,20 +208,19 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
                         <h2 class="text-lg md:text-xl font-bold text-slate-800">គ្រប់គ្រងថ្នាក់រៀន</h2>
-                        <p class="text-xs text-slate-500">បញ្ជីថ្នាក់រៀនទាំងអស់ភ្ជាប់ជាមួយប្រព័ន្ធស្វ័យប្រវត្តិ</p>
+                        <p class="text-xs text-slate-500">បន្ថែម និងកែប្រែថ្នាក់រៀនទាំងអស់ក្នុងសាលា</p>
                     </div>
-                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                        <button onclick="openClassModal()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
-                            <i class="fa-solid fa-circle-plus"></i>
-                            <span>បន្ថែមថ្នាក់រៀន</span>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="confirmResetAllData()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-medium px-4 py-3 rounded-2xl text-xs transition border border-rose-200">
+                            <i class="fa-solid fa-trash mr-1"></i> លុបថ្នាក់ទាំងអស់
                         </button>
-                        <button onclick="confirmResetAllData()" class="flex-1 sm:flex-none bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-rose-600/20 flex items-center justify-center space-x-2 transition">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                            <span>លុបទិន្នន័យទាំងអស់</span>
+                        <button onclick="openClassModal()" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>បន្ថែមថ្នាក់រៀន</span>
                         </button>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="classesGrid">
+                <div id="classesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                     <!-- Populated by JS -->
                 </div>
             </div>
@@ -219,53 +234,56 @@
                         <h2 class="text-lg md:text-xl font-bold text-slate-800">បញ្ជីឈ្មោះគ្រូបង្រៀន</h2>
                         <p class="text-xs text-slate-500">គ្រប់គ្រងព័ត៌មានគ្រូ និង QR ស្កេនវត្តមានគ្រូ</p>
                     </div>
-                    <button onclick="openTeacherModal()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
-                        <i class="fa-solid fa-chalkboard-user"></i>
-                        <span>បន្ថែមគ្រូបង្រៀន</span>
-                    </button>
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <button onclick="printAllTeacherQRs()" class="flex-1 sm:flex-none bg-slate-800 hover:bg-slate-900 active:scale-95 text-white text-sm font-medium px-4 py-3 rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-print"></i>
+                            <span>🖨️ បោះពុម្ព QR គ្រូទាំងអស់</span>
+                        </button>
+                        <button onclick="openTeacherModal()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-5 py-3 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                            <span>បន្ថែមគ្រូបង្រៀន</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-slate-100">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
                             <tr class="bg-slate-50 text-slate-700 border-b">
-                                <th class="py-3.5 px-4 font-bold">អត្តលេខគ្រូ</th>
+                                <th class="py-3.5 px-4 font-bold">អត្តលេខ</th>
                                 <th class="py-3.5 px-4 font-bold">ឈ្មោះគ្រូ</th>
-                                <th class="py-3.5 px-4 font-bold">មុខវិជ្ជាបង្រៀន</th>
+                                <th class="py-3.5 px-4 font-bold">មុខវិជ្ជា</th>
                                 <th class="py-3.5 px-4 font-bold">លេខទូរសព្ទ</th>
                                 <th class="py-3.5 px-4 font-bold text-center">QR Code</th>
-                                <th class="py-3.5 px-4 font-bold text-center">សកម្មភាព</th>
+                                <th class="py-3.5 px-4 font-bold text-center no-print">សកម្មភាព</th>
                             </tr>
                         </thead>
                         <tbody id="teachersTable">
-                            <tr><td colspan="6" class="text-center py-8 text-slate-400">កំពុងទាញទិន្នន័យ...</td></tr>
+                            <tr><td colspan="6" class="text-center py-8 text-slate-400">កំពុងទាញយកទិន្នន័យ...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- 5. TIMETABLE TAB (Monday to Saturday) -->
+        <!-- 5. TIMETABLE TAB -->
         <section id="section-timetable" class="space-y-6 hidden">
             <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg md:text-xl font-bold text-slate-800">កាលវិភាគសិក្សា និងកំណត់វេន (ចន្ទ - សៅរ៍)</h2>
-                        <p class="text-xs text-slate-500">កាលវិភាគប្រចាំសប្តាហ៍តាមថ្នាក់រៀន កំណត់វេនព្រឹក/រសៀល និងមុខវិជ្ជាដោយសេរី ឬស្វ័យប្រវត្តិ</p>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">កាលវិភាគសិក្សា</h2>
+                        <p class="text-xs text-slate-500">កំណត់មុខវិជ្ជានិងម៉ោងសិក្សាតាមថ្នាក់រៀន</p>
                     </div>
-                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                        <select id="timetableGradeSelect" onchange="renderTimetable()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white shadow-sm flex-1 sm:flex-none">
-                            <!-- Dynamically populated from classesData -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <select id="timetableGradeSelect" onchange="renderTimetable()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-bold text-emerald-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-emerald-50">
+                            <!-- Populated dynamically -->
                         </select>
-                        <select id="timetableShiftSelect" onchange="renderTimetable()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white shadow-sm flex-1 sm:flex-none">
+                        <select id="timetableShiftSelect" onchange="renderTimetable()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50">
                             <option value="all">គ្រប់វេនទាំងអស់</option>
                             <option value="morning">វេនព្រឹក</option>
                             <option value="afternoon">វេនរសៀល</option>
                         </select>
-                        <button onclick="openTimetableSlotModal()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2 shadow-md shadow-emerald-600/20">
-                            <i class="fa-solid fa-plus"></i> <span>បន្ថែមម៉ោងសិក្សា</span>
-                        </button>
-                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-print"></i> <span>ព្រីន</span>
+                        <button onclick="openTimetableSlotModal()" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-4 py-2.5 rounded-2xl shadow-md transition flex items-center space-x-2">
+                            <i class="fa-solid fa-plus"></i> <span>បន្ថែមម៉ោង</span>
                         </button>
                     </div>
                 </div>
@@ -296,16 +314,22 @@
             <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg md:text-xl font-bold text-slate-800">របាយការណ៍វត្តមានប្រចាំខែ (សរុបស្វ័យប្រត្តិ)</h2>
-                        <p class="text-xs text-slate-500" id="printMonthTitle">សរុបវត្តមានសិស្សតាមខែ និងទាញយកជា CSV</p>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">របាយការណ៍វត្តមានប្រចាំខែ</h2>
+                        <p id="printMonthTitle" class="text-xs text-slate-500">ទិន្នន័យវត្តមានសរុបស្វ័យប្រវត្តិតាមខែ និងថ្នាក់រៀន</p>
                     </div>
-                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto no-print">
-                        <input type="month" id="monthlyReportFilter" onchange="generateMonthlyReport()" class="border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white shadow-sm flex-1 sm:flex-none">
-                        <button onclick="exportMonthlyReportCSV()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2 shadow-md shadow-emerald-600/20">
-                            <i class="fa-solid fa-file-csv"></i> <span>ទាញយក CSV</span>
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <input type="month" id="monthlyReportFilter" onchange="generateMonthlyReport()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <select id="monthlyReportGradeFilter" onchange="generateMonthlyReport()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                            <option value="all">-- គ្រប់ថ្នាក់រៀនទាំងអស់ --</option>
+                        </select>
+                        <button onclick="clearSelectedGradeMonthlyLogs()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 font-medium px-4 py-2 rounded-2xl text-sm transition flex items-center space-x-1 no-print">
+                            <i class="fa-solid fa-trash-can mr-1"></i> លុបទិន្នន័យថ្នាក់នេះ
                         </button>
-                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 active:scale-95 text-white text-sm px-4 py-2.5 rounded-2xl flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-file-pdf"></i> <span>ព្រីន / PDF</span>
+                        <button onclick="exportMonthlyReportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-2xl text-sm shadow-md transition flex items-center space-x-1">
+                            <i class="fa-solid fa-file-csv mr-1"></i> Export CSV
+                        </button>
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-4 py-2 rounded-2xl text-sm shadow-md transition flex items-center space-x-1 no-print">
+                            <i class="fa-solid fa-print mr-1"></i> បោះពុម្ព PDF
                         </button>
                     </div>
                 </div>
@@ -321,10 +345,11 @@
                                 <th class="py-3.5 px-4 font-bold text-center">អវត្តមាន</th>
                                 <th class="py-3.5 px-4 font-bold text-center">សរុបស្កេន</th>
                                 <th class="py-3.5 px-4 font-bold text-center">ស្កេនចុងក្រោយ</th>
+                                <th class="py-3.5 px-4 font-bold text-center no-print">សកម្មភាព</th>
                             </tr>
                         </thead>
                         <tbody id="monthlyReportTable">
-                            <tr><td colspan="8" class="text-center py-8 text-slate-400">សូមជ្រើសរើសខែដើម្បីមើលរបាយការណ៍</td></tr>
+                            <tr><td colspan="9" class="text-center py-8 text-slate-400">សូមជ្រើសរើសខែដើម្បីមើលរបាយការណ៍</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -530,49 +555,46 @@
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">ជ្រើសរើសម៉ោង ឬកំណត់ពេលដោយសេរី</label>
                     <select id="ttTimePreset" onchange="onTimetablePresetChange(this)" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white mb-2">
                         <option value="">-- ជ្រើសរើសម៉ោងស្តង់ដារ --</option>
+                        <option value="CURRENT_TIME">🕒 ប្រើប្រាស់ម៉ោងបច្ចុប្បន្នស្វ័យប្រវត្តិ</option>
                         <option value="វេនព្រឹក - ម៉ោងទី ១ (07:00 - 07:50)">វេនព្រឹក - ម៉ោងទី ១ (07:00 - 07:50)</option>
                         <option value="វេនព្រឹក - ម៉ោងទី ២ (07:50 - 08:40)">វេនព្រឹក - ម៉ោងទី ២ (07:50 - 08:40)</option>
                         <option value="វេនព្រឹក - ម៉ោងទី ៣ (08:55 - 09:45)">វេនព្រឹក - ម៉ោងទី ៣ (08:55 - 09:45)</option>
                         <option value="វេនព្រឹក - ម៉ោងទី ៤ (09:45 - 10:35)">វេនព្រឹក - ម៉ោងទី ៤ (09:45 - 10:35)</option>
+                        <option value="វេនព្រឹក - ម៉ោងទី ៥ (10:35 - 11:25)">វេនព្រឹក - ម៉ោងទី ៥ (10:35 - 11:25)</option>
+                        <option value="វេនព្រឹក - ម៉ោងទី ៦ (11:25 - 12:15)">វេនព្រឹក - ម៉ោងទី ៦ (11:25 - 12:15)</option>
                         <option value="វេនរសៀល - ម៉ោងទី ១ (13:00 - 13:50)">វេនរសៀល - ម៉ោងទី ១ (13:00 - 13:50)</option>
                         <option value="វេនរសៀល - ម៉ោងទី ២ (13:50 - 14:40)">វេនរសៀល - ម៉ោងទី ២ (13:50 - 14:40)</option>
                         <option value="វេនរសៀល - ម៉ោងទី ៣ (14:55 - 15:45)">វេនរសៀល - ម៉ោងទី ៣ (14:55 - 15:45)</option>
                         <option value="វេនរសៀល - ម៉ោងទី ៤ (15:45 - 16:35)">វេនរសៀល - ម៉ោងទី ៤ (15:45 - 16:35)</option>
+                        <option value="វេនរសៀល - ម៉ោងទី ៥ (16:35 - 17:25)">វេនរសៀល - ម៉ោងទី ៥ (16:35 - 17:25)</option>
+                        <option value="វេនរសៀល - ម៉ោងទី ៦ (17:25 - 18:15)">វេនរសៀល - ម៉ោងទី ៦ (17:25 - 18:15)</option>
                     </select>
-                    <input type="text" id="ttTimeName" required placeholder="ឬវាយបញ្ចូលឈ្មោះម៉ោងដោយសេរី..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <!-- Quick Time Selector Chips -->
+                    <div class="flex flex-wrap gap-1.5 mb-2">
+                        <button type="button" onclick="selectQuickTime('CURRENT_TIME')" class="text-[11px] font-bold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-2.5 py-1 rounded-xl transition">🕒 ម៉ោងបច្ចុប្បន្ន</button>
+                        <button type="button" onclick="selectQuickTime('វេនព្រឹក - ម៉ោងទី ១ (07:00 - 07:50)')" class="text-[11px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded-xl transition">ព្រឹក ម៉ោង ១</button>
+                        <button type="button" onclick="selectQuickTime('វេនព្រឹក - ម៉ោងទី ៥ (10:35 - 11:25)')" class="text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-1 rounded-xl transition">ព្រឹក ម៉ោង ៥</button>
+                        <button type="button" onclick="selectQuickTime('វេនព្រឹក - ម៉ោងទី ៦ (11:25 - 12:15)')" class="text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 px-2 py-1 rounded-xl transition">ព្រឹក ម៉ោង ៦</button>
+                        <button type="button" onclick="selectQuickTime('វេនរសៀល - ម៉ោងទី ១ (13:00 - 13:50)')" class="text-[11px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-1 rounded-xl transition">រសៀល ម៉ោង ១</button>
+                        <button type="button" onclick="selectQuickTime('វេនរសៀល - ម៉ោងទី ៥ (16:35 - 17:25)')" class="text-[11px] font-bold bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 px-2 py-1 rounded-xl transition">រសៀល ម៉ោង ៥</button>
+                        <button type="button" onclick="selectQuickTime('វេនរសៀល - ម៉ោងទី ៦ (17:25 - 18:15)')" class="text-[11px] font-bold bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 px-2 py-1 rounded-xl transition">រសៀល ម៉ោង ៦</button>
+                    </div>
+                    <input type="text" id="ttTimeName" required placeholder="ឧ. 07:00 - 07:50" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                 </div>
-
-                <div class="border-t pt-3">
-                    <label class="block text-xs font-bold text-slate-700 mb-2">កំណត់មុខវិជ្ជាតាមថ្ងៃនីមួយៗ</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃចន្ទ</label>
-                            <input type="text" id="tt_1" placeholder="មុខវិជ្ជា ថ្ងៃចន្ទ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃអង្គារ</label>
-                            <input type="text" id="tt_2" placeholder="មុខវិជ្ជា ថ្ងៃអង្គារ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃពុធ</label>
-                            <input type="text" id="tt_3" placeholder="មុខវិជ្ជា ថ្ងៃពុធ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃព្រហស្បតិ៍</label>
-                            <input type="text" id="tt_4" placeholder="មុខវិជ្ជា ថ្ងៃព្រហស្បតិ៍" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃសុក្រ</label>
-                            <input type="text" id="tt_5" placeholder="មុខវិជ្ជា ថ្ងៃសុក្រ" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">ថ្ងៃសៅរ៍</label>
-                            <input type="text" id="tt_6" placeholder="មុខវិជ្ជា ថ្ងៃសៅរ៍" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-sm">
-                        </div>
+                
+                <div class="space-y-2 pt-2">
+                    <label class="block text-xs font-bold text-slate-700">មុខវិជ្ជាតាមថ្ងៃនីមួយៗ</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="tt_1" placeholder="ថ្ងៃចន្ទ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        <input type="text" id="tt_2" placeholder="ថ្ងៃអង្គារ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        <input type="text" id="tt_3" placeholder="ថ្ងៃពុធ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        <input type="text" id="tt_4" placeholder="ថ្ងៃព្រហស្បតិ៍" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        <input type="text" id="tt_5" placeholder="ថ្ងៃសុក្រ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        <input type="text" id="tt_6" placeholder="ថ្ងៃសៅរ៍" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
                     </div>
                 </div>
 
-                <div class="flex items-center space-x-3 pt-3">
+                <div class="flex items-center space-x-3 pt-4">
                     <button type="button" onclick="closeTimetableSlotModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
                     <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុក</button>
                 </div>
@@ -580,14 +602,43 @@
         </div>
     </div>
 
-    <!-- QR Code Modal -->
+    <!-- QR Modal -->
     <div id="qrModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center animate-in fade-in zoom-in duration-200">
             <h3 id="qrModalTitle" class="text-base font-bold text-slate-800 mb-4">QR Code</h3>
-            <div id="qrcodeContainer" class="flex justify-center p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 mb-5 inline-block"></div>
-            <div>
-                <button onclick="closeQrModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-md transition">បិទ</button>
+            <div id="qrcodeContainer" class="flex justify-center p-4 bg-white rounded-2xl border border-slate-100 shadow-inner mb-4"></div>
+            <button onclick="closeQrModal()" class="w-full py-3 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-2xl text-sm transition">បិទ</button>
+        </div>
+    </div>
+
+    <!-- Security / Change Password Modal -->
+    <div id="changePasswordModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 md:p-8 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center space-x-2">
+                    <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-key"></i></div>
+                    <span>ផ្លាស់ប្តូរពាក្យសម្ងាត់ Admin</span>
+                </h3>
+                <button onclick="closeChangePasswordModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
+            <form onsubmit="saveNewAdminPassword(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ពាក្យសម្ងាត់ចាស់</label>
+                    <input type="password" id="oldAdminPassword" required placeholder="បញ្ចូលពាក្យសម្ងាត់ចាស់..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">ពាក្យសម្ងាត់ថ្មី</label>
+                    <input type="password" id="newAdminPassword" required placeholder="បញ្ចូលពាក្យសម្ងាត់ថ្មី..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">បញ្ជាក់ពាក្យសម្ងាត់ថ្មី</label>
+                    <input type="password" id="confirmAdminPassword" required placeholder="បញ្ជាក់ពាក្យសម្ងាត់ថ្មីម្ដងទៀត..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="flex items-center space-x-3 pt-2">
+                    <button type="button" onclick="closeChangePasswordModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុក</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -630,67 +681,109 @@
         let isConnected = false;
         let studentsData = {};
         let teachersData = {};
-        let classesData = {}; // Completely empty default classes data
+        // Default Classes setup so grade names are always properly rendered
+        let classesData = {
+            "cls_7a": { name: "ថ្នាក់ទី ៧ ក", room: "បន្ទប់ ៧០១", teacher: "គ្រូប្រចាំថ្នាក់ ៧ ក" },
+            "cls_8a": { name: "ថ្នាក់ទី ៨ ក", room: "បន្ទប់ ៨០១", teacher: "គ្រូប្រចាំថ្នាក់ ៨ ក" },
+            "cls_9a": { name: "ថ្នាក់ទី ៩ ក", room: "បន្ទប់ ៩០១", teacher: "គ្រូប្រចាំថ្នាក់ ៩ ក" },
+            "cls_10a": { name: "ថ្នាក់ទី ១០ ក", room: "បន្ទប់ ១០០១", teacher: "គ្រូប្រចាំថ្នាក់ ១០ ក" },
+            "cls_11a": { name: "ថ្នាក់ទី ១១ ក", room: "បន្ទប់ ១១០១", teacher: "គ្រូប្រចាំថ្នាក់ ១១ ក" },
+            "cls_12a": { name: "ថ្នាក់ទី ១២ ក", room: "បន្ទប់ ១២០១", teacher: "គ្រូប្រចាំថ្នាក់ ១២ ក" }
+        };
         let scanLogsData = [];
         let telegramConfig = { botToken: "", chatIds: {} };
         let isAdminAuthenticated = false;
+        let adminPasswordHash = "12345"; // Default admin password
+        let autoLockTimer = null;
         let timetablesData = {};
 
         let html5QrCode = null;
+        let isCameraActive = false;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            try {
-                if (typeof firebase !== 'undefined') {
-                    firebase.initializeApp(firebaseConfig);
-                    db = firebase.database();
-                    updateDbStatus(true, "តភ្ជាប់ Cloud រួចរាល់");
-                    initFirebaseListeners();
-                } else {
-                    updateDbStatus(false, "Offline Mode");
-                }
-            } catch (err) {
-                console.error("Firebase init error:", err);
-                updateDbStatus(false, "កំហុសតភ្ជាប់");
+        // Initialize Firebase
+        try {
+            if (typeof firebase !== 'undefined') {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+                updateDbStatus(true, "បានតភ្ជាប់ Cloud");
+                initFirebaseListeners();
+            } else {
+                updateDbStatus(false, "Offline Mode (Local Only)");
             }
+        } catch (e) {
+            console.error("Firebase init error:", e);
+            updateDbStatus(false, "Offline Mode (Local Only)");
+        }
 
+        window.onload = function() {
             initScanner();
-            updateClassSelects();
-            renderTimetable();
-            renderClasses();
             
+            // Set current month to monthly report filter
             const now = new Date();
-            const ym = now.toISOString().slice(0, 7);
-            const monthlyFilter = document.getElementById('monthlyReportFilter');
-            if (monthlyFilter) {
-                monthlyFilter.value = ym;
-                generateMonthlyReport();
-            }
-        });
+            const yearMonth = now.toISOString().slice(0, 7);
+            const reportFilter = document.getElementById('monthlyReportFilter');
+            if (reportFilter) reportFilter.value = yearMonth;
 
-        function updateDbStatus(status, text) {
-            isConnected = status;
-            const dot = document.getElementById('dbDot');
-            const txt = document.getElementById('dbStatusText');
-            if (dot && txt) {
-                dot.className = "w-2.5 h-2.5 rounded-full " + (status ? "bg-emerald-400" : "bg-amber-400 animate-pulse");
-                txt.textContent = text;
+            updateClassSelects();
+            renderStudents();
+            renderTeachers();
+            renderClasses();
+            renderLogs();
+            updateStats();
+        };
+
+        function resetTimer() {
+            if (isAdminAuthenticated) {
+                clearTimeout(autoLockTimer);
+                autoLockTimer = setTimeout(() => logoutAdmin(true), 5 * 60 * 1000); // 5 Minutes
             }
         }
 
+        function setupAutoLockActivityListener() {
+            resetTimer();
+            window.removeEventListener('mousemove', resetTimer);
+            window.removeEventListener('keydown', resetTimer);
+            window.removeEventListener('click', resetTimer);
+            window.removeEventListener('touchstart', resetTimer);
+
+            window.addEventListener('mousemove', resetTimer);
+            window.addEventListener('keydown', resetTimer);
+            window.addEventListener('click', resetTimer);
+            window.addEventListener('touchstart', resetTimer);
+        }
+
         function switchTab(tabId) {
-            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
-            document.getElementById('section-' + tabId)?.classList.remove('hidden');
+            document.querySelectorAll('section[id^="section-"]').forEach(sec => sec.classList.add('hidden'));
+            const targetSection = document.getElementById(`section-${tabId}`);
+            if (targetSection) targetSection.classList.remove('hidden');
 
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 if (btn.id !== 'tab-admin') {
-                    btn.classList.remove('bg-white', 'text-emerald-900', 'shadow-sm');
-                    btn.classList.add('text-emerald-200', 'hover:bg-white/10');
+                    btn.className = "tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200";
                 }
             });
-            const activeBtn = document.getElementById('tab-' + tabId);
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
             if (activeBtn && tabId !== 'admin') {
-                activeBtn.classList.add('bg-white', 'text-emerald-900', 'shadow-sm');
-                activeBtn.classList.remove('text-emerald-200', 'hover:bg-white/10');
+                activeBtn.className = "tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 bg-white text-emerald-900 shadow-sm whitespace-nowrap transition-all duration-200";
+            }
+
+            if (tabId === 'monthly-report') generateMonthlyReport();
+            if (tabId === 'timetable') renderTimetable();
+        }
+
+        function updateDbStatus(connected, text) {
+            isConnected = connected;
+            const dot = document.getElementById('dbDot');
+            const txt = document.getElementById('dbStatusText');
+            if (dot && txt) {
+                if (connected) {
+                    dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+                    txt.textContent = text;
+                } else {
+                    dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
+                    txt.textContent = text;
+                }
             }
         }
 
@@ -699,12 +792,78 @@
             if (!isAdminAuthenticated) {
                 openAdminAuthModal();
             } else {
-                alert("✅ អ្នកបានចូលសិទ្ធិជា Admin រួចហើយ!");
+                openChangePasswordModal();
+            }
+        }
+
+        function openChangePasswordModal() {
+            const modal = document.getElementById('changePasswordModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeChangePasswordModal() {
+            const modal = document.getElementById('changePasswordModal');
+            if (modal) modal.classList.add('hidden');
+            document.getElementById('oldAdminPassword').value = "";
+            document.getElementById('newAdminPassword').value = "";
+            document.getElementById('confirmAdminPassword').value = "";
+        }
+
+        function saveNewAdminPassword(e) {
+            e.preventDefault();
+            const oldPwd = document.getElementById('oldAdminPassword').value;
+            const newPwd = document.getElementById('newAdminPassword').value;
+            const confirmPwd = document.getElementById('confirmAdminPassword').value;
+
+            if (oldPwd !== adminPasswordHash) {
+                alert("❌ ពាក្យសម្ងាត់ចាស់មិនត្រឹមត្រូវទេ!");
+                return;
+            }
+            if (newPwd !== confirmPwd) {
+                alert("❌ ពាក្យសម្ងាត់ថ្មីទាំង ២ មិនដូចគ្នាទេ!");
+                return;
+            }
+            if (newPwd.length < 4) {
+                alert("⚠️ ពាក្យសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៤ តួ!");
+                return;
+            }
+
+            adminPasswordHash = newPwd;
+            if (db && isConnected) {
+                db.ref('security/adminPassword').set(newPwd);
+            }
+            alert("✅ ផ្លាស់ប្តូរពាក្យសម្ងាត់ Admin បានជោគជ័យ!");
+            closeChangePasswordModal();
+        }
+
+        function logoutAdmin(isAuto = false) {
+            isAdminAuthenticated = false;
+            clearTimeout(autoLockTimer);
+            const adminLabel = document.getElementById('adminAuthLabel');
+            if (adminLabel) adminLabel.textContent = "ចូល Admin";
+            const tabAdmin = document.getElementById('tab-admin');
+            const logoutBtn = document.getElementById('tab-admin-logout');
+
+            if (tabAdmin) {
+                tabAdmin.classList.add('text-amber-300');
+                tabAdmin.classList.remove('bg-white', 'text-emerald-900', 'shadow-sm');
+            }
+            if (logoutBtn) logoutBtn.classList.add('hidden');
+
+            if (isAuto) {
+                alert("🔒 សិទ្ធិ Admin ត្រូវបានចាក់សោស្វ័យប្រវត្តិដោយសារគ្មានសកម្មភាពរយៈពេល ៥ នាទី!");
+            } else {
+                alert("🔒 បានចាក់សោសិទ្ធិ Admin រួចរាល់!");
             }
         }
 
         function initFirebaseListeners() {
             if (!db) return;
+
+            db.ref('security/adminPassword').on('value', (snapshot) => {
+                const val = snapshot.val();
+                if (val) adminPasswordHash = val;
+            });
 
             db.ref('students').on('value', (snapshot) => {
                 const val = snapshot.val();
@@ -751,7 +910,9 @@
         function initScanner() {
             const scannerStatus = document.getElementById('scannerStatus');
             try {
-                html5QrCode = new Html5Qrcode("reader");
+                if (!html5QrCode) {
+                    html5QrCode = new Html5Qrcode("reader");
+                }
                 const config = { fps: 5, qrbox: { width: 230, height: 230 } };
                 
                 html5QrCode.start(
@@ -760,12 +921,48 @@
                     onScanSuccess,
                     (error) => {}
                 ).then(() => {
+                    isCameraActive = true;
+                    updateCameraButtonState();
                     if (scannerStatus) scannerStatus.textContent = "កាមេរ៉ាកំពុងដំណើរការ (ត្រៀមស្កេន)...";
                 }).catch(err => {
+                    isCameraActive = false;
+                    updateCameraButtonState();
                     if (scannerStatus) scannerStatus.textContent = "មិនអាចបើកកាមេរ៉ាបាន (សូមប្រើប្រាស់ការបញ្ចូលដោយដៃ)";
                 });
             } catch (e) {
+                isCameraActive = false;
+                updateCameraButtonState();
                 if (scannerStatus) scannerStatus.textContent = "មិនមានកាមេរ៉ា ឬ Browser មិនគាំទ្រ";
+            }
+        }
+
+        function toggleCamera() {
+            const scannerStatus = document.getElementById('scannerStatus');
+            if (isCameraActive && html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    isCameraActive = false;
+                    updateCameraButtonState();
+                    if (scannerStatus) scannerStatus.textContent = "🔴 កាមេរ៉ាត្រូវបានបិទ (សូមបើកកាមេរ៉ា ឬវាយបញ្ចូលអត្តលេខដោយដៃ)";
+                }).catch(err => console.error("Error stopping camera:", err));
+            } else {
+                initScanner();
+            }
+        }
+
+        function updateCameraButtonState() {
+            const btn = document.getElementById('toggleCamBtn');
+            const icon = document.getElementById('toggleCamIcon');
+            const text = document.getElementById('toggleCamText');
+            if (!btn || !icon || !text) return;
+
+            if (isCameraActive) {
+                btn.className = "bg-rose-100 hover:bg-rose-200 text-rose-700 px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 shadow-sm";
+                icon.className = "fa-solid fa-video-slash";
+                text.textContent = "បិទកាមេរ៉ា";
+            } else {
+                btn.className = "bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 shadow-sm";
+                icon.className = "fa-solid fa-video";
+                text.textContent = "បើកកាមេរ៉ា";
             }
         }
 
@@ -787,17 +984,24 @@
             const targetType = targetTypeSelect ? targetTypeSelect.value : 'student';
             const checkType = checkTypeSelect ? checkTypeSelect.value : 'ចូលរៀន';
 
+            const now = new Date();
+            // Format standard ISO date string for standard date filtering (YYYY-MM-DD HH:mm:ss)
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const standardTimestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+            const displayTimestamp = now.toLocaleDateString('km-KH') + ' ' + now.toLocaleTimeString('km-KH');
+
             if (targetType === 'teacher') {
                 const teacher = teachersData[scannedId];
                 if (!teacher) {
                     alert("រកមិនឃើញអត្តលេខគ្រូបង្រៀននេះក្នុងប្រព័ន្ធទេ: " + scannedId);
                     return;
                 }
-
-                const now = new Date();
-                const dateStr = now.toLocaleDateString('km-KH');
-                const timeStr = now.toLocaleTimeString('km-KH');
-                const timestamp = dateStr + ' ' + timeStr;
 
                 const logItem = {
                     id: teacher.id,
@@ -806,12 +1010,17 @@
                     subject: teacher.subject,
                     checkType: checkType,
                     status: 'មកវត្តមាន',
-                    timestamp
+                    timestamp: standardTimestamp,
+                    displayTime: displayTimestamp
                 };
 
+                if (db && isConnected) {
+                    db.ref('scanLogs').push(logItem);
+                }
                 scanLogsData.unshift(logItem);
                 renderLogs();
                 updateStats();
+                sendTeacherTelegramNotification(teacher, checkType, displayTimestamp);
                 alert(`✅ កត់ត្រាគ្រូបង្រៀន [${checkType}] បានជោគជ័យ: លោកគ្រូ/អ្នកគ្រូ ${teacher.name}`);
                 return;
             }
@@ -825,12 +1034,6 @@
 
             const statusRadio = document.querySelector('input[name="attendanceStatus"]:checked');
             const statusText = statusRadio ? statusRadio.value : "មកវត្តមាន";
-
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('km-KH');
-            const timeStr = now.toLocaleTimeString('km-KH');
-            const timestamp = dateStr + ' ' + timeStr;
-
             const scheduleInfo = getCurrentScheduleInfo(student.grade, now);
 
             const logItem = { 
@@ -840,65 +1043,82 @@
                 grade: student.grade, 
                 status: statusText, 
                 checkType: checkType,
-                timestamp,
+                timestamp: standardTimestamp,
+                displayTime: displayTimestamp,
                 subject: scheduleInfo.subject,
                 period: scheduleInfo.period,
                 teacher: scheduleInfo.teacher
             };
 
             if (db && isConnected) {
-                db.ref('scanLogs').push(logItem).catch(err => {
-                    console.error("Firebase push error:", err);
-                });
+                db.ref('scanLogs').push(logItem);
             }
             scanLogsData.unshift(logItem);
             renderLogs();
             updateStats();
 
-            sendTelegramNotification(student, statusText, checkType, timestamp, scheduleInfo);
+            sendTelegramNotification(student, statusText, checkType, displayTimestamp, scheduleInfo);
             alert(`✅ កត់ត្រាវត្តមានសិស្ស (${statusText} - ${checkType}) [មុខវិជ្ជា: ${scheduleInfo.subject}] បានជោគជ័យ: ${student.name}`);
         }
 
         function getCurrentScheduleInfo(gradeKey, now) {
-            const dayIndex = now.getDay();
+            const dayIndex = now.getDay(); // 0: Sun, 1: Mon, ..., 6: Sat
             const daysMap = ["អាទិត្យ", "ចន្ទ", "អង្គារ", "ពុធ", "ព្រហស្បតិ៍", "សុក្រ", "សៅរ៍"];
             const currentDayName = daysMap[dayIndex] || "ចន្ទ";
 
-            const hoursMinutes = now.getHours() * 60 + now.getMinutes();
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
             let periodName = "ម៉ោងសិក្សាក្រៅកាលវិភាគ";
             let subjectName = "សិក្សាទូទៅ";
 
-            const gradeSlots = timetablesData[gradeKey] || [];
+            // Safe lookup for class and timetable
+            const gradeSlots = (timetablesData && timetablesData[gradeKey]) ? timetablesData[gradeKey] : [];
             let matchedSlot = null;
 
+            // Helper function to convert time string (e.g. "07:00 - 07:50" or "07:00") into minutes
+            function parseMinutes(timeStr) {
+                if (!timeStr) return null;
+                const matches = timeStr.match(/(\d{1,2}):(\d{2})/g);
+                if (matches && matches.length >= 2) {
+                    const [h1, m1] = matches[0].split(':').map(Number);
+                    const [h2, m2] = matches[1].split(':').map(Number);
+                    return { start: h1 * 60 + m1, end: h2 * 60 + m2 };
+                } else if (matches && matches.length === 1) {
+                    const [h, m] = matches[0].split(':').map(Number);
+                    return { start: h * 60, end: (h + 1) * 60 };
+                }
+                return null;
+            }
+
             for (let slot of gradeSlots) {
-                if (slot.days && slot.days[dayIndex]) {
-                    if (slot.time.includes("07:00") && hoursMinutes >= 420 && hoursMinutes < 470) matchedSlot = slot;
-                    else if (slot.time.includes("07:50") && hoursMinutes >= 470 && hoursMinutes < 520) matchedSlot = slot;
-                    else if (slot.time.includes("08:55") && hoursMinutes >= 535 && hoursMinutes < 585) matchedSlot = slot;
-                    else if (slot.time.includes("09:45") && hoursMinutes >= 585 && hoursMinutes < 635) matchedSlot = slot;
-                    else if (slot.time.includes("13:00") && hoursMinutes >= 780 && hoursMinutes < 830) matchedSlot = slot;
-                    else if (slot.time.includes("13:50") && hoursMinutes >= 830 && hoursMinutes < 880) matchedSlot = slot;
-                    else if (slot.time.includes("14:55") && hoursMinutes >= 895 && hoursMinutes < 945) matchedSlot = slot;
-                    else if (slot.time.includes("15:45") && hoursMinutes >= 945 && hoursMinutes < 995) matchedSlot = slot;
+                if (!slot) continue;
+                const timeRange = parseMinutes(slot.time);
+                
+                // If scanned time falls within the schedule slot range (or standard preset range)
+                if (timeRange && currentMinutes >= (timeRange.start - 20) && currentMinutes <= (timeRange.end + 20)) {
+                    matchedSlot = slot;
+                    break;
                 }
             }
 
             if (matchedSlot) {
-                periodName = matchedSlot.time;
-                subjectName = matchedSlot.days[dayIndex];
+                periodName = matchedSlot.time || "ម៉ោងសិក្សា";
+                if (matchedSlot.days && matchedSlot.days[dayIndex]) {
+                    subjectName = matchedSlot.days[dayIndex];
+                } else {
+                    subjectName = "មុខវិជ្ជាតាមតារាង";
+                }
             } else {
-                if (hoursMinutes >= 420 && hoursMinutes < 635) {
+                if (currentMinutes >= 390 && currentMinutes < 720) {
                     periodName = "វេនព្រឹក";
-                    subjectName = "មុខវិជ្ជាតាមតារាងវេនព្រឹក";
-                } else if (hoursMinutes >= 780 && hoursMinutes < 1010) {
+                    subjectName = "មុខវិជ្ជាវេនព្រឹក";
+                } else if (currentMinutes >= 720 && currentMinutes < 1080) {
                     periodName = "វេនរសៀល";
-                    subjectName = "មុខវិជ្ជាតាមតារាងវេនរសៀល";
+                    subjectName = "មុខវិជ្ជាវេនរសៀល";
                 }
             }
 
-            const classObj = classesData[gradeKey] || { teacher: "លោកគ្រូ/អ្នកគ្រូប្រចាំថ្នាក់" };
-            const teacherName = classObj.teacher || "គណៈកម្មការសិក្សា";
+            const classObj = (classesData && classesData[gradeKey]) ? classesData[gradeKey] : { teacher: "លោកគ្រូ/អ្នកគ្រូប្រចាំថ្នាក់" };
+            const teacherName = classObj.teacher || "លោកគ្រូ/អ្នកគ្រូប្រចាំថ្នាក់";
 
             return {
                 day: currentDayName,
@@ -937,6 +1157,8 @@
                     }
                 }
 
+                const timeToShow = log.displayTime || log.timestamp;
+
                 return `
                     <div class="bg-slate-50 border border-slate-100 p-3.5 rounded-2xl flex justify-between items-center shadow-sm">
                         <div>
@@ -949,7 +1171,7 @@
                             ${!isTeacher ? `<p class="text-[11px] text-slate-400 mt-0.5">មុខវិជ្ជា: ${log.subject || 'សិក្សាទូទៅ'}</p>` : ''}
                         </div>
                         <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-xl border shadow-sm">${log.timestamp.split(' ')[1] || log.timestamp}</span>
+                            <span class="text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-xl border shadow-sm">${timeToShow}</span>
                             <button onclick="deleteScanLog(${actualIdx})" class="text-rose-500 hover:text-rose-700 p-1.5 bg-white border border-rose-200 rounded-xl shadow-sm transition" title="លុបកំណត់ត្រានេះ"><i class="fa-solid fa-trash text-xs"></i></button>
                         </div>
                     </div>
@@ -958,20 +1180,17 @@
         }
 
         function deleteScanLog(index) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => deleteScanLog(index));
-                return;
-            }
             if (confirm("តើអ្នកពិតជាចង់លុបកំណត់ត្រាស្កេននេះមែនទេ?")) {
                 scanLogsData.splice(index, 1);
                 if (db && isConnected) {
-                    // Re-sync entire scanLogs array to Firebase or update
                     db.ref('scanLogs').set(scanLogsData).then(() => {
                         renderLogs();
+                        generateMonthlyReport();
                         updateStats();
                     });
                 } else {
                     renderLogs();
+                    generateMonthlyReport();
                     updateStats();
                 }
             }
@@ -1047,33 +1266,35 @@
             const tbody = document.getElementById('studentsTable');
             if (!tbody) return;
 
-            const list = Object.values(studentsData);
+            const list = Object.values(studentsData || {});
             if (list.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = list.map(s => {
-                // Determine correct grade/class display name
-                let gradeDisplay = s.grade;
-                if (classesData[s.grade]) {
+                if (!s) return '';
+                // Robust Grade Name formatting logic
+                let gradeDisplay = s.grade || '-';
+                if (classesData && classesData[s.grade]) {
                     gradeDisplay = classesData[s.grade].name;
-                } else {
-                    // Fallback search in classesData by name or key
-                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || classesData[k].name === s.grade);
-                    if (foundClassKey) {
+                } else if (classesData) {
+                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || (classesData[k] && classesData[k].name === s.grade));
+                    if (foundClassKey && classesData[foundClassKey]) {
                         gradeDisplay = classesData[foundClassKey].name;
-                    } else if (!String(s.grade).startsWith("ទី")) {
-                        gradeDisplay = "ទី " + s.grade;
+                    } else if (typeof s.grade === 'string' && s.grade.startsWith('cls_')) {
+                        gradeDisplay = "ថ្នាក់រៀន";
+                    } else if (s.grade && !String(s.grade).includes("ទី") && !String(s.grade).startsWith("cls_")) {
+                        gradeDisplay = "ថ្នាក់ទី " + s.grade;
                     }
                 }
 
                 return `
                 <tr class="border-b hover:bg-slate-50 transition">
-                    <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id}</td>
-                    <td class="py-3.5 px-4 font-bold text-slate-800">${s.name}</td>
-                    <td class="py-3.5 px-4 text-slate-600">${s.gender}</td>
-                    <td class="py-3.5 px-4 text-slate-600">${gradeDisplay}</td>
+                    <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id || ''}</td>
+                    <td class="py-3.5 px-4 font-bold text-slate-800">${s.name || ''}</td>
+                    <td class="py-3.5 px-4 text-slate-600">${s.gender || ''}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-700">${gradeDisplay}</td>
                     <td class="py-3.5 px-4 text-slate-600">${s.phone || '-'}</td>
                     <td class="py-3.5 px-4 text-center">
                         <button onclick="showQrModal('${s.id}', '${s.name}')" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 px-3 py-1.5 rounded-xl text-xs font-bold transition">
@@ -1193,13 +1414,13 @@
             }
 
             grid.innerHTML = keys.map(k => {
-                const c = classesData[k];
-                const count = Object.values(studentsData).filter(s => s.grade === k || s.grade === c.name || String(s.grade).includes(c.name)).length;
+                const c = classesData[k] || { name: k, room: '', teacher: '' };
+                const count = Object.values(studentsData).filter(s => s && (s.grade === k || s.grade === c.name || String(s.grade).includes(c.name))).length;
                 return `
                     <div class="bg-slate-50/80 p-5 rounded-2xl border-2 border-slate-100 flex flex-col justify-between shadow-sm hover:border-emerald-200 transition">
                         <div>
                             <div class="flex justify-between items-start mb-3">
-                                <h3 class="font-bold text-slate-800 text-base">${c.name}</h3>
+                                <h3 class="font-bold text-slate-800 text-base">${c.name || k}</h3>
                                 <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-xl font-bold shadow-sm">${count} សិស្ស</span>
                             </div>
                             <p class="text-xs text-slate-600 mb-1.5 flex items-center"><i class="fa-solid fa-location-dot mr-2 text-emerald-600"></i> ${c.room || 'បន្ទប់ទូទៅ'}</p>
@@ -1221,32 +1442,433 @@
         function updateClassSelects() {
             const stuGradeSelect = document.getElementById('stuGrade');
             const timeGradeSelect = document.getElementById('timetableGradeSelect');
+            const reportGradeFilter = document.getElementById('monthlyReportGradeFilter');
             
             const keys = Object.keys(classesData);
             const optionsHtml = keys.length > 0 
-                ? keys.map(k => `<option value="${k}">${classesData[k].name}</option>`).join('')
+                ? keys.map(k => `<option value="${k}">${classesData[k]?.name || k}</option>`).join('')
                 : `<option value="">-- គ្មានថ្នាក់រៀន (សូមបន្ថែមថ្នាក់) --</option>`;
 
             if (stuGradeSelect) stuGradeSelect.innerHTML = optionsHtml;
             if (timeGradeSelect) timeGradeSelect.innerHTML = optionsHtml;
+            
+            if (reportGradeFilter) {
+                const reportOptions = `<option value="all">-- គ្រប់ថ្នាក់រៀនទាំងអស់ --</option>` + (
+                    keys.length > 0 
+                    ? keys.map(k => `<option value="${k}">${classesData[k]?.name || k}</option>`).join('')
+                    : ''
+                );
+                reportGradeFilter.innerHTML = reportOptions;
+            }
             renderTelegramChatInputs();
         }
 
-        function renderTelegramChatInputs() {
-            const container = document.getElementById('telegramChatIdContainer');
-            if (!container) return;
+        function generateMonthlyReport() {
+            const filterInput = document.getElementById('monthlyReportFilter');
+            const gradeFilterInput = document.getElementById('monthlyReportGradeFilter');
+            const tbody = document.getElementById('monthlyReportTable');
+            const printTitle = document.getElementById('printMonthTitle');
+            if (!tbody || !filterInput) return;
 
-            const keys = Object.keys(classesData);
-            container.innerHTML = keys.map(k => {
-                const c = classesData[k];
-                const existingVal = (telegramConfig && telegramConfig.chatIds && telegramConfig.chatIds[k]) ? telegramConfig.chatIds[k] : "";
+            const selectedYM = filterInput.value || new Date().toISOString().slice(0, 7);
+            const selectedGrade = gradeFilterInput ? gradeFilterInput.value : 'all';
+            
+            let selectedGradeName = "គ្រប់ថ្នាក់រៀន";
+            if (selectedGrade !== 'all' && classesData && classesData[selectedGrade]) {
+                selectedGradeName = classesData[selectedGrade].name;
+            }
+
+            if (printTitle) printTitle.textContent = `ប្រចាំខែ: ${selectedYM} | ថ្នាក់: ${selectedGradeName}`;
+
+            let studentList = Object.values(studentsData || {});
+            if (selectedGrade !== 'all') {
+                studentList = studentList.filter(s => {
+                    if (!s) return false;
+                    if (s.grade === selectedGrade) return true;
+                    if (classesData && classesData[selectedGrade] && (s.grade === classesData[selectedGrade].name || String(s.grade).includes(classesData[selectedGrade].name))) return true;
+                    return false;
+                });
+            }
+
+            if (studentList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សក្នុងថ្នាក់ដែលបានជ្រើសរើសទេ</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = studentList.map(s => {
+                if (!s) return '';
+                const studentLogs = (scanLogsData || []).filter(l => {
+                    if (!l) return false;
+                    const matchId = String(l.id).trim() === String(s.id).trim();
+                    const matchRole = !l.role || l.role === 'student';
+                    
+                    let matchMonth = false;
+                    if (l.timestamp) {
+                        const ts = String(l.timestamp);
+                        matchMonth = ts.startsWith(selectedYM) || ts.includes(selectedYM);
+                    }
+                    if (!matchMonth && l.displayTime) {
+                        matchMonth = String(l.displayTime).includes(selectedYM.replace('-', '/')) || String(l.displayTime).includes(selectedYM);
+                    }
+                    if (!l.timestamp && !l.displayTime) matchMonth = true;
+
+                    return matchId && matchRole && matchMonth;
+                });
+
+                const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
+                const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
+                const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
+                const totalCount = studentLogs.length;
+                const lastLogObj = totalCount > 0 ? studentLogs[studentLogs.length - 1] : null;
+                const lastLog = lastLogObj ? (lastLogObj.displayTime || lastLogObj.timestamp) : '-';
+
+                let gradeDisplay = s.grade || '-';
+                if (classesData && classesData[s.grade]) {
+                    gradeDisplay = classesData[s.grade].name;
+                } else if (classesData) {
+                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || (classesData[k] && classesData[k].name === s.grade));
+                    if (foundClassKey && classesData[foundClassKey]) {
+                        gradeDisplay = classesData[foundClassKey].name;
+                    } else if (s.grade && !String(s.grade).includes("ទី")) {
+                        gradeDisplay = "ថ្នាក់ទី " + s.grade;
+                    }
+                }
+
                 return `
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">${c.name} (${k})</label>
-                        <input type="text" id="chatId_${k}" value="${existingVal}" placeholder="Chat ID សម្រាប់ ${c.name}" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm">
-                    </div>
+                    <tr class="border-b hover:bg-slate-50 transition">
+                        <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id || ''}</td>
+                        <td class="py-3.5 px-4 font-bold text-slate-800">${s.name || ''}</td>
+                        <td class="py-3.5 px-4 text-slate-600">${gradeDisplay}</td>
+                        <td class="py-3.5 px-4 text-center font-black text-emerald-600">${presentCount}</td>
+                        <td class="py-3.5 px-4 text-center font-black text-amber-600">${permissionCount}</td>
+                        <td class="py-3.5 px-4 text-center font-black text-rose-600">${absentCount}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-700">${totalCount}</td>
+                        <td class="py-3.5 px-4 text-center text-xs text-slate-500">${lastLog}</td>
+                        <td class="py-3.5 px-4 text-center no-print">
+                            <button onclick="clearStudentMonthlyLogs('${s.id}', '${selectedYM}')" class="text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 mx-auto" title="លុបកំណត់ត្រាវត្តមានប្រចាំខែនេះ">
+                                <i class="fa-solid fa-trash"></i> <span>លុប</span>
+                            </button>
+                        </td>
+                    </tr>
                 `;
             }).join('');
+        }
+
+        function clearStudentMonthlyLogs(studentId, selectedYM) {
+            if (confirm(`តើអ្នកពិតជាចង់លុបវត្តមានប្រចាំខែ (${selectedYM}) របស់សិស្សលេខ ${studentId} នេះមែនទេ?`)) {
+                scanLogsData = scanLogsData.filter(l => !(String(l.id).trim() === String(studentId).trim()));
+                if (db && isConnected) {
+                    db.ref('scanLogs').set(scanLogsData).then(() => {
+                        generateMonthlyReport();
+                        renderLogs();
+                        updateStats();
+                        alert("✅ បានលុបវត្តមានសិស្សដោយជោគជ័យ!");
+                    });
+                } else {
+                    generateMonthlyReport();
+                    renderLogs();
+                    updateStats();
+                    alert("✅ បានលុបវត្តមានសិស្សដោយជោគជ័យ!");
+                }
+            }
+        }
+
+        function clearSelectedGradeMonthlyLogs() {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => clearSelectedGradeMonthlyLogs());
+                return;
+            }
+
+            const filterInput = document.getElementById('monthlyReportFilter');
+            const gradeFilterInput = document.getElementById('monthlyReportGradeFilter');
+            if (!filterInput) return;
+
+            const selectedYM = filterInput.value;
+            const selectedGrade = gradeFilterInput ? gradeFilterInput.value : 'all';
+
+            let selectedGradeName = "គ្រប់ថ្នាក់រៀន";
+            if (selectedGrade !== 'all' && classesData[selectedGrade]) {
+                selectedGradeName = classesData[selectedGrade].name;
+            }
+
+            if (confirm(`⚠️ តើអ្នកពិតជាចង់លុបទិន្នន័យវត្តមានទាំងអស់នៃ (${selectedGradeName}) ក្នុងខែ (${selectedYM}) នេះមែនទេ?`)) {
+                scanLogsData = scanLogsData.filter(l => {
+                    let matchMonth = false;
+                    if (l.timestamp) {
+                        const ts = String(l.timestamp);
+                        matchMonth = ts.startsWith(selectedYM) || ts.includes(selectedYM);
+                    }
+                    if (!matchMonth && l.displayTime) {
+                        matchMonth = String(l.displayTime).includes(selectedYM.replace('-', '/')) || String(l.displayTime).includes(selectedYM);
+                    }
+
+                    if (!matchMonth) return true; // Keep logs from other months
+
+                    // Filter out logs for this grade/month
+                    if (selectedGrade === 'all') return false; // Remove all logs for this month
+
+                    const student = studentsData[l.id];
+                    if (student) {
+                        if (student.grade === selectedGrade) return false;
+                        if (classesData[selectedGrade] && (student.grade === classesData[selectedGrade].name || String(student.grade).includes(classesData[selectedGrade].name))) return false;
+                    }
+                    if (l.grade === selectedGrade || (classesData[selectedGrade] && l.grade === classesData[selectedGrade].name)) return false;
+
+                    return true;
+                });
+
+                if (db && isConnected) {
+                    db.ref('scanLogs').set(scanLogsData).then(() => {
+                        generateMonthlyReport();
+                        renderLogs();
+                        updateStats();
+                        alert(`✅ បានលុបទិន្នន័យវត្តមានរបស់ថ្នាក់ ${selectedGradeName} ប្រចាំខែ ${selectedYM} ដោយជោគជ័យ!`);
+                    });
+                } else {
+                    generateMonthlyReport();
+                    renderLogs();
+                    updateStats();
+                    alert(`✅ បានលុបទិន្នន័យវត្តមានរបស់ថ្នាក់ ${selectedGradeName} ប្រចាំខែ ${selectedYM} ដោយជោគជ័យ!`);
+                }
+            }
+        }
+
+        function exportMonthlyReportCSV() {
+            const filterInput = document.getElementById('monthlyReportFilter');
+            const gradeFilterInput = document.getElementById('monthlyReportGradeFilter');
+            if (!filterInput) return;
+
+            const selectedYM = filterInput.value || new Date().toISOString().slice(0, 7);
+            const selectedGrade = gradeFilterInput ? gradeFilterInput.value : 'all';
+
+            let selectedGradeName = "គ្រប់ថ្នាក់រៀន";
+            if (selectedGrade !== 'all' && classesData[selectedGrade]) {
+                selectedGradeName = classesData[selectedGrade].name;
+            }
+
+            let studentList = Object.values(studentsData);
+            if (selectedGrade !== 'all') {
+                studentList = studentList.filter(s => {
+                    if (s.grade === selectedGrade) return true;
+                    if (classesData[selectedGrade] && (s.grade === classesData[selectedGrade].name || String(s.grade).includes(classesData[selectedGrade].name))) return true;
+                    return false;
+                });
+            }
+
+            if (studentList.length === 0) {
+                alert("មិនទាន់មានទិន្នន័យសម្រាប់ Export CSV ទេ!");
+                return;
+            }
+
+            let csvContent = "\uFEFF"; // UTF-8 BOM for Excel Khmer text rendering
+            csvContent += `របាយការណ៍វត្តមានប្រចាំខែ: ${selectedYM} | ថ្នាក់: ${selectedGradeName}\n`;
+            csvContent += "អត្តលេខ,ឈ្មោះសិស្ស,ថ្នាក់រៀន,មកវត្តមាន,សុំច្បាប់,អវត្តមាន,សរុបស្កេន,ស្កេនចុងក្រោយ\n";
+
+            studentList.forEach(s => {
+                const studentLogs = scanLogsData.filter(l => {
+                    const matchId = String(l.id).trim() === String(s.id).trim();
+                    const matchRole = !l.role || l.role === 'student';
+                    let matchMonth = false;
+                    if (l.timestamp) {
+                        const ts = String(l.timestamp);
+                        matchMonth = ts.startsWith(selectedYM) || ts.includes(selectedYM);
+                    }
+                    if (!matchMonth && l.displayTime) {
+                        matchMonth = String(l.displayTime).includes(selectedYM.replace('-', '/')) || String(l.displayTime).includes(selectedYM);
+                    }
+                    if (!l.timestamp && !l.displayTime) matchMonth = true;
+                    return matchId && matchRole && matchMonth;
+                });
+
+                const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
+                const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
+                const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
+                const totalCount = studentLogs.length;
+                const lastLogObj = totalCount > 0 ? studentLogs[studentLogs.length - 1] : null;
+                const lastLog = lastLogObj ? (lastLogObj.displayTime || lastLogObj.timestamp) : '-';
+
+                let gradeDisplay = s.grade;
+                if (classesData[s.grade]) {
+                    gradeDisplay = classesData[s.grade].name;
+                }
+
+                csvContent += `"${s.id}","${s.name}","${gradeDisplay}",${presentCount},${permissionCount},${absentCount},${totalCount},"${lastLog}"\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Monthly_Attendance_${selectedGradeName}_${selectedYM}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Functions for Timetable Management
+        function renderTimetable() {
+            const gradeSelect = document.getElementById('timetableGradeSelect');
+            const shiftSelect = document.getElementById('timetableShiftSelect');
+            const tbody = document.getElementById('timetableBody');
+            if (!tbody || !gradeSelect) return;
+
+            const selectedGrade = gradeSelect.value;
+            const selectedShift = shiftSelect ? shiftSelect.value : 'all';
+
+            if (!timetablesData) timetablesData = {};
+
+            let slots = timetablesData[selectedGrade] || [
+                { time: "07:00 - 07:50", shift: "morning", days: ["", "", "", "", "", "", ""] },
+                { time: "07:50 - 08:40", shift: "morning", days: ["", "", "", "", "", "", ""] },
+                { time: "08:55 - 09:45", shift: "morning", days: ["", "", "", "", "", "", ""] },
+                { time: "09:45 - 10:35", shift: "morning", days: ["", "", "", "", "", "", ""] },
+                { time: "13:00 - 13:50", shift: "afternoon", days: ["", "", "", "", "", "", ""] },
+                { time: "13:50 - 14:40", shift: "afternoon", days: ["", "", "", "", "", "", ""] },
+                { time: "14:55 - 15:45", shift: "afternoon", days: ["", "", "", "", "", "", ""] }
+            ];
+
+            if (selectedShift !== 'all') {
+                slots = slots.filter(s => s && s.shift === selectedShift);
+            }
+
+            if (!slots || slots.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-slate-400">មិនទាន់មានកាលវិភាគសម្រាប់ថ្នាក់នេះទេ</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = slots.map((slot, index) => {
+                if (!slot) return '';
+                const days = slot.days || ["", "", "", "", "", "", ""];
+                return `
+                <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="p-3 font-bold text-emerald-800 bg-slate-50 border border-slate-200">
+                        <div>${slot.time || 'ម៉ោងសិក្សា'}</div>
+                        <span class="text-[10px] font-normal px-2 py-0.5 rounded ${slot.shift === 'morning' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'}">${slot.shift === 'morning' ? 'វេនព្រឹក' : 'វេនរសៀល'}</span>
+                    </td>
+                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[1] || '-'}</td>
+                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[2] || '-'}</td>
+                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[3] || '-'}</td>
+                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[4] || '-'}</td>
+                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[5] || '-'}</td>
+                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[6] || '-'}</td>
+                    <td class="p-3 border border-slate-200 no-print">
+                        <button onclick="editTimetableSlot('${selectedGrade}', ${index})" class="text-sky-600 hover:text-sky-800 p-1 bg-sky-50 rounded transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteTimetableSlot('${selectedGrade}', ${index})" class="text-rose-500 hover:text-rose-700 p-1 bg-rose-50 rounded transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openTimetableSlotModal(index = null) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => openTimetableSlotModal(index));
+                return;
+            }
+            const modal = document.getElementById('timetableModal');
+            const form = document.getElementById('timetableForm');
+            if (!modal || !form) return;
+
+            form.reset();
+            document.getElementById('ttIndex').value = index !== null ? index : "";
+
+            const grade = document.getElementById('timetableGradeSelect').value;
+            const slots = timetablesData[grade] || [];
+
+            if (index !== null && slots[index]) {
+                const s = slots[index];
+                document.getElementById('ttShift').value = s.shift || 'morning';
+                document.getElementById('ttTimeName').value = s.time || '';
+                for (let i = 1; i <= 6; i++) {
+                    const el = document.getElementById(`tt_${i}`);
+                    if (el) el.value = s.days[i] || '';
+                }
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeTimetableSlotModal() {
+            const modal = document.getElementById('timetableModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function onTimetablePresetChange(selectEl) {
+            if (!selectEl) return;
+            const val = selectEl.value;
+            if (!val) return;
+            
+            if (val === 'CURRENT_TIME') {
+                const now = new Date();
+                const hours = now.getHours();
+                const timeStr = now.toLocaleTimeString('km-KH', { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('ttTimeName').value = `ម៉ោងបច្ចុប្បន្ន (${timeStr})`;
+                document.getElementById('ttShift').value = hours >= 12 ? 'afternoon' : 'morning';
+            } else {
+                document.getElementById('ttTimeName').value = val;
+                if (val.includes('វេនរសៀល')) {
+                    document.getElementById('ttShift').value = 'afternoon';
+                } else if (val.includes('វេនព្រឹក')) {
+                    document.getElementById('ttShift').value = 'morning';
+                }
+            }
+        }
+
+        function selectQuickTime(val) {
+            const presetSelect = document.getElementById('ttTimePreset');
+            if (presetSelect) {
+                presetSelect.value = val;
+                onTimetablePresetChange(presetSelect);
+            }
+        }
+
+        function saveTimetableSlot(e) {
+            e.preventDefault();
+            const grade = document.getElementById('timetableGradeSelect').value;
+            const indexVal = document.getElementById('ttIndex').value;
+            const shift = document.getElementById('ttShift').value;
+            const time = document.getElementById('ttTimeName').value.trim();
+
+            const days = [""];
+            for (let i = 1; i <= 6; i++) {
+                const el = document.getElementById(`tt_${i}`);
+                days.push(el ? el.value.trim() : "");
+            }
+
+            if (!timetablesData[grade]) timetablesData[grade] = [];
+
+            const slotObj = { time, shift, days };
+
+            if (indexVal !== "") {
+                timetablesData[grade][parseInt(indexVal)] = slotObj;
+            } else {
+                timetablesData[grade].push(slotObj);
+            }
+
+            if (db && isConnected) {
+                db.ref('timetables/' + grade).set(timetablesData[grade]);
+            }
+
+            closeTimetableSlotModal();
+            renderTimetable();
+        }
+
+        function editTimetableSlot(grade, index) {
+            openTimetableSlotModal(index);
+        }
+
+        function deleteTimetableSlot(grade, index) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => deleteTimetableSlot(grade, index));
+                return;
+            }
+            if (confirm("តើអ្នកពិតជាចង់លុបម៉ោងសិក្សានេះមែនទេ?")) {
+                if (timetablesData[grade]) {
+                    timetablesData[grade].splice(index, 1);
+                    if (db && isConnected) {
+                        db.ref('timetables/' + grade).set(timetablesData[grade]);
+                    }
+                    renderTimetable();
+                }
+            }
         }
 
         function openClassModal(key = null) {
@@ -1254,39 +1876,42 @@
                 openAdminAuthModal(() => openClassModal(key));
                 return;
             }
+            const modal = document.getElementById('classModal');
             const titleEl = document.getElementById('classModalTitle');
+            if (!modal) return;
+
+            document.getElementById('clsKey').value = key || '';
             if (key && classesData[key]) {
-                titleEl.textContent = "កែប្រែថ្នាក់រៀន";
-                document.getElementById('clsKey').value = key;
+                titleEl.textContent = "កែប្រែព័ត៌មានថ្នាក់រៀន";
                 document.getElementById('clsName').value = classesData[key].name;
                 document.getElementById('clsRoom').value = classesData[key].room || '';
                 document.getElementById('clsTeacher').value = classesData[key].teacher || '';
             } else {
                 titleEl.textContent = "បន្ថែមថ្នាក់រៀនថ្មី";
                 document.getElementById('classForm').reset();
-                document.getElementById('clsKey').value = "";
             }
-            document.getElementById('classModal').classList.remove('hidden');
+            modal.classList.remove('hidden');
         }
 
         function closeClassModal() {
-            document.getElementById('classModal').classList.add('hidden');
-            document.getElementById('classForm').reset();
+            const modal = document.getElementById('classModal');
+            if (modal) modal.classList.add('hidden');
         }
 
         function saveClass(e) {
             e.preventDefault();
-            const keyInput = document.getElementById('clsKey').value.trim();
+            const keyInput = document.getElementById('clsKey').value;
             const name = document.getElementById('clsName').value.trim();
             const room = document.getElementById('clsRoom').value.trim();
             const teacher = document.getElementById('clsTeacher').value.trim();
 
-            const key = keyInput !== "" ? keyInput : Date.now().toString();
-            classesData[key] = { name, room, teacher };
+            const key = keyInput || 'cls_' + Date.now();
+            const clsObj = { name, room, teacher };
 
             if (db && isConnected) {
-                db.ref('classes').set(classesData);
+                db.ref('classes/' + key).set(clsObj);
             } else {
+                classesData[key] = clsObj;
                 updateClassSelects();
                 renderClasses();
                 updateStats();
@@ -1300,10 +1925,10 @@
                 return;
             }
             if (confirm("តើអ្នកពិតជាចង់លុបថ្នាក់រៀននេះមែនទេ?")) {
-                delete classesData[key];
                 if (db && isConnected) {
-                    db.ref('classes').set(classesData);
+                    db.ref('classes/' + key).remove();
                 } else {
+                    delete classesData[key];
                     updateClassSelects();
                     renderClasses();
                     updateStats();
@@ -1313,281 +1938,49 @@
 
         function confirmResetAllData() {
             if (!isAdminAuthenticated) {
-                openAdminAuthModal(confirmResetAllData);
+                openAdminAuthModal(() => confirmResetAllData());
                 return;
             }
-            if (confirm("⚠️ ការព្រមាន៖ ការលុបទិន្នន័យទាំងអស់នឹងសម្អាតទិន្នន័យសិស្ស គ្រូ និងកាលវិភាគចេញពីប្រព័ន្ធទាំងស្រុង។ តើអ្នកពិតជាចង់បន្តឬ?")) {
+            if (confirm("⚠️ តើអ្នកពិតជាចង់លុបទិន្នន័យថ្នាក់រៀនទាំងអស់ចេញពីប្រព័ន្ធមែនទេ? Action នេះមិនអាចត្រឡប់វិញបានទេ!")) {
                 if (db && isConnected) {
-                    db.ref('students').remove();
-                    db.ref('teachers').remove();
-                    db.ref('scanLogs').remove();
-                    db.ref('timetables').remove();
-                }
-                studentsData = {};
-                teachersData = {};
-                scanLogsData = [];
-                renderStudents();
-                renderTeachers();
-                renderLogs();
-                updateStats();
-                alert("បានលុបទិន្នន័យទាំងអស់រួចរាល់!");
-            }
-        }
-
-        function renderTimetable() {
-            const tbody = document.getElementById('timetableBody');
-            const gradeSelect = document.getElementById('timetableGradeSelect');
-            const shiftSelect = document.getElementById('timetableShiftSelect');
-            const gradeKey = gradeSelect?.value || Object.keys(classesData)[0] || "7";
-            const shiftFilter = shiftSelect?.value || "all";
-            if (!tbody) return;
-
-            if (!timetablesData[gradeKey]) {
-                timetablesData[gradeKey] = [];
-            }
-
-            let slots = timetablesData[gradeKey];
-            if (shiftFilter !== "all") {
-                slots = slots.filter(s => s.shift === shiftFilter);
-            }
-
-            if (slots.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">មិនទាន់មានកាលវិភាគសិក្សាទេ (សូមចុចបន្ថែមម៉ោងសិក្សា)</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = slots.map((slot, index) => `
-                <tr class="border-b hover:bg-slate-50 transition">
-                    <td class="p-3.5 bg-slate-50 font-bold text-xs border">
-                        <span class="inline-block px-2.5 py-1 rounded-xl text-[10px] font-bold ${slot.shift === 'morning' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'} mb-1 shadow-sm">
-                            ${slot.shift === 'morning' ? 'វេនព្រឹក' : 'វេនរសៀល'}
-                        </span><br>
-                        ${slot.time}
-                    </td>
-                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[1] || '-'}</td>
-                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[2] || '-'}</td>
-                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[3] || '-'}</td>
-                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[4] || '-'}</td>
-                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[5] || '-'}</td>
-                    <td class="p-3.5 border text-xs text-slate-700 font-medium">${slot.days[6] || '-'}</td>
-                    <td class="p-3.5 border text-center no-print space-x-1">
-                        <button onclick="openTimetableSlotModal(${index})" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteTimetableSlot(${index})" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function onTimetablePresetChange(sel) {
-            if (sel.value) {
-                document.getElementById('ttTimeName').value = sel.value;
-                if (sel.value.includes("វេនព្រឹក")) {
-                    document.getElementById('ttShift').value = "morning";
-                } else if (sel.value.includes("វេនរសៀល")) {
-                    document.getElementById('ttShift').value = "afternoon";
-                }
-            }
-        }
-
-        function openTimetableSlotModal(index = null) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => openTimetableSlotModal(index));
-                return;
-            }
-            const gradeSelect = document.getElementById('timetableGradeSelect');
-            const gradeKey = gradeSelect?.value || "7";
-            const titleEl = document.getElementById('timetableModalTitle');
-            
-            document.getElementById('ttIndex').value = index !== null ? index : "";
-            if (index !== null && timetablesData[gradeKey] && timetablesData[gradeKey][index]) {
-                titleEl.textContent = "កែប្រែម៉ោងកាលវិភាគ និងវេន";
-                const slot = timetablesData[gradeKey][index];
-                document.getElementById('ttShift').value = slot.shift || "morning";
-                document.getElementById('ttTimeName').value = slot.time;
-                document.getElementById('ttTimePreset').value = slot.time;
-                for (let i = 1; i <= 6; i++) {
-                    document.getElementById('tt_' + i).value = slot.days[i] || "";
-                }
-            } else {
-                titleEl.textContent = "បន្ថែមម៉ោងកាលវិភាគ និងវេនថ្មី";
-                document.getElementById('timetableForm').reset();
-            }
-            document.getElementById('timetableModal').classList.remove('hidden');
-        }
-
-        function closeTimetableSlotModal() {
-            document.getElementById('timetableModal').classList.add('hidden');
-            document.getElementById('timetableForm').reset();
-        }
-
-        function saveTimetableSlot(e) {
-            e.preventDefault();
-            const gradeSelect = document.getElementById('timetableGradeSelect');
-            const gradeKey = gradeSelect?.value || "7";
-            const indexStr = document.getElementById('ttIndex').value;
-            const shift = document.getElementById('ttShift').value;
-            const timeName = document.getElementById('ttTimeName').value.trim();
-
-            const days = {};
-            for (let i = 1; i <= 6; i++) {
-                days[i] = document.getElementById('tt_' + i).value.trim();
-            }
-
-            if (!timetablesData[gradeKey]) timetablesData[gradeKey] = [];
-
-            if (indexStr !== "") {
-                timetablesData[gradeKey][parseInt(indexStr)] = { shift, time: timeName, days };
-            } else {
-                timetablesData[gradeKey].push({ shift, time: timeName, days });
-            }
-
-            if (db && isConnected) {
-                db.ref('timetables/' + gradeKey).set(timetablesData[gradeKey]);
-            } else {
-                renderTimetable();
-            }
-            closeTimetableSlotModal();
-        }
-
-        function deleteTimetableSlot(index) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => deleteTimetableSlot(index));
-                return;
-            }
-            const gradeSelect = document.getElementById('timetableGradeSelect');
-            const gradeKey = gradeSelect?.value || "7";
-
-            if (confirm("តើអ្នកពិតជាចង់លុបម៉ោងសិក្សានេះមែនទេ?")) {
-                if (timetablesData[gradeKey]) {
-                    timetablesData[gradeKey].splice(index, 1);
-                    if (db && isConnected) {
-                        db.ref('timetables/' + gradeKey).set(timetablesData[gradeKey]);
-                    } else {
-                        renderTimetable();
-                    }
-                }
-            }
-        }
-
-        function generateMonthlyReport() {
-            const filterInput = document.getElementById('monthlyReportFilter');
-            const tbody = document.getElementById('monthlyReportTable');
-            const printTitle = document.getElementById('printMonthTitle');
-            if (!tbody || !filterInput) return;
-
-            const selectedYM = filterInput.value; 
-            if (printTitle) printTitle.textContent = "ប្រចាំខែ: " + selectedYM;
-
-            const studentList = Object.values(studentsData);
-            if (studentList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = studentList.map(s => {
-                // Filter logs strictly for this student and this month, excluding any teacher logs
-                const studentLogs = scanLogsData.filter(l => 
-                    String(l.id).trim() === String(s.id).trim() && 
-                    String(l.timestamp).includes(selectedYM) &&
-                    (!l.role || l.role === 'student')
-                );
-                const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
-                const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
-                const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
-                const totalCount = studentLogs.length;
-                const lastLog = totalCount > 0 ? studentLogs[studentLogs.length - 1].timestamp : '-';
-
-                let gradeDisplay = s.grade;
-                if (classesData[s.grade]) {
-                    gradeDisplay = classesData[s.grade].name;
+                    db.ref('classes').remove();
                 } else {
-                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || classesData[k].name === s.grade);
-                    if (foundClassKey) {
-                        gradeDisplay = classesData[foundClassKey].name;
-                    } else if (!String(s.grade).startsWith("ទី")) {
-                        gradeDisplay = "ទី " + s.grade;
-                    }
+                    classesData = {};
+                    updateClassSelects();
+                    renderClasses();
+                    updateStats();
                 }
-
-                return `
-                    <tr class="border-b hover:bg-slate-50 transition">
-                        <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id}</td>
-                        <td class="py-3.5 px-4 font-bold text-slate-800">${s.name}</td>
-                        <td class="py-3.5 px-4 text-slate-600">${gradeDisplay}</td>
-                        <td class="py-3.5 px-4 text-center font-black text-emerald-600">${presentCount}</td>
-                        <td class="py-3.5 px-4 text-center font-black text-amber-600">${permissionCount}</td>
-                        <td class="py-3.5 px-4 text-center font-black text-rose-600">${absentCount}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-slate-700">${totalCount}</td>
-                        <td class="py-3.5 px-4 text-center text-xs text-slate-500">${lastLog}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function exportMonthlyReportCSV() {
-            const filterInput = document.getElementById('monthlyReportFilter');
-            const selectedYM = filterInput ? filterInput.value : 'monthly-report';
-            const studentList = Object.values(studentsData);
-
-            let csvContent = "\uFEFFអត្តលេខ,ឈ្មោះសិស្ស,ថ្នាក់,មកវត្តមាន,សុំច្បាប់,អវត្តមាន,សរុបស្កេន,ស្កេនចុងក្រោយ\n";
-
-            studentList.forEach(s => {
-                const studentLogs = scanLogsData.filter(l => 
-                    String(l.id).trim() === String(s.id).trim() && 
-                    String(l.timestamp).includes(selectedYM) &&
-                    (!l.role || l.role === 'student')
-                );
-                const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
-                const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
-                const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
-                const totalCount = studentLogs.length;
-                const lastLog = totalCount > 0 ? studentLogs[studentLogs.length - 1].timestamp : '-';
-                const gradeDisplay = classesData[s.grade] ? classesData[s.grade].name : (`ទី ${s.grade}`);
-
-                csvContent += `"${s.id}","${s.name}","${gradeDisplay}",${presentCount},${permissionCount},${absentCount},${totalCount},"${lastLog}"\n`;
-            });
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('href', url);
-            a.setAttribute('download', `Monthly_Attendance_${selectedYM}.csv`);
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
-        function sendTelegramNotification(student, statusText, checkType, timestamp, scheduleInfo) {
-            const token = telegramConfig.botToken;
-            const chatId = telegramConfig.chatIds?.[student.grade] || telegramConfig.chatIds?.[Object.keys(classesData).find(k => classesData[k].name === student.grade)];
-            if (!token || !chatId) return;
-
-            const message = `🚨 ដំណឹងវត្តមានសិស្ស (${checkType}) - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង\n👤 ឈ្មោះ: ${student.name}\n🆔 អត្តលេខ: ${student.id}\n🏫 ថ្នាក់: ${student.grade}\n📌 ស្ថានភាព: ${statusText} [${checkType}]\n📅 ថ្ងៃ: ${scheduleInfo.day} | ${scheduleInfo.period}\n📚 មុខវិជ្ជា: ${scheduleInfo.subject}\n👨‍🏫 គ្រូបង្រៀន: ${scheduleInfo.teacher}\n⏰ ម៉ោងស្កេន: ${timestamp}`;
-            
-            const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=` + encodeURIComponent(message);
-            fetch(url).catch(err => console.log("Telegram API error:", err));
+            }
         }
 
         function loadTelegramConfigUI() {
-            if (!telegramConfig) return;
-            if (document.getElementById('telegramBotToken')) {
-                document.getElementById('telegramBotToken').value = telegramConfig.botToken || "";
-            }
+            const tokenInput = document.getElementById('telegramBotToken');
+            if (tokenInput) tokenInput.value = telegramConfig.botToken || "";
             renderTelegramChatInputs();
         }
 
-        function saveTelegramConfig() {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(saveTelegramConfig);
+        function renderTelegramChatInputs() {
+            const container = document.getElementById('telegramChatIdContainer');
+            if (!container) return;
+            const keys = Object.keys(classesData);
+            if (keys.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-slate-400 text-xs">មិនទាន់មានថ្នាក់រៀនសម្រាប់កំណត់ Chat ID ទេ</div>`;
                 return;
             }
+            container.innerHTML = keys.map(k => `
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">${classesData[k].name}</label>
+                    <input type="text" id="tg_chat_${k}" value="${(telegramConfig.chatIds && telegramConfig.chatIds[k]) || ''}" placeholder="Telegram Chat ID" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-xs">
+                </div>
+            `).join('');
+        }
+
+        function saveTelegramConfig() {
             const botToken = document.getElementById('telegramBotToken').value.trim();
             const chatIds = {};
             Object.keys(classesData).forEach(k => {
-                const el = document.getElementById('chatId_' + k);
-                if (el && el.value.trim()) {
-                    chatIds[k] = el.value.trim();
-                }
+                const el = document.getElementById(`tg_chat_${k}`);
+                if (el) chatIds[k] = el.value.trim();
             });
 
             telegramConfig = { botToken, chatIds };
@@ -1597,6 +1990,59 @@
             } else {
                 alert("បានរក្សាទុកក្នុង Local Mode!");
             }
+        }
+
+        function sendTelegramNotification(student, statusText, checkType, timestamp, scheduleInfo) {
+            if (!telegramConfig.botToken) return;
+            const chatId = telegramConfig.chatIds ? telegramConfig.chatIds[student.grade] : null;
+            if (!chatId) return;
+
+            const checkIcon = checkType === 'ចេញពីសាលា' ? '🔴' : '🟢';
+            const gradeName = classesData[student.grade] ? classesData[student.grade].name : student.grade;
+
+            const msg = `🔔 *ជូនដំណឹងវត្តមានសិស្ស (ស្កេនជោគជ័យ)*\n\n` +
+                        `👤 *ឈ្មោះសិស្ស:* ${student.name} (${student.id})\n` +
+                        `🏫 *ថ្នាក់រៀន:* ${gradeName}\n` +
+                        `📌 *ស្ថានភាព:* ${statusText} (${checkIcon} ${checkType})\n` +
+                        `📚 *មុខវិជ្ជា:* ${scheduleInfo.subject} (${scheduleInfo.period})\n` +
+                        `👨‍🏫 *គ្រូបន្ទុក:* ${scheduleInfo.teacher}\n` +
+                        `⏰ *វេលាម៉ោង:* ${timestamp}`;
+
+            fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: msg,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(err => console.error("Telegram Notification Error:", err));
+        }
+
+        function sendTeacherTelegramNotification(teacher, checkType, timestamp) {
+            if (!telegramConfig.botToken) return;
+            // Send teacher logs to general or first configured chat ID
+            const chatIdsList = Object.values(telegramConfig.chatIds || {});
+            const chatId = chatIdsList.length > 0 ? chatIdsList[0] : null;
+            if (!chatId) return;
+
+            const checkIcon = checkType === 'ចេញពីសាលា' ? '🔴' : '🟢';
+
+            const msg = `🔔 *ជូនដំណឹងវត្តមានគ្រូបង្រៀន*\n\n` +
+                        `👩‍🏫 *ឈ្មោះគ្រូ:* ${teacher.name} (${teacher.id})\n` +
+                        `📚 *មុខវិជ្ជាបង្រៀន:* ${teacher.subject}\n` +
+                        `📌 *ស្ថានភាព:* មកវត្តមាន (${checkIcon} ${checkType})\n` +
+                        `⏰ *វេលាម៉ោង:* ${timestamp}`;
+
+            fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: msg,
+                    parse_mode: 'Markdown'
+                })
+            }).catch(err => console.error("Teacher Telegram Notification Error:", err));
         }
 
         function openAdminAuthModal(callback = null) {
@@ -1626,24 +2072,139 @@
         let pendingAdminAction = null;
         function verifyAdminPassword() {
             const pwd = document.getElementById('adminPasswordInput').value;
-            if (pwd === "12345") {
+            if (pwd === adminPasswordHash) {
                 isAdminAuthenticated = true;
                 const adminLabel = document.getElementById('adminAuthLabel');
-                if (adminLabel) adminLabel.textContent = "Admin (បានចូល)";
+                if (adminLabel) adminLabel.textContent = "Admin (កែពាក្យសម្ងាត់)";
                 const tabAdmin = document.getElementById('tab-admin');
+                const logoutBtn = document.getElementById('tab-admin-logout');
+
                 if (tabAdmin) {
                     tabAdmin.classList.remove('text-amber-300');
                     tabAdmin.classList.add('bg-white', 'text-emerald-900', 'shadow-sm');
                 }
+                if (logoutBtn) logoutBtn.classList.remove('hidden');
+
                 alert("✅ ផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ Admin បានជោគជ័យ!");
                 closeAdminAuthModal();
+                setupAutoLockActivityListener();
+
                 if (pendingAdminAction) {
                     pendingAdminAction();
                     pendingAdminAction = null;
                 }
             } else {
-                alert("❌ ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ! (ពាក្យសម្ងាត់ដើមគឺ: 12345)");
+                alert("❌ ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ!");
             }
+        }
+
+        function printAllStudentQRs() {
+            const list = Object.values(studentsData);
+            if (list.length === 0) {
+                alert("មិនទាន់មានទិន្នន័យសិស្សសម្រាប់បោះពុម្ពទេ!");
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            let cardsHtml = list.map(s => {
+                const gradeName = classesData[s.grade] ? classesData[s.grade].name : (s.grade || '-');
+                return `
+                    <div style="border: 2px solid #059669; border-radius: 12px; padding: 12px; text-align: center; background: #ffffff; page-break-inside: avoid; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px;">
+                        <div style="font-weight: bold; font-size: 14px; color: #065f46; margin-bottom: 2px;">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</div>
+                        <div style="font-size: 11px; color: #475569; margin-bottom: 6px;">កាតសម្គាល់សិស្ស</div>
+                        <div id="qr_${s.id}" style="margin: 6px auto;"></div>
+                        <div style="font-weight: bold; font-size: 13px; color: #1e293b; margin-top: 4px;">${s.name}</div>
+                        <div style="font-size: 11px; color: #059669; font-weight: bold;">អត្តលេខ: ${s.id} | ថ្នាក់: ${gradeName}</div>
+                    </div>
+                `;
+            }).join('');
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>បោះពុម្ព QR Code សិស្សទាំងអស់</title>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+                    <style>
+                        body { font-family: 'Kantumruy Pro', sans-serif; padding: 10px; background: #fff; }
+                        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+                        @media print {
+                            body { padding: 0; }
+                            .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2 style="text-align: center; color: #065f46; margin-bottom: 15px;">បញ្ជី QR Code សិស្សសរុប (${list.length} នាក់)</h2>
+                    <div class="grid">${cardsHtml}</div>
+                    <script>
+                        const students = ${JSON.stringify(list)};
+                        students.forEach(s => {
+                            new QRCode(document.getElementById('qr_' + s.id), {
+                                text: s.id,
+                                width: 110,
+                                height: 110
+                            });
+                        });
+                        setTimeout(() => { window.print(); }, 800);
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        function printAllTeacherQRs() {
+            const list = Object.values(teachersData);
+            if (list.length === 0) {
+                alert("មិនទាន់មានទិន្នន័យគ្រូបង្រៀនសម្រាប់បោះពុម្ពទេ!");
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            let cardsHtml = list.map(t => `
+                <div style="border: 2px solid #0284c7; border-radius: 12px; padding: 12px; text-align: center; background: #ffffff; page-break-inside: avoid; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px;">
+                    <div style="font-weight: bold; font-size: 14px; color: #075985; margin-bottom: 2px;">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</div>
+                    <div style="font-size: 11px; color: #475569; margin-bottom: 6px;">កាតសម្គាល់គ្រូបង្រៀន</div>
+                    <div id="qr_${t.id}" style="margin: 6px auto;"></div>
+                    <div style="font-weight: bold; font-size: 13px; color: #1e293b; margin-top: 4px;">លោកគ្រូ/អ្នកគ្រូ: ${t.name}</div>
+                    <div style="font-size: 11px; color: #0284c7; font-weight: bold;">អត្តលេខ: ${t.id} | មុខវិជ្ជា: ${t.subject}</div>
+                </div>
+            `).join('');
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>បោះពុម្ព QR Code គ្រូបង្រៀនទាំងអស់</title>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
+                    <style>
+                        body { font-family: 'Kantumruy Pro', sans-serif; padding: 10px; background: #fff; }
+                        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+                        @media print {
+                            body { padding: 0; }
+                            .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2 style="text-align: center; color: #075985; margin-bottom: 15px;">បញ្ជី QR Code គ្រូបង្រៀនសរុប (${list.length} នាក់)</h2>
+                    <div class="grid">${cardsHtml}</div>
+                    <script>
+                        const teachers = ${JSON.stringify(list)};
+                        teachers.forEach(t => {
+                            new QRCode(document.getElementById('qr_' + t.id), {
+                                text: t.id,
+                                width: 110,
+                                height: 110
+                            });
+                        });
+                        setTimeout(() => { window.print(); }, 800);
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
         }
 
         function showQrModal(id, titleText) {
