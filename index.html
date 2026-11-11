@@ -123,11 +123,20 @@
                         </div>
                         <div>
                             <label class="block text-[11px] font-bold text-slate-600 mb-1">ម៉ោងចូល / ចេញ</label>
-                            <select id="scanCheckType" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-sky-800 bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                            <select id="scanCheckType" class="w-full border-2 border-slate-200 rounded-2xl px-3 py-2 text-xs font-bold text-sky-800 bg-sky-50 focus:outline-none focus:ring-2 focus:ring-sky-500">
                                 <option value="ចូលរៀន">🟢 ម៉ោងចូល (Check-in)</option>
                                 <option value="ចេញពីសាលា">🔴 ម៉ោងចេញ (Check-out)</option>
                             </select>
                         </div>
+                    </div>
+
+                    <!-- Camera Facing Mode Selector -->
+                    <div class="w-full max-w-md mb-4">
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">ជ្រើសរើសកាមេរ៉ា</label>
+                        <select id="cameraFacingSelect" onchange="restartCameraWithSelectedFacing()" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="environment">📷 កាមេរ៉ាក្រោយ (Back Camera)</option>
+                            <option value="user">🤳 កាមេរ៉ាមុខ (Front/Selfie Camera)</option>
+                        </select>
                     </div>
 
                     <div id="reader" class="w-full max-w-md rounded-2xl overflow-hidden bg-slate-900 border-2 border-slate-200 shadow-inner min-h-[280px]"></div>
@@ -892,14 +901,33 @@
                 </div>
                 
                 <div class="space-y-2 pt-2">
-                    <label class="block text-xs font-bold text-slate-700">មុខវិជ្ជាតាមថ្ងៃនីមួយៗ</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="tt_1" placeholder="ថ្ងៃចន្ទ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                        <input type="text" id="tt_2" placeholder="ថ្ងៃអង្គារ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                        <input type="text" id="tt_3" placeholder="ថ្ងៃពុធ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                        <input type="text" id="tt_4" placeholder="ថ្ងៃព្រហស្បតិ៍" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                        <input type="text" id="tt_5" placeholder="ថ្ងៃសុក្រ" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
-                        <input type="text" id="tt_6" placeholder="ថ្ងៃសៅរ៍" class="border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                    <label class="block text-xs font-bold text-slate-700">១. មុខវិជ្ជា និង ២. ឈ្មោះគ្រូបង្រៀន តាមថ្ងៃនីមួយៗ</label>
+                    <p class="text-[11px] text-slate-500 mb-2">ទម្រង់: <code class="bg-slate-100 px-1 py-0.5 rounded text-emerald-700">មុខវិជ្ជា (គ្រូ: ឈ្មោះគ្រូ)</code></p>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-20 text-xs font-bold text-slate-600">ថ្ងៃចន្ទ:</span>
+                            <input type="text" id="tt_1" placeholder="ឧ. គណិតវិទ្យា (គ្រូ: លោកគ្រូ អុីប្រាហ៊ីម)" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-20 text-xs font-bold text-slate-600">ថ្ងៃអង្គារ:</span>
+                            <input type="text" id="tt_2" placeholder="ឧ. ភាសាខ្មែរ (គ្រូ: អ្នកគ្រូ ...)" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-20 text-xs font-bold text-slate-600">ថ្ងៃពុធ:</span>
+                            <input type="text" id="tt_3" placeholder="ថ្ងៃពុធ" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-20 text-xs font-bold text-slate-600">ថ្ងៃព្រហស្បតិ៍:</span>
+                            <input type="text" id="tt_4" placeholder="ថ្ងៃព្រហស្បតិ៍" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-20 text-xs font-bold text-slate-600">ថ្ងៃសុក្រ:</span>
+                            <input type="text" id="tt_5" placeholder="ថ្ងៃសុក្រ" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-20 text-xs font-bold text-slate-600">ថ្ងៃសៅរ៍:</span>
+                            <input type="text" id="tt_6" placeholder="ថ្ងៃសៅរ៍" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                        </div>
                     </div>
                 </div>
 
@@ -1338,14 +1366,16 @@
                     document.getElementById('ttTimeName').value = slot.timeName || '';
                     const days = slot.days || ['', '', '', '', '', ''];
                     for (let i = 0; i < 6; i++) {
-                        document.getElementById(`tt_${i+1}`).value = days[i] || '';
+                        const dayInput = document.getElementById(`tt_${i+1}`);
+                        if (dayInput) dayInput.value = days[i] || '';
                     }
                 }
             } else {
                 document.getElementById('ttShift').value = 'morning';
                 document.getElementById('ttTimeName').value = '';
                 for (let i = 0; i < 6; i++) {
-                    document.getElementById(`tt_${i+1}`).value = '';
+                    const dayInput = document.getElementById(`tt_${i+1}`);
+                    if (dayInput) dayInput.value = '';
                 }
             }
             modal.classList.remove('hidden');
@@ -1356,29 +1386,52 @@
             if (modal) modal.classList.add('hidden');
         }
 
+        function onTimetablePresetChange(el) {
+            if (el && el.value) {
+                const timeField = document.getElementById('ttTimeName');
+                if (timeField) {
+                    timeField.value = el.value === 'CURRENT_TIME' ? new Date().toLocaleTimeString('km-KH') : el.value;
+                }
+            }
+        }
+
+        function selectQuickTime(timeStr) {
+            const timeField = document.getElementById('ttTimeName');
+            if (timeField) {
+                timeField.value = timeStr === 'CURRENT_TIME' ? new Date().toLocaleTimeString('km-KH') : timeStr;
+            }
+        }
+
         function saveTimetableSlot(e) {
-            e.preventDefault();
-            const slotKeyEl = document.getElementById('ttSlotKey').value;
-            const shift = document.getElementById('ttShift').value;
-            const timeName = document.getElementById('ttTimeName').value.trim();
-            const t1 = document.getElementById('tt_1').value.trim();
-            const t2 = document.getElementById('tt_2').value.trim();
-            const t3 = document.getElementById('tt_3').value.trim();
-            const t4 = document.getElementById('tt_4').value.trim();
-            const t5 = document.getElementById('tt_5').value.trim();
-            const t6 = document.getElementById('tt_6').value.trim();
+            if (e) e.preventDefault();
+            const slotKeyEl = document.getElementById('ttSlotKey');
+            const shiftEl = document.getElementById('ttShift');
+            const timeNameEl = document.getElementById('ttTimeName');
+
+            if (!timeNameEl) return;
+
+            const slotKeyVal = slotKeyEl ? slotKeyEl.value : '';
+            const shift = shiftEl ? shiftEl.value : 'morning';
+            const timeName = timeNameEl.value.trim();
+            
+            const daysArr = [];
+            for (let i = 1; i <= 6; i++) {
+                const input = document.getElementById(`tt_${i}`);
+                daysArr.push(input ? input.value.trim() : '');
+            }
 
             const gradeKey = document.getElementById('timetableGradeSelect')?.value || 'cls_7a';
-            const slotKey = slotKeyEl ? slotKeyEl : ('slot_' + Date.now());
+            const slotKey = slotKeyVal ? slotKeyVal : ('slot_' + Date.now());
 
             if (!timetablesData[gradeKey]) timetablesData[gradeKey] = {};
-            timetablesData[gradeKey][slotKey] = { shift, timeName, days: [t1, t2, t3, t4, t5, t6] };
+            timetablesData[gradeKey][slotKey] = { shift, timeName, days: daysArr };
 
             if (db && isConnected) {
-                db.ref(`timetables/${gradeKey}/${slotKey}`).set({ shift, timeName, days: [t1, t2, t3, t4, t5, t6] });
+                db.ref(`timetables/${gradeKey}/${slotKey}`).set({ shift, timeName, days: daysArr });
             } else {
                 renderTimetable();
             }
+            
             closeTimetableSlotModal();
             alert("✅ រក្សាទុកកាលវិភាគបានជោគជ័យ!");
         }
@@ -1390,7 +1443,7 @@
             }
             if (confirm("តើអ្នកពិតជាចង់លុបម៉ោងសិក្សានេះមែនទេ?")) {
                 const gradeKey = document.getElementById('timetableGradeSelect')?.value || 'cls_7a';
-                if (timetablesData[gradeKey] && timetablesData[gradeKey][slotKey]) {
+                if (timetablesData[gradeKey]) {
                     delete timetablesData[gradeKey][slotKey];
                 }
                 if (db && isConnected) {
@@ -1399,22 +1452,6 @@
                     renderTimetable();
                 }
                 alert("✅ បានលុបម៉ោងសិក្សារួចរាល់!");
-            }
-        }
-
-        function onTimetablePresetChange(selectEl) {
-            if (selectEl.value && selectEl.value !== 'CURRENT_TIME') {
-                document.getElementById('ttTimeName').value = selectEl.value;
-            }
-        }
-
-        function selectQuickTime(val) {
-            if (val === 'CURRENT_TIME') {
-                const now = new Date();
-                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('ttTimeName').value = timeStr;
-            } else {
-                document.getElementById('ttTimeName').value = val;
             }
         }
 
@@ -1444,12 +1481,12 @@
                 return `
                     <tr class="border-b hover:bg-slate-50 transition">
                         <td class="p-3.5 border font-bold text-emerald-800 bg-slate-50">${slot.timeName || '-'}</td>
-                        <td class="p-3.5 border">${days[0] || '-'}</td>
-                        <td class="p-3.5 border">${days[1] || '-'}</td>
-                        <td class="p-3.5 border">${days[2] || '-'}</td>
-                        <td class="p-3.5 border">${days[3] || '-'}</td>
-                        <td class="p-3.5 border">${days[4] || '-'}</td>
-                        <td class="p-3.5 border">${days[5] || '-'}</td>
+                        <td class="p-3.5 border text-xs">${days[0] ? days[0].replace(/\(([^)]+)\)/g, '<br><span class="text-sky-700 font-semibold">($1)</span>') : '-'}</td>
+                        <td class="p-3.5 border text-xs">${days[1] ? days[1].replace(/\(([^)]+)\)/g, '<br><span class="text-sky-700 font-semibold">($1)</span>') : '-'}</td>
+                        <td class="p-3.5 border text-xs">${days[2] ? days[2].replace(/\(([^)]+)\)/g, '<br><span class="text-sky-700 font-semibold">($1)</span>') : '-'}</td>
+                        <td class="p-3.5 border text-xs">${days[3] ? days[3].replace(/\(([^)]+)\)/g, '<br><span class="text-sky-700 font-semibold">($1)</span>') : '-'}</td>
+                        <td class="p-3.5 border text-xs">${days[4] ? days[4].replace(/\(([^)]+)\)/g, '<br><span class="text-sky-700 font-semibold">($1)</span>') : '-'}</td>
+                        <td class="p-3.5 border text-xs">${days[5] ? days[5].replace(/\(([^)]+)\)/g, '<br><span class="text-sky-700 font-semibold">($1)</span>') : '-'}</td>
                         <td class="p-3.5 border text-center no-print space-x-1">
                             <button onclick="openTimetableSlotModal('${slotKey}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg" title="កែប្រែ"><i class="fa-solid fa-pen"></i></button>
                             <button onclick="deleteTimetableSlot('${slotKey}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg" title="លុប"><i class="fa-solid fa-trash"></i></button>
@@ -1750,19 +1787,20 @@
             const scannerStatus = document.getElementById('scannerStatus');
             const btnText = document.getElementById('toggleCamText');
             const btnIcon = document.getElementById('toggleCamIcon');
+            const facingSelect = document.getElementById('cameraFacingSelect');
+            const selectedFacing = facingSelect ? facingSelect.value : "environment";
             const readerConfig = { fps: 10, qrbox: { width: 220, height: 220 } };
 
             if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
 
             html5QrCode.start(
-                { facingMode: "environment" },
+                { facingMode: selectedFacing },
                 readerConfig,
                 (decodedText) => {
-                    // QR Code detected successfully
                     processScannedCode(decodedText);
                 },
                 (errorMessage) => {
-                    // Scanning... (ignore frame noise)
+                    // Scanning...
                 }
             ).then(() => {
                 isCameraActive = true;
@@ -1770,10 +1808,10 @@
                 if (btnText) btnText.textContent = "បិទកាមេរ៉ា";
                 if (btnIcon) btnIcon.className = "fa-solid fa-video-slash";
             }).catch(err => {
-                console.warn("Unable to start camera with environment, trying default camera...", err);
-                // Fallback to user / default camera if back camera is not available
+                console.warn("Unable to start camera with selected facing, trying fallback...", err);
+                const fallbackFacing = selectedFacing === "environment" ? "user" : "environment";
                 html5QrCode.start(
-                    { facingMode: "user" },
+                    { facingMode: fallbackFacing },
                     readerConfig,
                     (decodedText) => { processScannedCode(decodedText); }
                 ).then(() => {
@@ -1789,6 +1827,17 @@
                     if (btnIcon) btnIcon.className = "fa-solid fa-video";
                 });
             });
+        }
+
+        function restartCameraWithSelectedFacing() {
+            if (html5QrCode && isCameraActive) {
+                html5QrCode.stop().catch(() => {}).then(() => {
+                    isCameraActive = false;
+                    startCameraScanner();
+                });
+            } else {
+                startCameraScanner();
+            }
         }
 
         function stopCameraScanner() {
@@ -1865,14 +1914,15 @@
             let currentSubjectSlot = "ក្រៅម៉ោងសិក្សា";
             let gradeKey = targetType === 'student' ? (targetObj.grade || '') : '';
 
-            // ប្រសិនបើជាគ្រូបង្រៀន រកមើលថាតើគាត់ត្រូវបង្រៀនថ្នាក់ណា
             if (targetType === 'teacher' && !gradeKey) {
                 const foundClass = Object.keys(classesData || {}).find(k => classesData[k].teacher === targetObj.name);
                 gradeKey = foundClass || Object.keys(classesData || {})[0] || '';
             }
 
-            // ស្វែងរកមុខវិជ្ជាតាមថ្ងៃនៃសប្តាហ៍
             const dayOfWeek = now.getDay(); // 1 = ចន្ទ, 6 = សៅរ៍
+            const dayNames = ["អាទិត្យ", "ចន្ទ", "អង្គារ", "ពុធ", "ព្រហស្បតិ៍", "សុក្រ", "សៅរ៍"];
+            const currentDayName = dayNames[dayOfWeek] || "";
+
             if (dayOfWeek >= 1 && dayOfWeek <= 6 && gradeKey && timetablesData && timetablesData[gradeKey]) {
                 const dayIndex = dayOfWeek - 1;
                 const slots = Object.values(timetablesData[gradeKey] || {});
@@ -1881,7 +1931,9 @@
                 for (let slot of slots) {
                     if (slot && slot.days && slot.days[dayIndex]) {
                         const timeText = slot.timeName || '';
+                        const subjectName = slot.days[dayIndex].trim();
                         const matches = timeText.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+                        
                         if (matches) {
                             let startH = parseInt(matches[1]);
                             const startM = parseInt(matches[2]);
@@ -1895,12 +1947,20 @@
                             const endMin = endH * 60 + endM;
 
                             if (curMinutes >= startMin && curMinutes <= endMin) {
-                                currentSubjectSlot = `${slot.days[dayIndex]} (${timeText})`;
+                                currentSubjectSlot = `${subjectName} (${currentDayName}, ${timeText})`;
                                 break;
                             }
-                        } else if (slot.days[dayIndex]) {
-                            currentSubjectSlot = `${slot.days[dayIndex]} (${timeText})`;
+                        } else if (subjectName) {
+                            currentSubjectSlot = `${subjectName} (${currentDayName}, ${timeText})`;
                         }
+                    }
+                }
+
+                // ប្រសិនបើរកមិនទាន់ចំម៉ោង ზოგបង្ហាញមុខវិជ្ជាតាមម៉ោងដំបូង ឬបង្ហាញថ្ងៃនិងម៉ោងបច្ចុប្បន្នជាមួយមុខវិជ្ជា
+                if (currentSubjectSlot === "ក្រៅម៉ោងសិក្សា" && slots.length > 0 && slots[0].days && slots[0].days[dayIndex]) {
+                    const fallbackSub = slots[0].days[dayIndex].trim();
+                    if (fallbackSub) {
+                        currentSubjectSlot = `${fallbackSub} (${currentDayName}, ${slots[0].timeName || timeStr})`;
                     }
                 }
             }
@@ -1917,19 +1977,17 @@
                 timestamp: timeStr
             };
 
-            // បញ្ចូលក្នុង Local Array ភ្លាមៗ
-            scanLogsData.push(newLog);
-
             // ផ្ញើសារទៅ Telegram Bot
             sendTelegramNotification(newLog, targetObj);
 
+            scanLogsData.push(newLog);
             if (db && isConnected) {
                 db.ref('scanLogs').push(newLog);
             } else {
                 renderLogs();
                 updateStats();
             }
-            alert(`✅ ស្កេនជោគជ័យ:\n👤 ឈ្មោះ: ${name} (${code})\n🏫 ថ្នាក់/កាលវិភាគ: ${getGradeName(gradeKey)} - ${currentSubjectSlot}\n⏰ ម៉ោង: ${timeStr}\n📊 ស្ថានភាព: ${status}`);
+            alert(`✅ ស្កេនជោគជ័យ:\n👤 ឈ្មោះ: ${name} (${code})\n🏫 ថ្នាក់/មុខវិជ្ជា: ${getGradeName(gradeKey)} - ${currentSubjectSlot}\n⏰ ម៉ោង: ${timeStr}\n📊 ស្ថានភាព: ${status}`);
         }
 
         function sendTelegramNotification(logData, targetObject) {
@@ -2030,6 +2088,24 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        function confirmResetAllData() {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => confirmResetAllData());
+                return;
+            }
+            if (confirm("⚠️ តើអ្នកពិតជាចង់លុបថ្នាក់រៀនទាំងអស់មែនទេ? ការกระทำនេះមិនអាចត្រឡប់វិញបានទេ។")) {
+                classesData = {};
+                if (db && isConnected) {
+                    db.ref('classes').remove();
+                } else {
+                    renderClasses();
+                    updateClassSelects();
+                    updateStats();
+                }
+                alert("✅ បានលុបថ្នាក់រៀនទាំងអស់រួចរាល់!");
+            }
         }
 
         function openClassModal(key = null) {
