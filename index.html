@@ -1726,26 +1726,91 @@
 
         // Additional utility helper functions
         function initScanner() {
+            const scannerStatus = document.getElementById('scannerStatus');
+            if (!document.getElementById('reader')) return;
+
             try {
-                const scannerStatus = document.getElementById('scannerStatus');
-                if (scannerStatus) scannerStatus.textContent = "កាមេរ៉ារួចរាល់សម្រាប់ការស្កេន";
+                if (html5QrCode) {
+                    html5QrCode.stop().catch(() => {}).then(() => {
+                        startCameraScanner();
+                    });
+                } else {
+                    html5QrCode = new Html5Qrcode("reader");
+                    startCameraScanner();
+                }
             } catch (err) {
-                console.error(err);
+                console.error("Camera Init Error:", err);
+                if (scannerStatus) scannerStatus.textContent = "❌ មិនអាចបើកកាមេរ៉ាបានទេ ឬឧបករណ៍មិនគាំទ្រ!";
+            }
+        }
+
+        function startCameraScanner() {
+            const scannerStatus = document.getElementById('scannerStatus');
+            const btnText = document.getElementById('toggleCamText');
+            const btnIcon = document.getElementById('toggleCamIcon');
+            const readerConfig = { fps: 10, qrbox: { width: 220, height: 220 } };
+
+            if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                readerConfig,
+                (decodedText) => {
+                    // QR Code detected successfully
+                    processScannedCode(decodedText);
+                },
+                (errorMessage) => {
+                    // Scanning... (ignore frame noise)
+                }
+            ).then(() => {
+                isCameraActive = true;
+                if (scannerStatus) scannerStatus.textContent = "🟢 កាមេរ៉ាកំពុងដំណើរការ ស្កេន QR Code";
+                if (btnText) btnText.textContent = "បិទកាមេរ៉ា";
+                if (btnIcon) btnIcon.className = "fa-solid fa-video-slash";
+            }).catch(err => {
+                console.warn("Unable to start camera with environment, trying default camera...", err);
+                // Fallback to user / default camera if back camera is not available
+                html5QrCode.start(
+                    { facingMode: "user" },
+                    readerConfig,
+                    (decodedText) => { processScannedCode(decodedText); }
+                ).then(() => {
+                    isCameraActive = true;
+                    if (scannerStatus) scannerStatus.textContent = "🟢 កាមេរ៉ាកំពុងដំណើរការ ស្កេន QR Code";
+                    if (btnText) btnText.textContent = "បិទកាមេរ៉ា";
+                    if (btnIcon) btnIcon.className = "fa-solid fa-video-slash";
+                }).catch(e => {
+                    isCameraActive = false;
+                    console.error("Failed to start camera:", e);
+                    if (scannerStatus) scannerStatus.textContent = "⚠️ សូមអនុញ្ញាត (Allow) សិទ្ធិប្រើប្រាស់កាមេរ៉ានៅលើ Browser!";
+                    if (btnText) btnText.textContent = "បើកកាមេរ៉ា";
+                    if (btnIcon) btnIcon.className = "fa-solid fa-video";
+                });
+            });
+        }
+
+        function stopCameraScanner() {
+            const scannerStatus = document.getElementById('scannerStatus');
+            const btnText = document.getElementById('toggleCamText');
+            const btnIcon = document.getElementById('toggleCamIcon');
+
+            if (html5QrCode && isCameraActive) {
+                html5QrCode.stop().then(() => {
+                    isCameraActive = false;
+                    if (scannerStatus) scannerStatus.textContent = "🔴 កាមេរ៉ាត្រូវបានបិទ";
+                    if (btnText) btnText.textContent = "បើកកាមេរ៉ា";
+                    if (btnIcon) btnIcon.className = "fa-solid fa-video";
+                }).catch(err => {
+                    console.error("Stop camera error:", err);
+                });
             }
         }
 
         function toggleCamera() {
-            isCameraActive = !isCameraActive;
-            const btnText = document.getElementById('toggleCamText');
-            const btnIcon = document.getElementById('toggleCamIcon');
-            if (btnText && btnIcon) {
-                if (isCameraActive) {
-                    btnText.textContent = "បិទកាមេរ៉ា";
-                    btnIcon.className = "fa-solid fa-video-slash";
-                } else {
-                    btnText.textContent = "បើកកាមេរ៉ា";
-                    btnIcon.className = "fa-solid fa-video";
-                }
+            if (isCameraActive) {
+                stopCameraScanner();
+            } else {
+                startCameraScanner();
             }
         }
 
@@ -1758,59 +1823,6 @@
             const code = input.value.trim();
             input.value = "";
             processScannedCode(code);
-        }
-
-        function sendTelegramNotification(logData, targetObject) {
-            if (!telegramConfig || !telegramConfig.botToken) {
-                console.warn("Telegram Bot Token មិនទាន់បានកំណត់ទេ");
-                return;
-            }
-
-            // ស្វែងរក Chat ID តាមថ្នាក់រៀន
-            let chatId = "";
-            if (logData.targetType === 'student' && targetObject && targetObject.grade) {
-                chatId = telegramConfig.chatIds ? telegramConfig.chatIds[targetObject.grade] : "";
-            }
-
-            // ប្រសិនបើគ្មាន Chat ID តាមថ្នាក់ ប្រើ Chat ID ដើម (ប្រសិនបើមាន)
-            if (!chatId && telegramConfig.chatIds) {
-                chatId = Object.values(telegramConfig.chatIds).find(id => id.trim() !== "") || "";
-            }
-
-            if (!chatId) {
-                console.warn("មិនមាន Chat ID សម្រាប់ថ្នាក់នេះទេ");
-                return;
-            }
-
-            const emoji = logData.status === 'មកវត្តមាន' ? '🟢' : (logData.status === 'ច្បាប់' ? '🟡' : '🔴');
-            const message = `${emoji} <b>ជូនដំណឹងវត្តមានវត្តមាន - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</b>\n\n` +
-                            `👤 <b>ឈ្មោះ:</b> ${logData.name}\n` +
-                            `🆔 <b>អត្តលេខ:</b> <code>${logData.targetId}</code>\n` +
-                            `🏫 <b>ថ្នាក់/មុខវិជ្ជា:</b> ${logData.targetType === 'student' ? getGradeName(targetObject.grade) : (targetObject.subject || 'គ្រូបង្រៀន')}\n` +
-                            `📌 <b>ប្រភេទ:</b> ${logData.checkType}\n` +
-                            `📊 <b>ស្ថានភាព:</b> <b>${logData.status}</b>\n` +
-                            `⏰ <b>កាលបរិច្ឆេទ & ម៉ោង:</b> ${logData.date} - ${logData.timestamp}`;
-
-            const url = `https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`;
-            
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message,
-                    parse_mode: 'HTML'
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) {
-                    console.log("✅ ផ្ញើសារទៅ Telegram រួចរាល់!");
-                } else {
-                    console.error("❌ កំហុស Telegram:", data.description);
-                }
-            })
-            .catch(err => console.error("❌ Telegram Fetch Error:", err));
         }
 
         function processScannedCode(code) {
@@ -1857,19 +1869,16 @@
                 gradeKey = foundClass || Object.keys(classesData || {})[0] || '';
             }
 
-            // ស្វែងរកមុខវិជ្ជាតាមថ្ងៃនៃសប្តាហ៍ (0: អាទិត្យ, 1: ចន្ទ, 2: អង្គារ, 3: ពុធ, 4: ព្រហស្បតិ៍, 5: សុក្រ, 6: សៅរ៍)
+            // ស្វែងរកមុខវិជ្ជាតាមថ្ងៃនៃសប្តាហ៍
             const dayOfWeek = now.getDay(); // 1 = ចន្ទ, 6 = សៅរ៍
             if (dayOfWeek >= 1 && dayOfWeek <= 6 && gradeKey && timetablesData && timetablesData[gradeKey]) {
-                const dayIndex = dayOfWeek - 1; // 0 index សម្រាប់ថ្ងៃចន្ទ
+                const dayIndex = dayOfWeek - 1;
                 const slots = Object.values(timetablesData[gradeKey] || {});
-                
-                // គណនាcurrentTime គិតជា minutes តាំងពី midnight ដើម្បីងាយស្រួលប្រៀបធៀប
                 const curMinutes = now.getHours() * 60 + now.getMinutes();
 
                 for (let slot of slots) {
                     if (slot && slot.days && slot.days[dayIndex]) {
                         const timeText = slot.timeName || '';
-                        // ព្យាយាមទាញយកម៉ោងចាប់ផ្តើម និងបញ្ចប់ (ឧ. "07:00 - 07:50")
                         const matches = timeText.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
                         if (matches) {
                             let startH = parseInt(matches[1]);
@@ -1877,7 +1886,6 @@
                             let endH = parseInt(matches[3]);
                             const endM = parseInt(matches[4]);
 
-                            // សម្រួលម៉ោងរសៀល/ព្រឹក ប្រសិនបើក្នុង timetable ដាក់ជាម៉ោង 1-12
                             if (slot.shift === 'afternoon' && startH < 12) startH += 12;
                             if (slot.shift === 'afternoon' && endH < 12) endH += 12;
 
@@ -1889,7 +1897,6 @@
                                 break;
                             }
                         } else if (slot.days[dayIndex]) {
-                            // ប្រសិនបើគ្មានទ្រង់ទ្រាយម៉ោងប្រៀបធៀប យកមុខវិជ្ជានៅ slot នោះ
                             currentSubjectSlot = `${slot.days[dayIndex]} (${timeText})`;
                         }
                     }
@@ -1911,7 +1918,7 @@
             // បញ្ចូលក្នុង Local Array ភ្លាមៗ
             scanLogsData.push(newLog);
 
-            // ផ្ញើសារទៅ Telegram Bot (រួមទាំងព័ត៌មានម៉ោងសិក្សាតាមកាលវិភាគ)
+            // ផ្ញើសារទៅ Telegram Bot
             sendTelegramNotification(newLog, targetObj);
 
             if (db && isConnected) {
@@ -1922,20 +1929,19 @@
             }
             alert(`✅ ស្កេនជោគជ័យ:\n👤 ឈ្មោះ: ${name} (${code})\n🏫 ថ្នាក់/កាលវិភាគ: ${getGradeName(gradeKey)} - ${currentSubjectSlot}\n⏰ ម៉ោង: ${timeStr}\n📊 ស្ថានភាព: ${status}`);
         }
+
         function sendTelegramNotification(logData, targetObject) {
             if (!telegramConfig || !telegramConfig.botToken) {
                 console.warn("Telegram Bot Token មិនទាន់បានកំណត់ទេ");
                 return;
             }
 
-            // ស្វែងរក Chat ID តាមថ្នាក់រៀន
             let chatId = "";
             const gradeKey = logData.grade || (targetObject ? targetObject.grade : "");
             if (gradeKey && telegramConfig.chatIds) {
                 chatId = telegramConfig.chatIds[gradeKey] || "";
             }
 
-            // ប្រសិនបើគ្មាន Chat ID តាមថ្នាក់ ប្រើ Chat ID ដើម (ប្រសិនបើមាន)
             if (!chatId && telegramConfig.chatIds) {
                 chatId = Object.values(telegramConfig.chatIds).find(id => id.trim() !== "") || "";
             }
