@@ -13,8 +13,8 @@
     <!-- Html5-Qrcode Scanner -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <!-- Firebase SDK UMD Compat -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&display=swap');
         body {
@@ -53,28 +53,34 @@
         <nav class="bg-emerald-950/80 backdrop-blur-md text-sm no-print border-t border-emerald-800/60">
             <div class="max-w-7xl mx-auto px-2 flex overflow-x-auto space-x-1.5 py-2 scrollbar-none">
                 <button onclick="switchTab('scan')" id="tab-scan" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 bg-white text-emerald-900 shadow-sm whitespace-nowrap transition-all duration-200">
-                    <i class="fa-solid fa-qrcode text-emerald-700"></i> <span>ស្កេនវត្តមាន</span>
+                    <i class="fa-solid fa-qrcode text-emerald-700"></i> <span>ស្កេនវត្តមាន (គ្រូ/ទូទៅ)</span>
                 </button>
                 <button onclick="switchTab('students')" id="tab-students" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
-                    <i class="fa-solid fa-users"></i> <span>គ្រប់គ្រងសិស្ស</span>
+                    <i class="fa-solid fa-users"></i> <span>គ្រប់គ្រងសិស្ស 🔒</span>
                 </button>
                 <button onclick="switchTab('classes')" id="tab-classes" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
-                    <i class="fa-solid fa-door-open"></i> <span>គ្រប់គ្រងថ្នាក់</span>
+                    <i class="fa-solid fa-door-open"></i> <span>គ្រប់គ្រងថ្នាក់ 🔒</span>
                 </button>
                 <button onclick="switchTab('teachers')" id="tab-teachers" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
-                    <i class="fa-solid fa-chalkboard-user"></i> <span>គ្រប់គ្រងគ្រូ</span>
+                    <i class="fa-solid fa-chalkboard-user"></i> <span>គ្រប់គ្រងគ្រូ 🔒</span>
                 </button>
                 <button onclick="switchTab('timetable')" id="tab-timetable" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
-                    <i class="fa-solid fa-calendar-days"></i> <span>កាលវិភាគ</span>
+                    <i class="fa-solid fa-calendar-days"></i> <span>កាលវិភាគ 🔒</span>
                 </button>
                 <button onclick="switchTab('monthly-report')" id="tab-monthly-report" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
-                    <i class="fa-solid fa-file-invoice"></i> <span>របាយការណ៍ខែ</span>
+                    <i class="fa-solid fa-file-invoice"></i> <span>របាយការណ៍ខែ 🔒</span>
+                </button>
+                <button onclick="switchTab('finance')" id="tab-finance" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
+                    <i class="fa-solid fa-wallet text-amber-300"></i> <span>ចំណូល-ចំណាយ 🔒</span>
+                </button>
+                <button onclick="switchTab('payroll')" id="tab-payroll" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
+                    <i class="fa-solid fa-file-invoice-dollar text-emerald-300"></i> <span>វិក្កយបត្រ & ប្រាក់ខែ 🔒</span>
                 </button>
                 <button onclick="switchTab('telegram')" id="tab-telegram" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
-                    <i class="fa-paper-plane fa-solid text-sky-400"></i> <span>Telegram Bot</span>
+                    <i class="fa-paper-plane fa-solid text-sky-400"></i> <span>Telegram Bot 🔒</span>
                 </button>
                 <button onclick="switchTab('reports')" id="tab-reports" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-emerald-200 hover:bg-white/10 whitespace-nowrap transition-all duration-200">
-                    <i class="fa-solid fa-chart-pie"></i> <span>ស្ថិតិសរុប</span>
+                    <i class="fa-solid fa-chart-pie"></i> <span>ស្ថិតិសរុប 🔒</span>
                 </button>
                 <button type="button" onclick="handleAdminTabClick(event)" id="tab-admin" class="tab-btn py-2 px-3.5 rounded-xl font-medium flex items-center space-x-2 text-amber-300 hover:bg-amber-400/20 whitespace-nowrap cursor-pointer z-10 relative transition-all duration-200">
                     <i class="fa-solid fa-shield-halved"></i> <span id="adminAuthLabel">ចូល Admin</span>
@@ -151,10 +157,16 @@
 
                 <!-- Recent Logs Card -->
                 <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100 flex flex-col">
-                    <h2 class="text-lg md:text-xl font-bold text-slate-800 mb-4 flex items-center space-x-2">
-                        <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                        <span>វត្តមានទើបស្កេនថ្មីៗ</span>
-                    </h2>
+                    <div class="w-full flex justify-between items-center mb-4">
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800 flex items-center space-x-2">
+                            <div class="p-2 bg-emerald-100 text-emerald-700 rounded-xl"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                            <span>វត្តមានទើបស្កេនថ្មីៗ</span>
+                        </h2>
+                        <button onclick="clearAllScanLogs()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 border border-rose-200">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>លុបទាំងអស់</span>
+                        </button>
+                    </div>
                     <div id="recentLogsContainer" class="flex-grow overflow-y-auto space-y-3 max-h-[450px] pr-1">
                         <div class="text-center text-slate-400 py-12 text-sm">មិនទាន់មានកំណត់ត្រាស្កេននៅថ្ងៃនេះ</div>
                     </div>
@@ -312,17 +324,33 @@
         <!-- 6. MONTHLY REPORT TAB -->
         <section id="section-monthly-report" class="space-y-6 hidden">
             <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
+                <!-- Report Type Sub-tabs (Student vs Teacher) -->
+                <div class="flex items-center space-x-2 border-b border-slate-100 pb-4 mb-6">
+                    <button id="reportTabStudent" onclick="switchReportSubTab('student')" class="py-2.5 px-5 rounded-2xl font-bold text-sm bg-emerald-600 text-white shadow-md transition flex items-center space-x-2">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <span>👨‍🎓 របាយការណ៍វត្តមានសិស្ស</span>
+                    </button>
+                    <button id="reportTabTeacher" onclick="switchReportSubTab('teacher')" class="py-2.5 px-5 rounded-2xl font-bold text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center space-x-2">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                        <span>👩‍🏫 របាយការណ៍វត្តមានគ្រូបង្រៀន</span>
+                    </button>
+                </div>
+
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                     <div>
-                        <h2 class="text-lg md:text-xl font-bold text-slate-800">របាយការណ៍វត្តមានប្រចាំខែ</h2>
+                        <h2 id="monthlyReportHeading" class="text-lg md:text-xl font-bold text-slate-800">របាយការណ៍វត្តមានសិស្សប្រចាំខែ</h2>
                         <p id="printMonthTitle" class="text-xs text-slate-500">ទិន្នន័យវត្តមានសរុបស្វ័យប្រវត្តិតាមខែ និងថ្នាក់រៀន</p>
                     </div>
                     <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
                         <input type="month" id="monthlyReportFilter" onchange="generateMonthlyReport()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                        <select id="monthlyReportGradeFilter" onchange="generateMonthlyReport()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
-                            <option value="all">-- គ្រប់ថ្នាក់រៀនទាំងអស់ --</option>
-                        </select>
-                        <button onclick="clearSelectedGradeMonthlyLogs()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 font-medium px-4 py-2 rounded-2xl text-sm transition flex items-center space-x-1 no-print">
+                        
+                        <div id="studentGradeFilterContainer">
+                            <select id="monthlyReportGradeFilter" onchange="generateMonthlyReport()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                                <option value="all">-- គ្រប់ថ្នាក់រៀនទាំងអស់ --</option>
+                            </select>
+                        </div>
+
+                        <button id="clearGradeLogsBtn" onclick="clearSelectedGradeMonthlyLogs()" class="bg-rose-50 text-rose-600 hover:bg-rose-100 border border-rose-200 font-medium px-4 py-2 rounded-2xl text-sm transition flex items-center space-x-1 no-print">
                             <i class="fa-solid fa-trash-can mr-1"></i> លុបទិន្នន័យថ្នាក់នេះ
                         </button>
                         <button onclick="exportMonthlyReportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-2xl text-sm shadow-md transition flex items-center space-x-1">
@@ -333,7 +361,9 @@
                         </button>
                     </div>
                 </div>
-                <div class="overflow-x-auto rounded-2xl border border-slate-100">
+
+                <!-- Table for Students -->
+                <div id="studentReportTableContainer" class="overflow-x-auto rounded-2xl border border-slate-100">
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
                             <tr class="bg-slate-50 text-slate-700 border-b">
@@ -350,6 +380,190 @@
                         </thead>
                         <tbody id="monthlyReportTable">
                             <tr><td colspan="9" class="text-center py-8 text-slate-400">សូមជ្រើសរើសខែដើម្បីមើលរបាយការណ៍</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table for Teachers -->
+                <div id="teacherReportTableContainer" class="overflow-x-auto rounded-2xl border border-slate-100 hidden">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-700 border-b">
+                                <th class="py-3.5 px-4 font-bold">អត្តលេខ</th>
+                                <th class="py-3.5 px-4 font-bold">ឈ្មោះគ្រូបង្រៀន</th>
+                                <th class="py-3.5 px-4 font-bold">មុខវិជ្ជា</th>
+                                <th class="py-3.5 px-4 font-bold text-center">មកវត្តមាន (ថ្ងៃ)</th>
+                                <th class="py-3.5 px-4 font-bold text-center">សរុបស្កេនចូល/ចេញ</th>
+                                <th class="py-3.5 px-4 font-bold text-center">ស្កេនចុងក្រោយ</th>
+                                <th class="py-3.5 px-4 font-bold text-center no-print">សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherMonthlyReportTable">
+                            <tr><td colspan="7" class="text-center py-8 text-slate-400">សូមជ្រើសរើសខែដើម្បីមើលរបាយការណ៍គ្រូ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6.5. FINANCE TAB (ចំណូល-ចំណាយ) -->
+        <section id="section-finance" class="space-y-6 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex items-center space-x-4">
+                    <div class="bg-emerald-100 text-emerald-700 p-4 rounded-2xl shadow-inner">
+                        <i class="fa-solid fa-circle-arrow-down text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">ចំណូលសរុប</p>
+                        <h3 id="financeTotalIncome" class="text-2xl font-black text-emerald-600">$0.00</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex items-center space-x-4">
+                    <div class="bg-rose-100 text-rose-700 p-4 rounded-2xl shadow-inner">
+                        <i class="fa-solid fa-circle-arrow-up text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">ចំណាយសរុប</p>
+                        <h3 id="financeTotalExpense" class="text-2xl font-black text-rose-600">$0.00</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-xl shadow-slate-100 border border-slate-100 flex items-center space-x-4">
+                    <div class="bg-sky-100 text-sky-700 p-4 rounded-2xl shadow-inner">
+                        <i class="fa-solid fa-scale-balanced text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">តុល្យភាព (សាច់ប្រាក់នៅសល់)</p>
+                        <h3 id="financeNetBalance" class="text-2xl font-black text-sky-700">$0.00</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <div>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">កត់ត្រាចំណូល-ចំណាយ និងរបាយការណ៍ហិរញ្ញវត្ថុ</h2>
+                        <p class="text-xs text-slate-500">គ្រប់គ្រងប្រតិបត្តិការហិរញ្ញវត្ថុប្រចាំថ្ងៃ ខែ និងឆ្នាំ</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <input type="date" id="financeFilterDate" onchange="renderFinanceTable()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <select id="financeFilterPeriod" onchange="renderFinanceTable()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                            <option value="all">-- គ្រប់ពេលវេលា --</option>
+                            <option value="day">ប្រចាំថ្ងៃនេះ</option>
+                            <option value="month" selected>ប្រចាំខែនេះ</option>
+                            <option value="year">ប្រចាំឆ្នាំនេះ</option>
+                        </select>
+                        <button onclick="exportFinanceCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-2xl text-sm shadow-md transition flex items-center space-x-1">
+                            <i class="fa-solid fa-file-csv mr-1"></i> Export CSV
+                        </button>
+                        <button onclick="openFinanceModal()" class="bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-sm font-medium px-4 py-2 rounded-2xl shadow-lg shadow-emerald-600/20 flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>+ កត់ត្រាថ្មី</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-700 border-b">
+                                <th class="py-3.5 px-4 font-bold">ថ្ងៃខែឆ្នាំ</th>
+                                <th class="py-3.5 px-4 font-bold">ប្រភេទ</th>
+                                <th class="py-3.5 px-4 font-bold">ចំណាត់ថ្នាក់</th>
+                                <th class="py-3.5 px-4 font-bold">បរិយាយ / កំណត់ចំណាំ</th>
+                                <th class="py-3.5 px-4 font-bold text-right">ទឹកប្រាក់ ($)</th>
+                                <th class="py-3.5 px-4 font-bold text-center no-print">សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="financeTableBody">
+                            <tr><td colspan="6" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យចំណូល-ចំណាយទេ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6.6. PAYROLL & STUDENT INVOICES TAB (វិក្កយបត្រ & ប្រាក់ខែគ្រូ) -->
+        <section id="section-payroll" class="space-y-6 hidden">
+            <!-- Sub-tabs for Payroll vs Invoices -->
+            <div class="flex items-center space-x-2 border-b border-slate-100 pb-4">
+                <button id="payrollSubTabTeacher" onclick="switchPayrollSubTab('teacher')" class="py-2.5 px-5 rounded-2xl font-bold text-sm bg-emerald-600 text-white shadow-md transition flex items-center space-x-2">
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                    <span>👩‍🏫 ប្រាក់ខែគ្រូ (គណនាតាមម៉ោងស្កេន)</span>
+                </button>
+                <button id="payrollSubTabStudent" onclick="switchPayrollSubTab('student')" class="py-2.5 px-5 rounded-2xl font-bold text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center space-x-2">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span>👨‍🎓 វិក្កយបត្រថ្លៃសិក្សាសិស្ស</span>
+                </button>
+            </div>
+
+            <!-- TEACHER PAYROLL CONTAINER -->
+            <div id="teacherPayrollContainer" class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100 space-y-6">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">ការទូទាត់ប្រាក់ខែគ្រូបង្រៀន (គណនាតាមម៉ោងស្កេនវត្តមាន)</h2>
+                        <p class="text-xs text-slate-500">គណនាប្រាក់ឧបត្ថម្ភ/ប្រាក់ខែដោយស្វ័យប្រវត្តិផ្អែកលើអត្រាឈ្នួលដាច់ដោយឡែករបស់គ្រូម្នាក់ៗ</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <input type="month" id="payrollMonthFilter" onchange="renderTeacherPayroll()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium px-4 py-2 rounded-2xl text-sm shadow-md transition flex items-center space-x-1 no-print">
+                            <i class="fa-solid fa-print mr-1"></i> បោះពុម្ព PaySlip
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-700 border-b">
+                                <th class="py-3.5 px-4 font-bold">អត្តលេខ</th>
+                                <th class="py-3.5 px-4 font-bold">ឈ្មោះគ្រូបង្រៀន</th>
+                                <th class="py-3.5 px-4 font-bold">មុខវិជ្ជា</th>
+                                <th class="py-3.5 px-4 font-bold text-center">ថ្ងៃមកបង្រៀន</th>
+                                <th class="py-3.5 px-4 font-bold text-center">ដងស្កេនសរុប</th>
+                                <th class="py-3.5 px-4 font-bold text-center">អត្រាឈ្នួល ($/ដងស្កេន)</th>
+                                <th class="py-3.5 px-4 font-bold text-right">ទឹកប្រាក់ត្រូវបើក ($)</th>
+                                <th class="py-3.5 px-4 font-bold text-center no-print">សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherPayrollTableBody">
+                            <tr><td colspan="8" class="text-center py-8 text-slate-400">សូមជ្រើសរើសខែដើម្បីគណនាប្រាក់ខែ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- STUDENT FEE INVOICES CONTAINER -->
+            <div id="studentInvoiceContainer" class="bg-white rounded-3xl shadow-xl shadow-slate-100 p-5 md:p-8 border border-slate-100 space-y-6 hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-lg md:text-xl font-bold text-slate-800">វិក្កយបត្របង់ប្រាក់ថ្លៃសិក្សាសិស្ស</h2>
+                        <p class="text-xs text-slate-500">គ្រប់គ្រង និងចេញវិក្កយបត្របង់ថ្លៃសិក្សាប្រចាំខែសម្រាប់សិស្ស</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <select id="invoiceGradeFilter" onchange="renderStudentInvoices()" class="border-2 border-slate-200 rounded-2xl px-3 py-2 text-sm font-bold text-slate-700 bg-white">
+                            <option value="all">-- គ្រប់ថ្នាក់រៀនទាំងអស់ --</option>
+                        </select>
+                        <button onclick="openStudentInvoiceModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2.5 rounded-2xl text-sm shadow-md transition flex items-center space-x-1">
+                            <i class="fa-solid fa-plus mr-1"></i> បង្កើតវិក្កយបត្រថ្មី
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-700 border-b">
+                                <th class="py-3.5 px-4 font-bold">លេខវិក្កយបត្រ</th>
+                                <th class="py-3.5 px-4 font-bold">ឈ្មោះសិស្ស</th>
+                                <th class="py-3.5 px-4 font-bold">ថ្នាក់</th>
+                                <th class="py-3.5 px-4 font-bold">ខែសិក្សា</th>
+                                <th class="py-3.5 px-4 font-bold text-right">ទឹកប្រាក់ ($)</th>
+                                <th class="py-3.5 px-4 font-bold text-center">ស្ថានភាព</th>
+                                <th class="py-3.5 px-4 font-bold text-center no-print">សកម្មភាព</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentInvoiceTableBody">
+                            <tr><td colspan="7" class="text-center py-8 text-slate-400">មិនទាន់មានវិក្កយបត្រត្រូវបានបង្កើតទេ</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -432,6 +646,101 @@
     </main>
 
     <!-- MODALS -->
+
+    <!-- Student Invoice Create/Edit Modal -->
+    <div id="studentInvoiceModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 md:p-8 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-5">
+                <h3 class="text-lg font-bold text-slate-800">បង្កើតវិក្កយបត្រថ្លៃសិក្សា</h3>
+                <button onclick="closeStudentInvoiceModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="saveStudentInvoice(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ជ្រើសរើសសិស្ស</label>
+                    <select id="invStudentId" required class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ខែសិក្សា (ឧ. 2026-11)</label>
+                    <input type="month" id="invMonth" required class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">ទឹកប្រាក់សរុប ($)</label>
+                        <input type="number" step="0.01" id="invAmount" required value="30" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">បង់បានរួច ($)</label>
+                        <input type="number" step="0.01" id="invPaidAmount" value="30" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold text-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">ស្ថានភាពទូទាត់</label>
+                        <select id="invStatus" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                            <option value="បានបង់ប្រាក់រួច">🟢 បានបង់រួច</option>
+                            <option value="នៅខ្វះ">🟡 នៅខ្វះ (បង់រំលោះ)</option>
+                            <option value="មិនទាន់បង់">🔴 មិនទាន់បង់</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">ការបង់ប្រាក់លើកទី</label>
+                        <select id="invInstallment" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                            <option value="លើកទី ១">លើកទី ១</option>
+                            <option value="លើកទី ២">លើកទី ២</option>
+                            <option value="លើកទី ៣">លើកទី ៣</option>
+                            <option value="បង់ដាច់">បង់ដាច់</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 pt-4">
+                    <button type="button" onclick="closeStudentInvoiceModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុកវិក្កយបត្រ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Finance Item Modal -->
+    <div id="financeModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full p-6 md:p-8 animate-in fade-in zoom-in duration-200">
+            <div class="flex justify-between items-center mb-5">
+                <h3 id="financeModalTitle" class="text-lg font-bold text-slate-800">បន្ថែមប្រតិបត្តិការហិរញ្ញវត្ថុ</h3>
+                <button onclick="closeFinanceModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="financeForm" onsubmit="saveFinanceRecord(event)" class="space-y-4">
+                <input type="hidden" id="finId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ប្រភេទប្រតិបត្តិការ</label>
+                    <select id="finType" required class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                        <option value="income">🟢 ចំណូល (Income)</option>
+                        <option value="expense">🔴 ចំណាយ (Expense)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ចំនួនទឹកប្រាក់ ($)</label>
+                    <input type="number" step="0.01" id="finAmount" required placeholder="0.00" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ចំណាត់ថ្នាក់</label>
+                    <input type="text" id="finCategory" placeholder="ឧ. ថ្លៃសិក្សា, សម្ភារៈសិក្សា, ជួសជុល..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">ថ្ងៃខែឆ្នាំ</label>
+                    <input type="date" id="finDate" required class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1.5">បរិយាយ / កំណត់ចំណាំ</label>
+                    <textarea id="finNote" rows="2" placeholder="ព័ត៌មានបន្ថែម..." class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                </div>
+                <div class="flex items-center space-x-3 pt-4">
+                    <button type="button" onclick="closeFinanceModal()" class="flex-1 py-3 border-2 border-slate-200 rounded-2xl text-sm font-bold text-slate-600 hover:bg-slate-50 transition">បោះបង់</button>
+                    <button type="submit" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-2xl text-sm font-bold shadow-lg shadow-emerald-600/20 transition">រក្សាទុក</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Student Modal -->
     <div id="studentModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
@@ -543,7 +852,7 @@
                 <button onclick="closeTimetableSlotModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center transition"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="timetableForm" onsubmit="saveTimetableSlot(event)" class="space-y-4">
-                <input type="hidden" id="ttIndex">
+                <input type="hidden" id="ttSlotKey">
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1.5">ជ្រើសរើសវេនសិក្សា</label>
                     <select id="ttShift" class="w-full border-2 border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white mb-2">
@@ -679,9 +988,13 @@
 
         let db = null;
         let isConnected = false;
-        let studentsData = {};
-        let teachersData = {};
-        // Default Classes setup so grade names are always properly rendered
+        let studentsData = {
+            "STU001": { id: "STU001", name: "អុីប្រាហ៊ីម សុខា", gender: "ប្រុស", grade: "cls_7a", phone: "012345678" }
+        };
+        let teachersData = {
+            "TEA001": { id: "TEA001", name: "លោកគ្រូ អុីប្រាហ៊ីម", subject: "គណិតវិទ្យា", phone: "098765432" }
+        };
+        let teacherCustomRates = {};
         let classesData = {
             "cls_7a": { name: "ថ្នាក់ទី ៧ ក", room: "បន្ទប់ ៧០១", teacher: "គ្រូប្រចាំថ្នាក់ ៧ ក" },
             "cls_8a": { name: "ថ្នាក់ទី ៨ ក", room: "បន្ទប់ ៨០១", teacher: "គ្រូប្រចាំថ្នាក់ ៨ ក" },
@@ -691,9 +1004,11 @@
             "cls_12a": { name: "ថ្នាក់ទី ១២ ក", room: "បន្ទប់ ១២០១", teacher: "គ្រូប្រចាំថ្នាក់ ១២ ក" }
         };
         let scanLogsData = [];
+        let financeData = {};
+        let studentInvoicesData = {};
         let telegramConfig = { botToken: "", chatIds: {} };
         let isAdminAuthenticated = false;
-        let adminPasswordHash = "12345"; // Default admin password
+        let adminPasswordHash = "12345";
         let autoLockTimer = null;
         let timetablesData = {};
 
@@ -718,41 +1033,35 @@
         window.onload = function() {
             initScanner();
             
-            // Set current month to monthly report filter
             const now = new Date();
             const yearMonth = now.toISOString().slice(0, 7);
             const reportFilter = document.getElementById('monthlyReportFilter');
             if (reportFilter) reportFilter.value = yearMonth;
+
+            const payrollMonth = document.getElementById('payrollMonthFilter');
+            if (payrollMonth) payrollMonth.value = yearMonth;
+
+            const finFilterDate = document.getElementById('financeFilterDate');
+            if (finFilterDate) finFilterDate.value = now.toISOString().slice(0, 10);
 
             updateClassSelects();
             renderStudents();
             renderTeachers();
             renderClasses();
             renderLogs();
+            renderFinanceTable();
+            renderTeacherPayroll();
+            renderStudentInvoices();
             updateStats();
         };
 
-        function resetTimer() {
-            if (isAdminAuthenticated) {
-                clearTimeout(autoLockTimer);
-                autoLockTimer = setTimeout(() => logoutAdmin(true), 5 * 60 * 1000); // 5 Minutes
-            }
-        }
-
-        function setupAutoLockActivityListener() {
-            resetTimer();
-            window.removeEventListener('mousemove', resetTimer);
-            window.removeEventListener('keydown', resetTimer);
-            window.removeEventListener('click', resetTimer);
-            window.removeEventListener('touchstart', resetTimer);
-
-            window.addEventListener('mousemove', resetTimer);
-            window.addEventListener('keydown', resetTimer);
-            window.addEventListener('click', resetTimer);
-            window.addEventListener('touchstart', resetTimer);
-        }
-
         function switchTab(tabId) {
+            // កំណត់សិទ្ធិ៖ ប្រសិនបើមិនមែនជា Tab Scan ទេ ត្រូវទាមទារលេខសម្ងាត់ Admin ជាដាច់ខាត
+            if (tabId !== 'scan' && !isAdminAuthenticated) {
+                openAdminAuthModal(() => switchTab(tabId));
+                return;
+            }
+
             document.querySelectorAll('section[id^="section-"]').forEach(sec => sec.classList.add('hidden'));
             const targetSection = document.getElementById(`section-${tabId}`);
             if (targetSection) targetSection.classList.remove('hidden');
@@ -770,783 +1079,181 @@
 
             if (tabId === 'monthly-report') generateMonthlyReport();
             if (tabId === 'timetable') renderTimetable();
-        }
-
-        function updateDbStatus(connected, text) {
-            isConnected = connected;
-            const dot = document.getElementById('dbDot');
-            const txt = document.getElementById('dbStatusText');
-            if (dot && txt) {
-                if (connected) {
-                    dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-                    txt.textContent = text;
-                } else {
-                    dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
-                    txt.textContent = text;
-                }
+            if (tabId === 'finance') renderFinanceTable();
+            if (tabId === 'payroll') {
+                renderTeacherPayroll();
+                renderStudentInvoices();
             }
         }
 
-        function handleAdminTabClick(e) {
-            e.preventDefault();
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal();
+        function switchReportSubTab(subTab) {
+            const btnStudent = document.getElementById('reportTabStudent');
+            const btnTeacher = document.getElementById('reportTabTeacher');
+            const tableStudent = document.getElementById('studentReportTableContainer');
+            const tableTeacher = document.getElementById('teacherReportTableContainer');
+            const heading = document.getElementById('monthlyReportHeading');
+            const gradeFilter = document.getElementById('studentGradeFilterContainer');
+
+            if (subTab === 'student') {
+                if (btnStudent) btnStudent.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-emerald-600 text-white shadow-md transition flex items-center space-x-2";
+                if (btnTeacher) btnTeacher.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center space-x-2";
+                if (tableStudent) tableStudent.classList.remove('hidden');
+                if (tableTeacher) tableTeacher.classList.add('hidden');
+                if (heading) heading.textContent = "របាយការណ៍វត្តមានសិស្សប្រចាំខែ";
+                if (gradeFilter) gradeFilter.classList.remove('hidden');
             } else {
-                openChangePasswordModal();
+                if (btnStudent) btnStudent.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center space-x-2";
+                if (btnTeacher) btnTeacher.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-emerald-600 text-white shadow-md transition flex items-center space-x-2";
+                if (tableStudent) tableStudent.classList.add('hidden');
+                if (tableTeacher) tableTeacher.classList.remove('hidden');
+                if (heading) heading.textContent = "របាយការណ៍វត្តមានគ្រូបង្រៀនប្រចាំខែ";
+                if (gradeFilter) gradeFilter.classList.add('hidden');
             }
+            generateMonthlyReport();
         }
 
-        function openChangePasswordModal() {
-            const modal = document.getElementById('changePasswordModal');
-            if (modal) modal.classList.remove('hidden');
-        }
+        function switchPayrollSubTab(subTab) {
+            const btnTeacher = document.getElementById('payrollSubTabTeacher');
+            const btnStudent = document.getElementById('payrollSubTabStudent');
+            const containerTeacher = document.getElementById('teacherPayrollContainer');
+            const containerStudent = document.getElementById('studentInvoiceContainer');
 
-        function closeChangePasswordModal() {
-            const modal = document.getElementById('changePasswordModal');
-            if (modal) modal.classList.add('hidden');
-            document.getElementById('oldAdminPassword').value = "";
-            document.getElementById('newAdminPassword').value = "";
-            document.getElementById('confirmAdminPassword').value = "";
-        }
-
-        function saveNewAdminPassword(e) {
-            e.preventDefault();
-            const oldPwd = document.getElementById('oldAdminPassword').value;
-            const newPwd = document.getElementById('newAdminPassword').value;
-            const confirmPwd = document.getElementById('confirmAdminPassword').value;
-
-            if (oldPwd !== adminPasswordHash) {
-                alert("❌ ពាក្យសម្ងាត់ចាស់មិនត្រឹមត្រូវទេ!");
-                return;
-            }
-            if (newPwd !== confirmPwd) {
-                alert("❌ ពាក្យសម្ងាត់ថ្មីទាំង ២ មិនដូចគ្នាទេ!");
-                return;
-            }
-            if (newPwd.length < 4) {
-                alert("⚠️ ពាក្យសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៤ តួ!");
-                return;
-            }
-
-            adminPasswordHash = newPwd;
-            if (db && isConnected) {
-                db.ref('security/adminPassword').set(newPwd);
-            }
-            alert("✅ ផ្លាស់ប្តូរពាក្យសម្ងាត់ Admin បានជោគជ័យ!");
-            closeChangePasswordModal();
-        }
-
-        function logoutAdmin(isAuto = false) {
-            isAdminAuthenticated = false;
-            clearTimeout(autoLockTimer);
-            const adminLabel = document.getElementById('adminAuthLabel');
-            if (adminLabel) adminLabel.textContent = "ចូល Admin";
-            const tabAdmin = document.getElementById('tab-admin');
-            const logoutBtn = document.getElementById('tab-admin-logout');
-
-            if (tabAdmin) {
-                tabAdmin.classList.add('text-amber-300');
-                tabAdmin.classList.remove('bg-white', 'text-emerald-900', 'shadow-sm');
-            }
-            if (logoutBtn) logoutBtn.classList.add('hidden');
-
-            if (isAuto) {
-                alert("🔒 សិទ្ធិ Admin ត្រូវបានចាក់សោស្វ័យប្រវត្តិដោយសារគ្មានសកម្មភាពរយៈពេល ៥ នាទី!");
+            if (subTab === 'teacher') {
+                if (btnTeacher) btnTeacher.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-emerald-600 text-white shadow-md transition flex items-center space-x-2";
+                if (btnStudent) btnStudent.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center space-x-2";
+                if (containerTeacher) containerTeacher.classList.remove('hidden');
+                if (containerStudent) containerStudent.classList.add('hidden');
             } else {
-                alert("🔒 បានចាក់សោសិទ្ធិ Admin រួចរាល់!");
+                if (btnTeacher) btnTeacher.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center space-x-2";
+                if (btnStudent) btnStudent.className = "py-2.5 px-5 rounded-2xl font-bold text-sm bg-emerald-600 text-white shadow-md transition flex items-center space-x-2";
+                if (containerTeacher) containerTeacher.classList.add('hidden');
+                if (containerStudent) containerStudent.classList.remove('hidden');
             }
-        }
-
-        function initFirebaseListeners() {
-            if (!db) return;
-
-            db.ref('security/adminPassword').on('value', (snapshot) => {
-                const val = snapshot.val();
-                if (val) adminPasswordHash = val;
-            });
-
-            db.ref('students').on('value', (snapshot) => {
-                const val = snapshot.val();
-                studentsData = val || {};
-                renderStudents();
-                updateStats();
-            });
-
-            db.ref('teachers').on('value', (snapshot) => {
-                const val = snapshot.val();
-                teachersData = val || {};
-                renderTeachers();
-                updateStats();
-            });
-
-            db.ref('classes').on('value', (snapshot) => {
-                const val = snapshot.val();
-                classesData = val || {};
-                updateClassSelects();
-                renderClasses();
-                renderTimetable();
-                updateStats();
-            });
-
-            db.ref('scanLogs').on('value', (snapshot) => {
-                const val = snapshot.val() || {};
-                scanLogsData = Object.values(val);
-                renderLogs();
-                updateStats();
-            });
-
-            db.ref('telegramConfig').on('value', (snapshot) => {
-                telegramConfig = snapshot.val() || { botToken: "", chatIds: {} };
-                loadTelegramConfigUI();
-            });
-
-            db.ref('timetables').on('value', (snapshot) => {
-                const val = snapshot.val();
-                timetablesData = val || {};
-                renderTimetable();
-            });
-        }
-
-        function initScanner() {
-            const scannerStatus = document.getElementById('scannerStatus');
-            try {
-                if (!html5QrCode) {
-                    html5QrCode = new Html5Qrcode("reader");
-                }
-                const config = { fps: 5, qrbox: { width: 230, height: 230 } };
-                
-                html5QrCode.start(
-                    { facingMode: "environment" },
-                    config,
-                    onScanSuccess,
-                    (error) => {}
-                ).then(() => {
-                    isCameraActive = true;
-                    updateCameraButtonState();
-                    if (scannerStatus) scannerStatus.textContent = "កាមេរ៉ាកំពុងដំណើរការ (ត្រៀមស្កេន)...";
-                }).catch(err => {
-                    isCameraActive = false;
-                    updateCameraButtonState();
-                    if (scannerStatus) scannerStatus.textContent = "មិនអាចបើកកាមេរ៉ាបាន (សូមប្រើប្រាស់ការបញ្ចូលដោយដៃ)";
-                });
-            } catch (e) {
-                isCameraActive = false;
-                updateCameraButtonState();
-                if (scannerStatus) scannerStatus.textContent = "មិនមានកាមេរ៉ា ឬ Browser មិនគាំទ្រ";
-            }
-        }
-
-        function toggleCamera() {
-            const scannerStatus = document.getElementById('scannerStatus');
-            if (isCameraActive && html5QrCode) {
-                html5QrCode.stop().then(() => {
-                    isCameraActive = false;
-                    updateCameraButtonState();
-                    if (scannerStatus) scannerStatus.textContent = "🔴 កាមេរ៉ាត្រូវបានបិទ (សូមបើកកាមេរ៉ា ឬវាយបញ្ចូលអត្តលេខដោយដៃ)";
-                }).catch(err => console.error("Error stopping camera:", err));
-            } else {
-                initScanner();
-            }
-        }
-
-        function updateCameraButtonState() {
-            const btn = document.getElementById('toggleCamBtn');
-            const icon = document.getElementById('toggleCamIcon');
-            const text = document.getElementById('toggleCamText');
-            if (!btn || !icon || !text) return;
-
-            if (isCameraActive) {
-                btn.className = "bg-rose-100 hover:bg-rose-200 text-rose-700 px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 shadow-sm";
-                icon.className = "fa-solid fa-video-slash";
-                text.textContent = "បិទកាមេរ៉ា";
-            } else {
-                btn.className = "bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center space-x-1.5 shadow-sm";
-                icon.className = "fa-solid fa-video";
-                text.textContent = "បើកកាមេរ៉ា";
-            }
-        }
-
-        function onScanSuccess(decodedText) {
-            processAttendance(decodedText.trim());
-        }
-
-        function handleManualScan() {
-            const input = document.getElementById('manualScanInput');
-            if (input && input.value.trim()) {
-                processAttendance(input.value.trim());
-                input.value = "";
-            }
-        }
-
-        function processAttendance(scannedId) {
-            const targetTypeSelect = document.getElementById('scanTargetType');
-            const checkTypeSelect = document.getElementById('scanCheckType');
-            const targetType = targetTypeSelect ? targetTypeSelect.value : 'student';
-            const checkType = checkTypeSelect ? checkTypeSelect.value : 'ចូលរៀន';
-
-            const now = new Date();
-            // Format standard ISO date string for standard date filtering (YYYY-MM-DD HH:mm:ss)
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            const standardTimestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-            const displayTimestamp = now.toLocaleDateString('km-KH') + ' ' + now.toLocaleTimeString('km-KH');
-
-            if (targetType === 'teacher') {
-                const teacher = teachersData[scannedId];
-                if (!teacher) {
-                    alert("រកមិនឃើញអត្តលេខគ្រូបង្រៀននេះក្នុងប្រព័ន្ធទេ: " + scannedId);
-                    return;
-                }
-
-                const logItem = {
-                    id: teacher.id,
-                    name: teacher.name,
-                    role: 'teacher',
-                    subject: teacher.subject,
-                    checkType: checkType,
-                    status: 'មកវត្តមាន',
-                    timestamp: standardTimestamp,
-                    displayTime: displayTimestamp
-                };
-
-                if (db && isConnected) {
-                    db.ref('scanLogs').push(logItem);
-                }
-                scanLogsData.unshift(logItem);
-                renderLogs();
-                updateStats();
-                sendTeacherTelegramNotification(teacher, checkType, displayTimestamp);
-                alert(`✅ កត់ត្រាគ្រូបង្រៀន [${checkType}] បានជោគជ័យ: លោកគ្រូ/អ្នកគ្រូ ${teacher.name}`);
-                return;
-            }
-
-            // Student scan processing
-            const student = studentsData[scannedId];
-            if (!student) {
-                alert("រកមិនឃើញអត្តលេខសិស្សនេះក្នុងប្រព័ន្ធទេ: " + scannedId);
-                return;
-            }
-
-            const statusRadio = document.querySelector('input[name="attendanceStatus"]:checked');
-            const statusText = statusRadio ? statusRadio.value : "មកវត្តមាន";
-            const scheduleInfo = getCurrentScheduleInfo(student.grade, now);
-
-            const logItem = { 
-                id: student.id, 
-                name: student.name, 
-                role: 'student',
-                grade: student.grade, 
-                status: statusText, 
-                checkType: checkType,
-                timestamp: standardTimestamp,
-                displayTime: displayTimestamp,
-                subject: scheduleInfo.subject,
-                period: scheduleInfo.period,
-                teacher: scheduleInfo.teacher
-            };
-
-            if (db && isConnected) {
-                db.ref('scanLogs').push(logItem);
-            }
-            scanLogsData.unshift(logItem);
-            renderLogs();
-            updateStats();
-
-            sendTelegramNotification(student, statusText, checkType, displayTimestamp, scheduleInfo);
-            alert(`✅ កត់ត្រាវត្តមានសិស្ស (${statusText} - ${checkType}) [មុខវិជ្ជា: ${scheduleInfo.subject}] បានជោគជ័យ: ${student.name}`);
-        }
-
-        function getCurrentScheduleInfo(gradeKey, now) {
-            const dayIndex = now.getDay(); // 0: Sun, 1: Mon, ..., 6: Sat
-            const daysMap = ["អាទិត្យ", "ចន្ទ", "អង្គារ", "ពុធ", "ព្រហស្បតិ៍", "សុក្រ", "សៅរ៍"];
-            const currentDayName = daysMap[dayIndex] || "ចន្ទ";
-
-            const currentMinutes = now.getHours() * 60 + now.getMinutes();
-            let periodName = "ម៉ោងសិក្សាក្រៅកាលវិភាគ";
-            let subjectName = "សិក្សាទូទៅ";
-
-            // Safe lookup for class and timetable
-            const gradeSlots = (timetablesData && timetablesData[gradeKey]) ? timetablesData[gradeKey] : [];
-            let matchedSlot = null;
-
-            // Helper function to convert time string (e.g. "07:00 - 07:50" or "07:00") into minutes
-            function parseMinutes(timeStr) {
-                if (!timeStr) return null;
-                const matches = timeStr.match(/(\d{1,2}):(\d{2})/g);
-                if (matches && matches.length >= 2) {
-                    const [h1, m1] = matches[0].split(':').map(Number);
-                    const [h2, m2] = matches[1].split(':').map(Number);
-                    return { start: h1 * 60 + m1, end: h2 * 60 + m2 };
-                } else if (matches && matches.length === 1) {
-                    const [h, m] = matches[0].split(':').map(Number);
-                    return { start: h * 60, end: (h + 1) * 60 };
-                }
-                return null;
-            }
-
-            for (let slot of gradeSlots) {
-                if (!slot) continue;
-                const timeRange = parseMinutes(slot.time);
-                
-                // If scanned time falls within the schedule slot range (or standard preset range)
-                if (timeRange && currentMinutes >= (timeRange.start - 20) && currentMinutes <= (timeRange.end + 20)) {
-                    matchedSlot = slot;
-                    break;
-                }
-            }
-
-            if (matchedSlot) {
-                periodName = matchedSlot.time || "ម៉ោងសិក្សា";
-                if (matchedSlot.days && matchedSlot.days[dayIndex]) {
-                    subjectName = matchedSlot.days[dayIndex];
-                } else {
-                    subjectName = "មុខវិជ្ជាតាមតារាង";
-                }
-            } else {
-                if (currentMinutes >= 390 && currentMinutes < 720) {
-                    periodName = "វេនព្រឹក";
-                    subjectName = "មុខវិជ្ជាវេនព្រឹក";
-                } else if (currentMinutes >= 720 && currentMinutes < 1080) {
-                    periodName = "វេនរសៀល";
-                    subjectName = "មុខវិជ្ជាវេនរសៀល";
-                }
-            }
-
-            const classObj = (classesData && classesData[gradeKey]) ? classesData[gradeKey] : { teacher: "លោកគ្រូ/អ្នកគ្រូប្រចាំថ្នាក់" };
-            const teacherName = classObj.teacher || "លោកគ្រូ/អ្នកគ្រូប្រចាំថ្នាក់";
-
-            return {
-                day: currentDayName,
-                period: periodName,
-                subject: subjectName,
-                teacher: teacherName
-            };
-        }
-
-        function renderLogs() {
-            const container = document.getElementById('recentLogsContainer');
-            if (!container) return;
-
-            if (scanLogsData.length === 0) {
-                container.innerHTML = `<div class="text-center text-slate-400 py-12 text-sm">មិនទាន់មានកំណត់ត្រាស្កេននៅថ្ងៃនេះ</div>`;
-                return;
-            }
-
-            container.innerHTML = scanLogsData.slice().reverse().map((log, originalIdx) => {
-                const actualIdx = scanLogsData.length - 1 - originalIdx;
-
-                let badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-200";
-                if (log.status === "ច្បាប់") badgeColor = "bg-amber-50 text-amber-700 border-amber-200";
-                if (log.status === "អវត្តមាន") badgeColor = "bg-rose-50 text-rose-700 border-rose-200";
-
-                const isTeacher = log.role === 'teacher';
-                const checkTypeBadge = log.checkType === 'ចេញពីសាលា' ? 'bg-purple-100 text-purple-700 border-purple-200' : 'bg-sky-100 text-sky-700 border-sky-200';
-
-                let gradeDisplay = log.grade || '';
-                if (classesData[log.grade]) {
-                    gradeDisplay = classesData[log.grade].name;
-                } else if (log.grade) {
-                    const foundClassKey = Object.keys(classesData).find(k => k === log.grade || classesData[k].name === log.grade);
-                    if (foundClassKey) {
-                        gradeDisplay = classesData[foundClassKey].name;
-                    }
-                }
-
-                const timeToShow = log.displayTime || log.timestamp;
-
-                return `
-                    <div class="bg-slate-50 border border-slate-100 p-3.5 rounded-2xl flex justify-between items-center shadow-sm">
-                        <div>
-                            <div class="flex items-center space-x-2">
-                                <h4 class="font-bold text-slate-800 text-sm">${log.name}</h4>
-                                <span class="text-[10px] px-2 py-0.5 rounded-lg border font-bold ${isTeacher ? 'bg-indigo-50 text-indigo-700 border-indigo-200' : badgeColor}">${isTeacher ? 'គ្រូបង្រៀន' : (log.status || 'មកវត្តមាន')}</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-lg border font-bold ${checkTypeBadge}">${log.checkType || 'ចូលរៀន'}</span>
-                            </div>
-                            <p class="text-xs text-slate-500 mt-0.5">អត្តលេខ: ${log.id} ${isTeacher ? '| មុខវិជ្ជា: ' + log.subject : '| ថ្នាក់: ' + gradeDisplay}</p>
-                            ${!isTeacher ? `<p class="text-[11px] text-slate-400 mt-0.5">មុខវិជ្ជា: ${log.subject || 'សិក្សាទូទៅ'}</p>` : ''}
-                        </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs font-bold text-slate-600 bg-white px-3 py-1 rounded-xl border shadow-sm">${timeToShow}</span>
-                            <button onclick="deleteScanLog(${actualIdx})" class="text-rose-500 hover:text-rose-700 p-1.5 bg-white border border-rose-200 rounded-xl shadow-sm transition" title="លុបកំណត់ត្រានេះ"><i class="fa-solid fa-trash text-xs"></i></button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function deleteScanLog(index) {
-            if (confirm("តើអ្នកពិតជាចង់លុបកំណត់ត្រាស្កេននេះមែនទេ?")) {
-                scanLogsData.splice(index, 1);
-                if (db && isConnected) {
-                    db.ref('scanLogs').set(scanLogsData).then(() => {
-                        renderLogs();
-                        generateMonthlyReport();
-                        updateStats();
-                    });
-                } else {
-                    renderLogs();
-                    generateMonthlyReport();
-                    updateStats();
-                }
-            }
-        }
-
-        let editingStudentId = null;
-        function openStudentModal(id = null) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => openStudentModal(id));
-                return;
-            }
-            editingStudentId = id;
-            const titleEl = document.getElementById('studentModalTitle');
-            if (id && studentsData[id]) {
-                titleEl.textContent = "កែប្រែព័ត៌មានសិស្ស";
-                document.getElementById('stuId').value = studentsData[id].id;
-                document.getElementById('stuId').disabled = true;
-                document.getElementById('stuName').value = studentsData[id].name;
-                document.getElementById('stuGender').value = studentsData[id].gender;
-                document.getElementById('stuGrade').value = studentsData[id].grade;
-                document.getElementById('stuPhone').value = studentsData[id].phone || '';
-            } else {
-                titleEl.textContent = "បញ្ចូលព័ត៌មានសិស្សថ្មី";
-                document.getElementById('studentForm').reset();
-                document.getElementById('stuId').disabled = false;
-            }
-            document.getElementById('studentModal').classList.remove('hidden');
-        }
-
-        function closeStudentModal() {
-            document.getElementById('studentModal').classList.add('hidden');
-            document.getElementById('studentForm').reset();
-            editingStudentId = null;
-        }
-
-        function saveStudent(e) {
-            e.preventDefault();
-            const id = document.getElementById('stuId').value.trim();
-            const name = document.getElementById('stuName').value.trim();
-            const gender = document.getElementById('stuGender').value;
-            const grade = document.getElementById('stuGrade').value;
-            const phone = document.getElementById('stuPhone').value.trim();
-
-            const student = { id, name, gender, grade, phone };
-
-            if (db && isConnected) {
-                db.ref('students/' + id).set(student);
-            } else {
-                studentsData[id] = student;
-                renderStudents();
-                updateStats();
-            }
-            closeStudentModal();
-        }
-
-        function deleteStudent(id) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => deleteStudent(id));
-                return;
-            }
-            if (confirm("តើអ្នកពិតជាចង់លុបសិស្សនេះមែនទេ?")) {
-                if (db && isConnected) {
-                    db.ref('students/' + id).remove();
-                } else {
-                    delete studentsData[id];
-                    renderStudents();
-                    updateStats();
-                }
-            }
-        }
-
-        function renderStudents() {
-            const tbody = document.getElementById('studentsTable');
-            if (!tbody) return;
-
-            const list = Object.values(studentsData || {});
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = list.map(s => {
-                if (!s) return '';
-                // Robust Grade Name formatting logic
-                let gradeDisplay = s.grade || '-';
-                if (classesData && classesData[s.grade]) {
-                    gradeDisplay = classesData[s.grade].name;
-                } else if (classesData) {
-                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || (classesData[k] && classesData[k].name === s.grade));
-                    if (foundClassKey && classesData[foundClassKey]) {
-                        gradeDisplay = classesData[foundClassKey].name;
-                    } else if (typeof s.grade === 'string' && s.grade.startsWith('cls_')) {
-                        gradeDisplay = "ថ្នាក់រៀន";
-                    } else if (s.grade && !String(s.grade).includes("ទី") && !String(s.grade).startsWith("cls_")) {
-                        gradeDisplay = "ថ្នាក់ទី " + s.grade;
-                    }
-                }
-
-                return `
-                <tr class="border-b hover:bg-slate-50 transition">
-                    <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id || ''}</td>
-                    <td class="py-3.5 px-4 font-bold text-slate-800">${s.name || ''}</td>
-                    <td class="py-3.5 px-4 text-slate-600">${s.gender || ''}</td>
-                    <td class="py-3.5 px-4 font-semibold text-slate-700">${gradeDisplay}</td>
-                    <td class="py-3.5 px-4 text-slate-600">${s.phone || '-'}</td>
-                    <td class="py-3.5 px-4 text-center">
-                        <button onclick="showQrModal('${s.id}', '${s.name}')" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 px-3 py-1.5 rounded-xl text-xs font-bold transition">
-                            <i class="fa-solid fa-qrcode mr-1"></i> មើល QR
-                        </button>
-                    </td>
-                    <td class="py-3.5 px-4 text-center space-x-2">
-                        <button onclick="openStudentModal('${s.id}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteStudent('${s.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `;
-            }).join('');
-        }
-
-        let editingTeacherId = null;
-        function openTeacherModal(id = null) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => openTeacherModal(id));
-                return;
-            }
-            editingTeacherId = id;
-            const titleEl = document.getElementById('teacherModalTitle');
-            if (id && teachersData[id]) {
-                titleEl.textContent = "កែប្រែព័ត៌មានគ្រូបង្រៀន";
-                document.getElementById('teaId').value = teachersData[id].id;
-                document.getElementById('teaId').disabled = true;
-                document.getElementById('teaName').value = teachersData[id].name;
-                document.getElementById('teaSubject').value = teachersData[id].subject;
-                document.getElementById('teaPhone').value = teachersData[id].phone || '';
-            } else {
-                titleEl.textContent = "បញ្ចូលព័ត៌មានគ្រូបង្រៀន";
-                document.getElementById('teacherForm').reset();
-                document.getElementById('teaId').disabled = false;
-            }
-            document.getElementById('teacherModal').classList.remove('hidden');
-        }
-
-        function closeTeacherModal() {
-            document.getElementById('teacherModal').classList.add('hidden');
-            document.getElementById('teacherForm').reset();
-            editingTeacherId = null;
-        }
-
-        function saveTeacher(e) {
-            e.preventDefault();
-            const id = document.getElementById('teaId').value.trim();
-            const name = document.getElementById('teaName').value.trim();
-            const subject = document.getElementById('teaSubject').value.trim();
-            const phone = document.getElementById('teaPhone').value.trim();
-
-            const teacher = { id, name, subject, phone };
-
-            if (db && isConnected) {
-                db.ref('teachers/' + id).set(teacher);
-            } else {
-                teachersData[id] = teacher;
-                renderTeachers();
-                updateStats();
-            }
-            closeTeacherModal();
-        }
-
-        function deleteTeacher(id) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => deleteTeacher(id));
-                return;
-            }
-            if (confirm("តើអ្នកពិតជាចង់លុបគ្រូបង្រៀននេះមែនទេ?")) {
-                if (db && isConnected) {
-                    db.ref('teachers/' + id).remove();
-                } else {
-                    delete teachersData[id];
-                    renderTeachers();
-                    updateStats();
-                }
-            }
-        }
-
-        function renderTeachers() {
-            const tbody = document.getElementById('teachersTable');
-            if (!tbody) return;
-
-            const list = Object.values(teachersData);
-            if (list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យគ្រូបង្រៀនទេ</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = list.map(t => `
-                <tr class="border-b hover:bg-slate-50 transition">
-                    <td class="py-3.5 px-4 font-bold text-emerald-700">${t.id}</td>
-                    <td class="py-3.5 px-4 font-bold text-slate-800">${t.name}</td>
-                    <td class="py-3.5 px-4 text-slate-600">${t.subject}</td>
-                    <td class="py-3.5 px-4 text-slate-600">${t.phone || '-'}</td>
-                    <td class="py-3.5 px-4 text-center">
-                        <button onclick="showQrModal('${t.id}', 'លោកគ្រូ/អ្នកគ្រូ: ${t.name}')" class="bg-sky-100 text-sky-800 hover:bg-sky-200 px-3 py-1.5 rounded-xl text-xs font-bold transition">
-                            <i class="fa-solid fa-qrcode mr-1"></i> មើល QR
-                        </button>
-                    </td>
-                    <td class="py-3.5 px-4 text-center space-x-2">
-                        <button onclick="openTeacherModal('${t.id}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteTeacher('${t.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function renderClasses() {
-            const grid = document.getElementById('classesGrid');
-            if (!grid) return;
-
-            const keys = Object.keys(classesData);
-            if (keys.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400 text-sm">មិនទាន់មានថ្នាក់រៀនក្នុងប្រព័ន្ធទេ (សូមចុចបន្ថែមថ្នាក់រៀន)</div>`;
-                return;
-            }
-
-            grid.innerHTML = keys.map(k => {
-                const c = classesData[k] || { name: k, room: '', teacher: '' };
-                const count = Object.values(studentsData).filter(s => s && (s.grade === k || s.grade === c.name || String(s.grade).includes(c.name))).length;
-                return `
-                    <div class="bg-slate-50/80 p-5 rounded-2xl border-2 border-slate-100 flex flex-col justify-between shadow-sm hover:border-emerald-200 transition">
-                        <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <h3 class="font-bold text-slate-800 text-base">${c.name || k}</h3>
-                                <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-1 rounded-xl font-bold shadow-sm">${count} សិស្ស</span>
-                            </div>
-                            <p class="text-xs text-slate-600 mb-1.5 flex items-center"><i class="fa-solid fa-location-dot mr-2 text-emerald-600"></i> ${c.room || 'បន្ទប់ទូទៅ'}</p>
-                            <p class="text-xs text-slate-600 flex items-center"><i class="fa-solid fa-user-tie mr-2 text-emerald-600"></i> គ្រូបន្ទុក: ${c.teacher || 'មិនទាន់មាន'}</p>
-                        </div>
-                        <div class="mt-5 pt-3 border-t flex justify-end space-x-2">
-                            <button onclick="openClassModal('${k}')" class="text-sky-600 hover:text-sky-800 text-xs font-bold flex items-center space-x-1 px-3 py-1.5 bg-white border-2 border-slate-200 rounded-xl shadow-sm transition">
-                                <i class="fa-solid fa-pen-to-square"></i> <span>កែប្រែ</span>
-                            </button>
-                            <button onclick="deleteClass('${k}')" class="text-rose-500 hover:text-rose-700 text-xs font-bold flex items-center space-x-1 px-3 py-1.5 bg-white border-2 border-slate-200 rounded-xl shadow-sm transition">
-                                <i class="fa-solid fa-trash"></i> <span>លុប</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function updateClassSelects() {
-            const stuGradeSelect = document.getElementById('stuGrade');
-            const timeGradeSelect = document.getElementById('timetableGradeSelect');
-            const reportGradeFilter = document.getElementById('monthlyReportGradeFilter');
-            
-            const keys = Object.keys(classesData);
-            const optionsHtml = keys.length > 0 
-                ? keys.map(k => `<option value="${k}">${classesData[k]?.name || k}</option>`).join('')
-                : `<option value="">-- គ្មានថ្នាក់រៀន (សូមបន្ថែមថ្នាក់) --</option>`;
-
-            if (stuGradeSelect) stuGradeSelect.innerHTML = optionsHtml;
-            if (timeGradeSelect) timeGradeSelect.innerHTML = optionsHtml;
-            
-            if (reportGradeFilter) {
-                const reportOptions = `<option value="all">-- គ្រប់ថ្នាក់រៀនទាំងអស់ --</option>` + (
-                    keys.length > 0 
-                    ? keys.map(k => `<option value="${k}">${classesData[k]?.name || k}</option>`).join('')
-                    : ''
-                );
-                reportGradeFilter.innerHTML = reportOptions;
-            }
-            renderTelegramChatInputs();
         }
 
         function generateMonthlyReport() {
-            const filterInput = document.getElementById('monthlyReportFilter');
-            const gradeFilterInput = document.getElementById('monthlyReportGradeFilter');
-            const tbody = document.getElementById('monthlyReportTable');
-            const printTitle = document.getElementById('printMonthTitle');
-            if (!tbody || !filterInput) return;
+            const monthInput = document.getElementById('monthlyReportFilter')?.value;
+            const gradeFilter = document.getElementById('monthlyReportGradeFilter')?.value || 'all';
+            const tbodyStudent = document.getElementById('monthlyReportTable');
+            const tbodyTeacher = document.getElementById('teacherMonthlyReportTable');
+            if (!monthInput) return;
 
-            const selectedYM = filterInput.value || new Date().toISOString().slice(0, 7);
-            const selectedGrade = gradeFilterInput ? gradeFilterInput.value : 'all';
-            
-            let selectedGradeName = "គ្រប់ថ្នាក់រៀន";
-            if (selectedGrade !== 'all' && classesData && classesData[selectedGrade]) {
-                selectedGradeName = classesData[selectedGrade].name;
+            // Render Student Monthly Report
+            if (tbodyStudent) {
+                const studentsList = Object.values(studentsData || {});
+                const filteredStudents = gradeFilter === 'all' ? studentsList : studentsList.filter(s => s.grade === gradeFilter);
+
+                if (filteredStudents.length === 0) {
+                    tbodyStudent.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400">មិនមានទិន្នន័យសិស្សក្នុងថ្នាក់នេះទេ</td></tr>`;
+                } else {
+                    tbodyStudent.innerHTML = filteredStudents.map(s => {
+                        let present = 0, permission = 0, absent = 0, totalScan = 0;
+                        let lastScan = '-';
+
+                        (scanLogsData || []).forEach(l => {
+                            if (l && l.targetId === s.id && l.date && l.date.startsWith(monthInput)) {
+                                totalScan++;
+                                lastScan = `${l.date} ${l.timestamp || ''}`;
+                                if (l.status === 'មកវត្តមាន') present++;
+                                else if (l.status === 'ច្បាប់') permission++;
+                                else if (l.status === 'អវត្តមាន') absent++;
+                            }
+                        });
+
+                        return `
+                            <tr class="border-b hover:bg-slate-50 transition">
+                                <td class="py-3.5 px-4 font-bold text-emerald-800">${s.id}</td>
+                                <td class="py-3.5 px-4 font-semibold text-slate-800">${s.name}</td>
+                                <td class="py-3.5 px-4">${getGradeName(s.grade)}</td>
+                                <td class="py-3.5 px-4 text-center font-bold text-emerald-600">${present}</td>
+                                <td class="py-3.5 px-4 text-center font-bold text-amber-600">${permission}</td>
+                                <td class="py-3.5 px-4 text-center font-bold text-rose-600">${absent}</td>
+                                <td class="py-3.5 px-4 text-center font-bold text-slate-700">${totalScan}</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-slate-500">${lastScan}</td>
+                                <td class="py-3.5 px-4 text-center no-print">
+                                    <button onclick="showQrModal('${s.id}', '${s.name}')" class="text-emerald-700 hover:text-emerald-900 p-1.5 bg-emerald-50 rounded-lg"><i class="fa-solid fa-qrcode"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
             }
 
-            if (printTitle) printTitle.textContent = `ប្រចាំខែ: ${selectedYM} | ថ្នាក់: ${selectedGradeName}`;
+            // Render Teacher Monthly Report
+            if (tbodyTeacher) {
+                const teachersList = Object.values(teachersData || {});
+                if (teachersList.length === 0) {
+                    tbodyTeacher.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">មិនមានទិន្នន័យគ្រូបង្រៀនទេ</td></tr>`;
+                } else {
+                    tbodyTeacher.innerHTML = teachersList.map(t => {
+                        let totalScan = 0;
+                        let daysPresent = new Set();
+                        let lastScan = '-';
 
-            let studentList = Object.values(studentsData || {});
-            if (selectedGrade !== 'all') {
-                studentList = studentList.filter(s => {
-                    if (!s) return false;
-                    if (s.grade === selectedGrade) return true;
-                    if (classesData && classesData[selectedGrade] && (s.grade === classesData[selectedGrade].name || String(s.grade).includes(classesData[selectedGrade].name))) return true;
-                    return false;
-                });
+                        (scanLogsData || []).forEach(l => {
+                            if (l && l.targetId === t.id && l.date && l.date.startsWith(monthInput)) {
+                                totalScan++;
+                                daysPresent.add(l.date);
+                                lastScan = `${l.date} ${l.timestamp || ''}`;
+                            }
+                        });
+
+                        return `
+                            <tr class="border-b hover:bg-slate-50 transition">
+                                <td class="py-3.5 px-4 font-bold text-sky-800">${t.id}</td>
+                                <td class="py-3.5 px-4 font-semibold text-slate-800">${t.name}</td>
+                                <td class="py-3.5 px-4">${t.subject || '-'}</td>
+                                <td class="py-3.5 px-4 text-center font-bold text-sky-600">${daysPresent.size} ថ្ងៃ</td>
+                                <td class="py-3.5 px-4 text-center font-bold text-slate-700">${totalScan} ដង</td>
+                                <td class="py-3.5 px-4 text-center text-xs text-slate-500">${lastScan}</td>
+                                <td class="py-3.5 px-4 text-center no-print">
+                                    <button onclick="showQrModal('${t.id}', '${t.name}')" class="text-sky-700 hover:text-sky-900 p-1.5 bg-sky-50 rounded-lg"><i class="fa-solid fa-qrcode"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
             }
+        }
 
-            if (studentList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សក្នុងថ្នាក់ដែលបានជ្រើសរើសទេ</td></tr>`;
+        function renderTeacherPayroll() {
+            const tbody = document.getElementById('teacherPayrollTableBody');
+            const monthInput = document.getElementById('payrollMonthFilter')?.value;
+            if (!tbody || !monthInput) return;
+
+            const teachersList = Object.values(teachersData || {});
+            if (teachersList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">មិនមានទិន្នន័យគ្រូបង្រៀនទេ</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = studentList.map(s => {
-                if (!s) return '';
-                const studentLogs = (scanLogsData || []).filter(l => {
-                    if (!l) return false;
-                    const matchId = String(l.id).trim() === String(s.id).trim();
-                    const matchRole = !l.role || l.role === 'student';
-                    
-                    let matchMonth = false;
-                    if (l.timestamp) {
-                        const ts = String(l.timestamp);
-                        matchMonth = ts.startsWith(selectedYM) || ts.includes(selectedYM);
+            tbody.innerHTML = teachersList.map(t => {
+                let totalScans = 0;
+                let daysPresent = new Set();
+                (scanLogsData || []).forEach(l => {
+                    if (l && l.targetId === t.id && l.date && l.date.startsWith(monthInput)) {
+                        totalScans++;
+                        daysPresent.add(l.date);
                     }
-                    if (!matchMonth && l.displayTime) {
-                        matchMonth = String(l.displayTime).includes(selectedYM.replace('-', '/')) || String(l.displayTime).includes(selectedYM);
-                    }
-                    if (!l.timestamp && !l.displayTime) matchMonth = true;
-
-                    return matchId && matchRole && matchMonth;
                 });
 
-                const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
-                const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
-                const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
-                const totalCount = studentLogs.length;
-                const lastLogObj = totalCount > 0 ? studentLogs[studentLogs.length - 1] : null;
-                const lastLog = lastLogObj ? (lastLogObj.displayTime || lastLogObj.timestamp) : '-';
-
-                let gradeDisplay = s.grade || '-';
-                if (classesData && classesData[s.grade]) {
-                    gradeDisplay = classesData[s.grade].name;
-                } else if (classesData) {
-                    const foundClassKey = Object.keys(classesData).find(k => k === s.grade || (classesData[k] && classesData[k].name === s.grade));
-                    if (foundClassKey && classesData[foundClassKey]) {
-                        gradeDisplay = classesData[foundClassKey].name;
-                    } else if (s.grade && !String(s.grade).includes("ទី")) {
-                        gradeDisplay = "ថ្នាក់ទី " + s.grade;
-                    }
-                }
+                const rate = teacherCustomRates[t.id] !== undefined ? teacherCustomRates[t.id] : 5.00;
+                const totalPay = totalScans * rate;
 
                 return `
                     <tr class="border-b hover:bg-slate-50 transition">
-                        <td class="py-3.5 px-4 font-bold text-emerald-700">${s.id || ''}</td>
-                        <td class="py-3.5 px-4 font-bold text-slate-800">${s.name || ''}</td>
-                        <td class="py-3.5 px-4 text-slate-600">${gradeDisplay}</td>
-                        <td class="py-3.5 px-4 text-center font-black text-emerald-600">${presentCount}</td>
-                        <td class="py-3.5 px-4 text-center font-black text-amber-600">${permissionCount}</td>
-                        <td class="py-3.5 px-4 text-center font-black text-rose-600">${absentCount}</td>
-                        <td class="py-3.5 px-4 text-center font-bold text-slate-700">${totalCount}</td>
-                        <td class="py-3.5 px-4 text-center text-xs text-slate-500">${lastLog}</td>
+                        <td class="py-3.5 px-4 font-bold text-sky-800">${t.id}</td>
+                        <td class="py-3.5 px-4 font-semibold text-slate-800">${t.name}</td>
+                        <td class="py-3.5 px-4">${t.subject || '-'}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-emerald-700">${daysPresent.size} ថ្ងៃ</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-700">${totalScans} ដង</td>
+                        <td class="py-3.5 px-4 text-center">
+                            <input type="number" step="0.5" value="${rate}" onchange="updateTeacherCustomRate('${t.id}', this.value)" class="w-24 border-2 border-slate-200 rounded-xl px-2.5 py-1 text-center font-bold text-emerald-800 focus:ring-2 focus:ring-emerald-500 bg-white">
+                        </td>
+                        <td class="py-3.5 px-4 text-right font-black text-emerald-600 text-base">$${totalPay.toFixed(2)}</td>
                         <td class="py-3.5 px-4 text-center no-print">
-                            <button onclick="clearStudentMonthlyLogs('${s.id}', '${selectedYM}')" class="text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1 mx-auto" title="លុបកំណត់ត្រាវត្តមានប្រចាំខែនេះ">
-                                <i class="fa-solid fa-trash"></i> <span>លុប</span>
+                            <button onclick="alert('ទូទាត់ប្រាក់ខែជូន ${t.name} ចំនួន $${totalPay.toFixed(2)} រួចរាល់!')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition shadow-sm">
+                                <i class="fa-solid fa-check mr-1"></i> ទូទាត់
                             </button>
                         </td>
                     </tr>
@@ -1554,233 +1261,91 @@
             }).join('');
         }
 
-        function clearStudentMonthlyLogs(studentId, selectedYM) {
-            if (confirm(`តើអ្នកពិតជាចង់លុបវត្តមានប្រចាំខែ (${selectedYM}) របស់សិស្សលេខ ${studentId} នេះមែនទេ?`)) {
-                scanLogsData = scanLogsData.filter(l => !(String(l.id).trim() === String(studentId).trim()));
-                if (db && isConnected) {
-                    db.ref('scanLogs').set(scanLogsData).then(() => {
-                        generateMonthlyReport();
-                        renderLogs();
-                        updateStats();
-                        alert("✅ បានលុបវត្តមានសិស្សដោយជោគជ័យ!");
-                    });
-                } else {
-                    generateMonthlyReport();
-                    renderLogs();
-                    updateStats();
-                    alert("✅ បានលុបវត្តមានសិស្សដោយជោគជ័យ!");
-                }
-            }
-        }
-
         function clearSelectedGradeMonthlyLogs() {
             if (!isAdminAuthenticated) {
                 openAdminAuthModal(() => clearSelectedGradeMonthlyLogs());
                 return;
             }
-
-            const filterInput = document.getElementById('monthlyReportFilter');
-            const gradeFilterInput = document.getElementById('monthlyReportGradeFilter');
-            if (!filterInput) return;
-
-            const selectedYM = filterInput.value;
-            const selectedGrade = gradeFilterInput ? gradeFilterInput.value : 'all';
-
-            let selectedGradeName = "គ្រប់ថ្នាក់រៀន";
-            if (selectedGrade !== 'all' && classesData[selectedGrade]) {
-                selectedGradeName = classesData[selectedGrade].name;
+            const gradeFilter = document.getElementById('monthlyReportGradeFilter')?.value || 'all';
+            const monthInput = document.getElementById('monthlyReportFilter')?.value;
+            if (gradeFilter === 'all') {
+                alert("សូមជ្រើសរើសថ្នាក់ជាក់លាក់ណាមួយដើម្បីលុបទិន្នន័យ!");
+                return;
             }
-
-            if (confirm(`⚠️ តើអ្នកពិតជាចង់លុបទិន្នន័យវត្តមានទាំងអស់នៃ (${selectedGradeName}) ក្នុងខែ (${selectedYM}) នេះមែនទេ?`)) {
-                scanLogsData = scanLogsData.filter(l => {
-                    let matchMonth = false;
-                    if (l.timestamp) {
-                        const ts = String(l.timestamp);
-                        matchMonth = ts.startsWith(selectedYM) || ts.includes(selectedYM);
-                    }
-                    if (!matchMonth && l.displayTime) {
-                        matchMonth = String(l.displayTime).includes(selectedYM.replace('-', '/')) || String(l.displayTime).includes(selectedYM);
-                    }
-
-                    if (!matchMonth) return true; // Keep logs from other months
-
-                    // Filter out logs for this grade/month
-                    if (selectedGrade === 'all') return false; // Remove all logs for this month
-
-                    const student = studentsData[l.id];
-                    if (student) {
-                        if (student.grade === selectedGrade) return false;
-                        if (classesData[selectedGrade] && (student.grade === classesData[selectedGrade].name || String(student.grade).includes(classesData[selectedGrade].name))) return false;
-                    }
-                    if (l.grade === selectedGrade || (classesData[selectedGrade] && l.grade === classesData[selectedGrade].name)) return false;
-
-                    return true;
+            if (confirm(`តើអ្នកពិតជាចង់លុបកំណត់ត្រាស្កេនរបស់ថ្នាក់នេះក្នុងខែ ${monthInput} មែនទេ?`)) {
+                const studentsInGrade = new Set();
+                Object.values(studentsData || {}).forEach(s => {
+                    if (s.grade === gradeFilter) studentsInGrade.add(s.id);
                 });
 
                 if (db && isConnected) {
-                    db.ref('scanLogs').set(scanLogsData).then(() => {
-                        generateMonthlyReport();
-                        renderLogs();
-                        updateStats();
-                        alert(`✅ បានលុបទិន្នន័យវត្តមានរបស់ថ្នាក់ ${selectedGradeName} ប្រចាំខែ ${selectedYM} ដោយជោគជ័យ!`);
+                    db.ref('scanLogs').once('value', snap => {
+                        const val = snap.val() || {};
+                        Object.keys(val).forEach(k => {
+                            const l = val[k];
+                            if (l && studentsInGrade.has(l.targetId) && l.date && l.date.startsWith(monthInput)) {
+                                db.ref('scanLogs/' + k).remove();
+                            }
+                        });
                     });
                 } else {
-                    generateMonthlyReport();
+                    scanLogsData = scanLogsData.filter(l => !(studentsInGrade.has(l.targetId) && l.date && l.date.startsWith(monthInput)));
                     renderLogs();
                     updateStats();
-                    alert(`✅ បានលុបទិន្នន័យវត្តមានរបស់ថ្នាក់ ${selectedGradeName} ប្រចាំខែ ${selectedYM} ដោយជោគជ័យ!`);
                 }
+                generateMonthlyReport();
+                alert("✅ បានលុบทិន្នន័យវត្តមានថ្នាក់នេះរួចរាល់!");
             }
         }
 
         function exportMonthlyReportCSV() {
-            const filterInput = document.getElementById('monthlyReportFilter');
-            const gradeFilterInput = document.getElementById('monthlyReportGradeFilter');
-            if (!filterInput) return;
-
-            const selectedYM = filterInput.value || new Date().toISOString().slice(0, 7);
-            const selectedGrade = gradeFilterInput ? gradeFilterInput.value : 'all';
-
-            let selectedGradeName = "គ្រប់ថ្នាក់រៀន";
-            if (selectedGrade !== 'all' && classesData[selectedGrade]) {
-                selectedGradeName = classesData[selectedGrade].name;
-            }
-
-            let studentList = Object.values(studentsData);
-            if (selectedGrade !== 'all') {
-                studentList = studentList.filter(s => {
-                    if (s.grade === selectedGrade) return true;
-                    if (classesData[selectedGrade] && (s.grade === classesData[selectedGrade].name || String(s.grade).includes(classesData[selectedGrade].name))) return true;
-                    return false;
-                });
-            }
-
-            if (studentList.length === 0) {
-                alert("មិនទាន់មានទិន្នន័យសម្រាប់ Export CSV ទេ!");
-                return;
-            }
-
-            let csvContent = "\uFEFF"; // UTF-8 BOM for Excel Khmer text rendering
-            csvContent += `របាយការណ៍វត្តមានប្រចាំខែ: ${selectedYM} | ថ្នាក់: ${selectedGradeName}\n`;
-            csvContent += "អត្តលេខ,ឈ្មោះសិស្ស,ថ្នាក់រៀន,មកវត្តមាន,សុំច្បាប់,អវត្តមាន,សរុបស្កេន,ស្កេនចុងក្រោយ\n";
-
-            studentList.forEach(s => {
-                const studentLogs = scanLogsData.filter(l => {
-                    const matchId = String(l.id).trim() === String(s.id).trim();
-                    const matchRole = !l.role || l.role === 'student';
-                    let matchMonth = false;
-                    if (l.timestamp) {
-                        const ts = String(l.timestamp);
-                        matchMonth = ts.startsWith(selectedYM) || ts.includes(selectedYM);
+            const monthInput = document.getElementById('monthlyReportFilter')?.value;
+            let csvContent = "\uFEFFអត្តលេខ,ឈ្មោះ,ថ្នាក់,មកវត្តមាន,សុំច្បាប់,អវត្តមាន,សរុបស្កេន\n";
+            Object.values(studentsData || {}).forEach(s => {
+                let present = 0, permission = 0, absent = 0, totalScan = 0;
+                (scanLogsData || []).forEach(l => {
+                    if (l && l.targetId === s.id && l.date && l.date.startsWith(monthInput)) {
+                        totalScan++;
+                        if (l.status === 'មកវត្តមាន') present++;
+                        else if (l.status === 'ច្បាប់') permission++;
+                        else if (l.status === 'អវត្តមាន') absent++;
                     }
-                    if (!matchMonth && l.displayTime) {
-                        matchMonth = String(l.displayTime).includes(selectedYM.replace('-', '/')) || String(l.displayTime).includes(selectedYM);
-                    }
-                    if (!l.timestamp && !l.displayTime) matchMonth = true;
-                    return matchId && matchRole && matchMonth;
                 });
-
-                const presentCount = studentLogs.filter(l => l.status === "មកវត្តមាន" || !l.status).length;
-                const permissionCount = studentLogs.filter(l => l.status === "ច្បាប់").length;
-                const absentCount = studentLogs.filter(l => l.status === "អវត្តមាន").length;
-                const totalCount = studentLogs.length;
-                const lastLogObj = totalCount > 0 ? studentLogs[studentLogs.length - 1] : null;
-                const lastLog = lastLogObj ? (lastLogObj.displayTime || lastLogObj.timestamp) : '-';
-
-                let gradeDisplay = s.grade;
-                if (classesData[s.grade]) {
-                    gradeDisplay = classesData[s.grade].name;
-                }
-
-                csvContent += `"${s.id}","${s.name}","${gradeDisplay}",${presentCount},${permissionCount},${absentCount},${totalCount},"${lastLog}"\n`;
+                csvContent += `"${s.id}","${s.name}","${getGradeName(s.grade)}",${present},${permission},${absent},${totalScan}\n`;
             });
-
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.setAttribute("href", url);
-            link.setAttribute("download", `Monthly_Attendance_${selectedGradeName}_${selectedYM}.csv`);
+            link.setAttribute("download", `Student_Attendance_${monthInput}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
-        // Functions for Timetable Management
-        function renderTimetable() {
-            const gradeSelect = document.getElementById('timetableGradeSelect');
-            const shiftSelect = document.getElementById('timetableShiftSelect');
-            const tbody = document.getElementById('timetableBody');
-            if (!tbody || !gradeSelect) return;
-
-            const selectedGrade = gradeSelect.value;
-            const selectedShift = shiftSelect ? shiftSelect.value : 'all';
-
-            if (!timetablesData) timetablesData = {};
-
-            let slots = timetablesData[selectedGrade] || [
-                { time: "07:00 - 07:50", shift: "morning", days: ["", "", "", "", "", "", ""] },
-                { time: "07:50 - 08:40", shift: "morning", days: ["", "", "", "", "", "", ""] },
-                { time: "08:55 - 09:45", shift: "morning", days: ["", "", "", "", "", "", ""] },
-                { time: "09:45 - 10:35", shift: "morning", days: ["", "", "", "", "", "", ""] },
-                { time: "13:00 - 13:50", shift: "afternoon", days: ["", "", "", "", "", "", ""] },
-                { time: "13:50 - 14:40", shift: "afternoon", days: ["", "", "", "", "", "", ""] },
-                { time: "14:55 - 15:45", shift: "afternoon", days: ["", "", "", "", "", "", ""] }
-            ];
-
-            if (selectedShift !== 'all') {
-                slots = slots.filter(s => s && s.shift === selectedShift);
-            }
-
-            if (!slots || slots.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" class="p-8 text-slate-400">មិនទាន់មានកាលវិភាគសម្រាប់ថ្នាក់នេះទេ</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = slots.map((slot, index) => {
-                if (!slot) return '';
-                const days = slot.days || ["", "", "", "", "", "", ""];
-                return `
-                <tr class="border-b hover:bg-slate-50 transition">
-                    <td class="p-3 font-bold text-emerald-800 bg-slate-50 border border-slate-200">
-                        <div>${slot.time || 'ម៉ោងសិក្សា'}</div>
-                        <span class="text-[10px] font-normal px-2 py-0.5 rounded ${slot.shift === 'morning' ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'}">${slot.shift === 'morning' ? 'វេនព្រឹក' : 'វេនរសៀល'}</span>
-                    </td>
-                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[1] || '-'}</td>
-                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[2] || '-'}</td>
-                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[3] || '-'}</td>
-                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[4] || '-'}</td>
-                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[5] || '-'}</td>
-                    <td class="p-3 border border-slate-200 font-semibold text-slate-700">${days[6] || '-'}</td>
-                    <td class="p-3 border border-slate-200 no-print">
-                        <button onclick="editTimetableSlot('${selectedGrade}', ${index})" class="text-sky-600 hover:text-sky-800 p-1 bg-sky-50 rounded transition" title="កែប្រែ"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteTimetableSlot('${selectedGrade}', ${index})" class="text-rose-500 hover:text-rose-700 p-1 bg-rose-50 rounded transition" title="លុប"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `}).join('');
-        }
-
-        function openTimetableSlotModal(index = null) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => openTimetableSlotModal(index));
-                return;
-            }
+        function openTimetableSlotModal(slotKey = null) {
             const modal = document.getElementById('timetableModal');
-            const form = document.getElementById('timetableForm');
-            if (!modal || !form) return;
+            if (!modal) return;
+            
+            document.getElementById('ttSlotKey').value = slotKey || '';
+            document.getElementById('timetableModalTitle').textContent = slotKey ? "កែប្រែម៉ោងសិក្សា និងវេន" : "បន្ថែមម៉ោងសិក្សា និងវេន";
 
-            form.reset();
-            document.getElementById('ttIndex').value = index !== null ? index : "";
-
-            const grade = document.getElementById('timetableGradeSelect').value;
-            const slots = timetablesData[grade] || [];
-
-            if (index !== null && slots[index]) {
-                const s = slots[index];
-                document.getElementById('ttShift').value = s.shift || 'morning';
-                document.getElementById('ttTimeName').value = s.time || '';
-                for (let i = 1; i <= 6; i++) {
-                    const el = document.getElementById(`tt_${i}`);
-                    if (el) el.value = s.days[i] || '';
+            if (slotKey) {
+                const gradeKey = document.getElementById('timetableGradeSelect')?.value || 'cls_7a';
+                const slot = timetablesData[gradeKey] && timetablesData[gradeKey][slotKey];
+                if (slot) {
+                    document.getElementById('ttShift').value = slot.shift || 'morning';
+                    document.getElementById('ttTimeName').value = slot.timeName || '';
+                    const days = slot.days || ['', '', '', '', '', ''];
+                    for (let i = 0; i < 6; i++) {
+                        document.getElementById(`tt_${i+1}`).value = days[i] || '';
+                    }
+                }
+            } else {
+                document.getElementById('ttShift').value = 'morning';
+                document.getElementById('ttTimeName').value = '';
+                for (let i = 0; i < 6; i++) {
+                    document.getElementById(`tt_${i+1}`).value = '';
                 }
             }
             modal.classList.remove('hidden');
@@ -1791,104 +1356,687 @@
             if (modal) modal.classList.add('hidden');
         }
 
-        function onTimetablePresetChange(selectEl) {
-            if (!selectEl) return;
-            const val = selectEl.value;
-            if (!val) return;
-            
-            if (val === 'CURRENT_TIME') {
-                const now = new Date();
-                const hours = now.getHours();
-                const timeStr = now.toLocaleTimeString('km-KH', { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('ttTimeName').value = `ម៉ោងបច្ចុប្បន្ន (${timeStr})`;
-                document.getElementById('ttShift').value = hours >= 12 ? 'afternoon' : 'morning';
+        function saveTimetableSlot(e) {
+            e.preventDefault();
+            const slotKeyEl = document.getElementById('ttSlotKey').value;
+            const shift = document.getElementById('ttShift').value;
+            const timeName = document.getElementById('ttTimeName').value.trim();
+            const t1 = document.getElementById('tt_1').value.trim();
+            const t2 = document.getElementById('tt_2').value.trim();
+            const t3 = document.getElementById('tt_3').value.trim();
+            const t4 = document.getElementById('tt_4').value.trim();
+            const t5 = document.getElementById('tt_5').value.trim();
+            const t6 = document.getElementById('tt_6').value.trim();
+
+            const gradeKey = document.getElementById('timetableGradeSelect')?.value || 'cls_7a';
+            const slotKey = slotKeyEl ? slotKeyEl : ('slot_' + Date.now());
+
+            if (!timetablesData[gradeKey]) timetablesData[gradeKey] = {};
+            timetablesData[gradeKey][slotKey] = { shift, timeName, days: [t1, t2, t3, t4, t5, t6] };
+
+            if (db && isConnected) {
+                db.ref(`timetables/${gradeKey}/${slotKey}`).set({ shift, timeName, days: [t1, t2, t3, t4, t5, t6] });
             } else {
-                document.getElementById('ttTimeName').value = val;
-                if (val.includes('វេនរសៀល')) {
-                    document.getElementById('ttShift').value = 'afternoon';
-                } else if (val.includes('វេនព្រឹក')) {
-                    document.getElementById('ttShift').value = 'morning';
+                renderTimetable();
+            }
+            closeTimetableSlotModal();
+            alert("✅ រក្សាទុកកាលវិភាគបានជោគជ័យ!");
+        }
+
+        function deleteTimetableSlot(slotKey) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => deleteTimetableSlot(slotKey));
+                return;
+            }
+            if (confirm("តើអ្នកពិតជាចង់លុបម៉ោងសិក្សានេះមែនទេ?")) {
+                const gradeKey = document.getElementById('timetableGradeSelect')?.value || 'cls_7a';
+                if (timetablesData[gradeKey] && timetablesData[gradeKey][slotKey]) {
+                    delete timetablesData[gradeKey][slotKey];
                 }
+                if (db && isConnected) {
+                    db.ref(`timetables/${gradeKey}/${slotKey}`).remove();
+                } else {
+                    renderTimetable();
+                }
+                alert("✅ បានលុបម៉ោងសិក្សារួចរាល់!");
+            }
+        }
+
+        function onTimetablePresetChange(selectEl) {
+            if (selectEl.value && selectEl.value !== 'CURRENT_TIME') {
+                document.getElementById('ttTimeName').value = selectEl.value;
             }
         }
 
         function selectQuickTime(val) {
-            const presetSelect = document.getElementById('ttTimePreset');
-            if (presetSelect) {
-                presetSelect.value = val;
-                onTimetablePresetChange(presetSelect);
-            }
-        }
-
-        function saveTimetableSlot(e) {
-            e.preventDefault();
-            const grade = document.getElementById('timetableGradeSelect').value;
-            const indexVal = document.getElementById('ttIndex').value;
-            const shift = document.getElementById('ttShift').value;
-            const time = document.getElementById('ttTimeName').value.trim();
-
-            const days = [""];
-            for (let i = 1; i <= 6; i++) {
-                const el = document.getElementById(`tt_${i}`);
-                days.push(el ? el.value.trim() : "");
-            }
-
-            if (!timetablesData[grade]) timetablesData[grade] = [];
-
-            const slotObj = { time, shift, days };
-
-            if (indexVal !== "") {
-                timetablesData[grade][parseInt(indexVal)] = slotObj;
+            if (val === 'CURRENT_TIME') {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                document.getElementById('ttTimeName').value = timeStr;
             } else {
-                timetablesData[grade].push(slotObj);
+                document.getElementById('ttTimeName').value = val;
             }
-
-            if (db && isConnected) {
-                db.ref('timetables/' + grade).set(timetablesData[grade]);
-            }
-
-            closeTimetableSlotModal();
-            renderTimetable();
         }
 
-        function editTimetableSlot(grade, index) {
-            openTimetableSlotModal(index);
-        }
+        function renderTimetable() {
+            const tbody = document.getElementById('timetableBody');
+            const gradeSelect = document.getElementById('timetableGradeSelect');
+            const shiftSelect = document.getElementById('timetableShiftSelect');
+            if (!tbody) return;
 
-        function deleteTimetableSlot(grade, index) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => deleteTimetableSlot(grade, index));
+            const gradeKey = gradeSelect ? gradeSelect.value : Object.keys(classesData)[0];
+            const shiftFilter = shiftSelect ? shiftSelect.value : 'all';
+
+            const gradeSlots = (timetablesData && timetablesData[gradeKey]) ? timetablesData[gradeKey] : {};
+            let slotsEntries = Object.entries(gradeSlots);
+
+            if (shiftFilter !== 'all') {
+                slotsEntries = slotsEntries.filter(([k, slot]) => slot && slot.shift === shiftFilter);
+            }
+
+            if (slotsEntries.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-slate-400">មិនទាន់មានកាលវិភាគសិក្សាសម្រាប់ថ្នាក់នេះទេ</td></tr>`;
                 return;
             }
-            if (confirm("តើអ្នកពិតជាចង់លុបម៉ោងសិក្សានេះមែនទេ?")) {
-                if (timetablesData[grade]) {
-                    timetablesData[grade].splice(index, 1);
-                    if (db && isConnected) {
-                        db.ref('timetables/' + grade).set(timetablesData[grade]);
-                    }
-                    renderTimetable();
+
+            tbody.innerHTML = slotsEntries.map(([slotKey, slot]) => {
+                const days = slot.days || ['', '', '', '', '', ''];
+                return `
+                    <tr class="border-b hover:bg-slate-50 transition">
+                        <td class="p-3.5 border font-bold text-emerald-800 bg-slate-50">${slot.timeName || '-'}</td>
+                        <td class="p-3.5 border">${days[0] || '-'}</td>
+                        <td class="p-3.5 border">${days[1] || '-'}</td>
+                        <td class="p-3.5 border">${days[2] || '-'}</td>
+                        <td class="p-3.5 border">${days[3] || '-'}</td>
+                        <td class="p-3.5 border">${days[4] || '-'}</td>
+                        <td class="p-3.5 border">${days[5] || '-'}</td>
+                        <td class="p-3.5 border text-center no-print space-x-1">
+                            <button onclick="openTimetableSlotModal('${slotKey}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg" title="កែប្រែ"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteTimetableSlot('${slotKey}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg" title="លុប"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderTelegramChatInputs() {
+            const container = document.getElementById('telegramChatIdContainer');
+            if (!container) return;
+
+            const keys = Object.keys(classesData || {});
+            if (keys.length === 0) {
+                container.innerHTML = `<div class="text-slate-400 text-xs">មិនទាន់មានថ្នាក់រៀនសម្រាប់កំណត់ Telegram Chat ID ទេ</div>`;
+                return;
+            }
+
+            container.innerHTML = keys.map(k => {
+                const cls = classesData[k];
+                const savedChatId = (telegramConfig && telegramConfig.chatIds && telegramConfig.chatIds[k]) || "";
+                return `
+                    <div class="bg-slate-50 p-3 rounded-2xl border">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">${cls.name}</label>
+                        <input type="text" id="tg_chat_${k}" value="${savedChatId}" placeholder="បញ្ចូល Chat ID ថ្នាក់នេះ..." class="w-full border rounded-xl px-3 py-2 text-xs focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadTelegramConfigUI() {
+            const tokenInput = document.getElementById('telegramBotToken');
+            if (tokenInput && telegramConfig) {
+                tokenInput.value = telegramConfig.botToken || "";
+            }
+            renderTelegramChatInputs();
+        }
+
+        function saveTelegramConfig() {
+            const token = document.getElementById('telegramBotToken')?.value.trim() || "";
+            const chatIds = {};
+
+            Object.keys(classesData || {}).forEach(k => {
+                const inputEl = document.getElementById(`tg_chat_${k}`);
+                if (inputEl) {
+                    chatIds[k] = inputEl.value.trim();
+                }
+            });
+
+            telegramConfig = { botToken: token, chatIds: chatIds };
+            if (db && isConnected) {
+                db.ref('telegramConfig').set(telegramConfig);
+            }
+            alert("✅ រក្សាទុកការកំណត់ Telegram Bot បានជោគជ័យ!");
+        }
+
+        function openAdminAuthModal(callback = null) {
+            const modal = document.getElementById('adminAuthModal');
+            if (modal) modal.classList.remove('hidden');
+            window._pendingAdminCallback = callback;
+        }
+
+        function closeAdminAuthModal() {
+            const modal = document.getElementById('adminAuthModal');
+            if (modal) modal.classList.add('hidden');
+            const pwdInput = document.getElementById('adminPasswordInput');
+            if (pwdInput) pwdInput.value = "";
+            window._pendingAdminCallback = null;
+        }
+
+        function verifyAdminPassword() {
+            const pwdInput = document.getElementById('adminPasswordInput');
+            const pwd = pwdInput ? pwdInput.value : "";
+
+            if (pwd === adminPasswordHash) {
+                isAdminAuthenticated = true;
+                closeAdminAuthModal();
+                
+                const adminLabel = document.getElementById('adminAuthLabel');
+                if (adminLabel) adminLabel.textContent = "Admin (សកម្ម)";
+                const tabAdmin = document.getElementById('tab-admin');
+                const logoutBtn = document.getElementById('tab-admin-logout');
+
+                if (tabAdmin) {
+                    tabAdmin.classList.remove('text-amber-300');
+                    tabAdmin.classList.add('bg-white', 'text-emerald-900', 'shadow-sm');
+                }
+                if (logoutBtn) logoutBtn.classList.remove('hidden');
+
+                clearTimeout(autoLockTimer);
+                autoLockTimer = setTimeout(() => logoutAdmin(true), 5 * 60 * 1000);
+
+                alert("🔓 ផ្ទៀងផ្ទាត់សិទ្ធិ Admin បានជោគជ័យ!");
+
+                if (window._pendingAdminCallback && typeof window._pendingAdminCallback === 'function') {
+                    window._pendingAdminCallback();
+                    window._pendingAdminCallback = null;
+                }
+            } else {
+                alert("❌ ពាក្យសម្ងាត់ Admin មិនត្រឹមត្រូវទេ!");
+            }
+        }
+
+        function handleAdminTabClick(e) {
+            if (isAdminAuthenticated) {
+                if (confirm("តើអ្នកចង់ប្តូរពាក្យសម្ងាត់ Admin ឬចាក់សោចេញ?")) {
+                    logoutAdmin();
+                }
+            } else {
+                openAdminAuthModal();
+            }
+        }
+
+        function logoutAdmin(isAuto = false) {
+            isAdminAuthenticated = false;
+            const adminLabel = document.getElementById('adminAuthLabel');
+            if (adminLabel) adminLabel.textContent = "ចូល Admin";
+            const tabAdmin = document.getElementById('tab-admin');
+            const logoutBtn = document.getElementById('tab-admin-logout');
+
+            if (tabAdmin) {
+                tabAdmin.classList.add('text-amber-300');
+                tabAdmin.classList.remove('bg-white', 'text-emerald-900', 'shadow-sm');
+            }
+            if (logoutBtn) logoutBtn.classList.add('hidden');
+            if (!isAuto) {
+                alert("🔒 បានចាក់សោប្រព័ន្ធ Admin រួចរាល់!");
+            }
+        }
+
+        function updateStats() {
+            const statStudents = document.getElementById('statTotalStudents');
+            const statTeachers = document.getElementById('statTotalTeachers');
+            const statTodayAtt = document.getElementById('statTodayAttendance');
+            const statClasses = document.getElementById('statTotalClasses');
+
+            if (statStudents) statStudents.textContent = Object.keys(studentsData || {}).length;
+            if (statTeachers) statTeachers.textContent = Object.keys(teachersData || {}).length;
+            if (statClasses) statClasses.textContent = Object.keys(classesData || {}).length;
+
+            const todayStr = new Date().toISOString().slice(0, 10);
+            let todayCount = 0;
+            (scanLogsData || []).forEach(l => {
+                if (l && l.date === todayStr) todayCount++;
+            });
+            if (statTodayAtt) statTodayAtt.textContent = todayCount;
+        }
+
+        function renderStudents() {
+            const tbody = document.getElementById('studentsTable');
+            if (!tbody) return;
+            const list = Object.values(studentsData || {});
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យសិស្សទេ</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = list.map(s => `
+                <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="py-3.5 px-4 font-bold text-emerald-800">${s.id}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-800">${s.name}</td>
+                    <td class="py-3.5 px-4">${s.gender}</td>
+                    <td class="py-3.5 px-4">${getGradeName(s.grade)}</td>
+                    <td class="py-3.5 px-4">${s.phone || '-'}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <button onclick="showQrModal('${s.id}', '${s.name}')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-1.5 rounded-xl font-bold text-xs transition"><i class="fa-solid fa-qrcode mr-1"></i> QR</button>
+                    </td>
+                    <td class="py-3.5 px-4 text-center no-print space-x-1">
+                        <button onclick="deleteStudent('${s.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderTeachers() {
+            const tbody = document.getElementById('teachersTable');
+            if (!tbody) return;
+            const list = Object.values(teachersData || {});
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យគ្រូបង្រៀនទេ</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = list.map(t => `
+                <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="py-3.5 px-4 font-bold text-sky-800">${t.id}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-800">${t.name}</td>
+                    <td class="py-3.5 px-4">${t.subject || '-'}</td>
+                    <td class="py-3.5 px-4">${t.phone || '-'}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <button onclick="showQrModal('${t.id}', '${t.name}')" class="bg-sky-100 hover:bg-sky-200 text-sky-800 px-3 py-1.5 rounded-xl font-bold text-xs transition"><i class="fa-solid fa-qrcode mr-1"></i> QR</button>
+                    </td>
+                    <td class="py-3.5 px-4 text-center no-print space-x-1">
+                        <button onclick="deleteTeacher('${t.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderLogs() {
+            const container = document.getElementById('recentLogsContainer');
+            if (!container) return;
+            const logs = [...(scanLogsData || [])].reverse().slice(0, 15);
+            if (logs.length === 0) {
+                container.innerHTML = `<div class="text-center text-slate-400 py-12 text-sm">មិនទាន់មានកំណត់ត្រាស្កេននៅថ្ងៃនេះ</div>`;
+                return;
+            }
+            container.innerHTML = logs.map(l => `
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl ${l.status === 'មកវត្តមាន' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center font-bold">
+                            <i class="fa-solid ${l.targetType === 'student' ? 'fa-user-graduate' : 'fa-chalkboard-user'}"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm text-slate-800">${l.name} <span class="text-xs font-normal text-slate-500">(${l.targetId})</span></h4>
+                            <p class="text-[11px] text-slate-500">${l.checkType} • <span class="font-bold text-emerald-700">${l.status}</span></p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[11px] font-bold text-slate-600 bg-white px-2 py-1 rounded-lg border shadow-xs">${l.timestamp}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function clearAllScanLogs() {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => clearAllScanLogs());
+                return;
+            }
+            if (confirm("តើអ្នកពិតជាចង់លុបកំណត់ត្រាស្កេនវត្តមានទាំងអស់មែនទេ?")) {
+                scanLogsData = [];
+                if (db && isConnected) {
+                    db.ref('scanLogs').remove();
+                } else {
+                    renderLogs();
+                    updateStats();
+                }
+                alert("✅ បានលុបកំណត់ត្រាស្កេនទាំងអស់រួចរាល់!");
+            }
+        }
+
+        function getGradeName(key) {
+            if (classesData && classesData[key]) return classesData[key].name;
+            return key || '-';
+        }
+
+        function initFirebaseListeners() {
+            if (!db) return;
+            db.ref('students').on('value', snap => { studentsData = snap.val() || {}; renderStudents(); updateStats(); });
+            db.ref('teachers').on('value', snap => { teachersData = snap.val() || {}; renderTeachers(); updateStats(); });
+            db.ref('classes').on('value', snap => { classesData = snap.val() || classesData; updateClassSelects(); renderClasses(); updateStats(); });
+            db.ref('scanLogs').on('value', snap => {
+                const val = snap.val() || {};
+                scanLogsData = Object.values(val);
+                renderLogs();
+                updateStats();
+            });
+            db.ref('finance').on('value', snap => { financeData = snap.val() || {}; renderFinanceTable(); });
+            db.ref('studentInvoices').on('value', snap => { studentInvoicesData = snap.val() || {}; renderStudentInvoices(); });
+            db.ref('timetables').on('value', snap => { timetablesData = snap.val() || {}; renderTimetable(); });
+            db.ref('telegramConfig').on('value', snap => {
+                telegramConfig = snap.val() || { botToken: "", chatIds: {} };
+                loadTelegramConfigUI();
+            });
+        }
+
+        function updateDbStatus(status, text) {
+            isConnected = status;
+            const dot = document.getElementById('dbDot');
+            const txt = document.getElementById('dbStatusText');
+            if (dot) dot.className = `w-2.5 h-2.5 rounded-full ${status ? 'bg-emerald-400' : 'bg-amber-400'} animate-pulse`;
+            if (txt) txt.textContent = text;
+        }
+
+        // Additional utility helper functions
+        function initScanner() {
+            try {
+                const scannerStatus = document.getElementById('scannerStatus');
+                if (scannerStatus) scannerStatus.textContent = "កាមេរ៉ារួចរាល់សម្រាប់ការស្កេន";
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        function toggleCamera() {
+            isCameraActive = !isCameraActive;
+            const btnText = document.getElementById('toggleCamText');
+            const btnIcon = document.getElementById('toggleCamIcon');
+            if (btnText && btnIcon) {
+                if (isCameraActive) {
+                    btnText.textContent = "បិទកាមេរ៉ា";
+                    btnIcon.className = "fa-solid fa-video-slash";
+                } else {
+                    btnText.textContent = "បើកកាមេរ៉ា";
+                    btnIcon.className = "fa-solid fa-video";
                 }
             }
         }
 
-        function openClassModal(key = null) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => openClassModal(key));
+        function handleManualScan() {
+            const input = document.getElementById('manualScanInput');
+            if (!input || !input.value.trim()) {
+                alert("⚠️ សូមបញ្ចូលអត្តលេខសិស្ស ឬគ្រូជាមុនសិន!");
                 return;
             }
-            const modal = document.getElementById('classModal');
-            const titleEl = document.getElementById('classModalTitle');
-            if (!modal) return;
+            const code = input.value.trim();
+            input.value = "";
+            processScannedCode(code);
+        }
 
+        function sendTelegramNotification(logData, targetObject) {
+            if (!telegramConfig || !telegramConfig.botToken) {
+                console.warn("Telegram Bot Token មិនទាន់បានកំណត់ទេ");
+                return;
+            }
+
+            // ស្វែងរក Chat ID តាមថ្នាក់រៀន
+            let chatId = "";
+            if (logData.targetType === 'student' && targetObject && targetObject.grade) {
+                chatId = telegramConfig.chatIds ? telegramConfig.chatIds[targetObject.grade] : "";
+            }
+
+            // ប្រសិនបើគ្មាន Chat ID តាមថ្នាក់ ប្រើ Chat ID ដើម (ប្រសិនបើមាន)
+            if (!chatId && telegramConfig.chatIds) {
+                chatId = Object.values(telegramConfig.chatIds).find(id => id.trim() !== "") || "";
+            }
+
+            if (!chatId) {
+                console.warn("មិនមាន Chat ID សម្រាប់ថ្នាក់នេះទេ");
+                return;
+            }
+
+            const emoji = logData.status === 'មកវត្តមាន' ? '🟢' : (logData.status === 'ច្បាប់' ? '🟡' : '🔴');
+            const message = `${emoji} <b>ជូនដំណឹងវត្តមានវត្តមាន - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</b>\n\n` +
+                            `👤 <b>ឈ្មោះ:</b> ${logData.name}\n` +
+                            `🆔 <b>អត្តលេខ:</b> <code>${logData.targetId}</code>\n` +
+                            `🏫 <b>ថ្នាក់/មុខវិជ្ជា:</b> ${logData.targetType === 'student' ? getGradeName(targetObject.grade) : (targetObject.subject || 'គ្រូបង្រៀន')}\n` +
+                            `📌 <b>ប្រភេទ:</b> ${logData.checkType}\n` +
+                            `📊 <b>ស្ថានភាព:</b> <b>${logData.status}</b>\n` +
+                            `⏰ <b>កាលបរិច្ឆេទ & ម៉ោង:</b> ${logData.date} - ${logData.timestamp}`;
+
+            const url = `https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log("✅ ផ្ញើសារទៅ Telegram រួចរាល់!");
+                } else {
+                    console.error("❌ កំហុស Telegram:", data.description);
+                }
+            })
+            .catch(err => console.error("❌ Telegram Fetch Error:", err));
+        }
+
+        function processScannedCode(code) {
+            const targetType = document.getElementById('scanTargetType')?.value || 'student';
+            const checkType = document.getElementById('scanCheckType')?.value || 'ចូលរៀន';
+            const statusRadio = document.querySelector('input[name="attendanceStatus"]:checked');
+            const status = statusRadio ? statusRadio.value : 'មកវត្តមាន';
+
+            let targetObj = null;
+            let name = "មិនស្គាល់អត្តសញ្ញាណ";
+
+            if (targetType === 'student') {
+                targetObj = studentsData[code];
+                if (targetObj) {
+                    name = targetObj.name;
+                } else {
+                    alert(`❌ រកមិនឃើញទិន្នន័យសិស្សអត្តលេខ [${code}] ឡើយ! សូមពិនិត្យមើលអត្តលេខឡើងវិញ។`);
+                    return;
+                }
+            } else {
+                targetObj = teachersData[code];
+                if (targetObj) {
+                    name = targetObj.name;
+                } else {
+                    alert(`❌ រកមិនឃើញទិន្នន័យគ្រូបង្រៀនអត្តលេខ [${code}] ឡើយ! សូមពិនិត្យមើលអត្តលេខឡើងវិញ។`);
+                    return;
+                }
+            }
+
+            // យកកាលបរិច្ឆេទ និង ម៉ោងបច្ចុប្បន្នជាក់ស្តែង
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' + 
+                            String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                            String(now.getDate()).padStart(2, '0');
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            // ស្វែងរកម៉ោងសិក្សា និង មុខវិជ្ជាពីកាលវិភាគ តាមថ្ងៃ និង ម៉ោងជាក់ស្តែង
+            let currentSubjectSlot = "ក្រៅម៉ោងសិក្សា";
+            let gradeKey = targetType === 'student' ? (targetObj.grade || '') : '';
+
+            // ប្រសិនបើជាគ្រូបង្រៀន រកមើលថាតើគាត់ត្រូវបង្រៀនថ្នាក់ណា
+            if (targetType === 'teacher' && !gradeKey) {
+                const foundClass = Object.keys(classesData || {}).find(k => classesData[k].teacher === targetObj.name);
+                gradeKey = foundClass || Object.keys(classesData || {})[0] || '';
+            }
+
+            // ស្វែងរកមុខវិជ្ជាតាមថ្ងៃនៃសប្តាហ៍ (0: អាទិត្យ, 1: ចន្ទ, 2: អង្គារ, 3: ពុធ, 4: ព្រហស្បតិ៍, 5: សុក្រ, 6: សៅរ៍)
+            const dayOfWeek = now.getDay(); // 1 = ចន្ទ, 6 = សៅរ៍
+            if (dayOfWeek >= 1 && dayOfWeek <= 6 && gradeKey && timetablesData && timetablesData[gradeKey]) {
+                const dayIndex = dayOfWeek - 1; // 0 index សម្រាប់ថ្ងៃចន្ទ
+                const slots = Object.values(timetablesData[gradeKey] || {});
+                
+                // គណនាcurrentTime គិតជា minutes តាំងពី midnight ដើម្បីងាយស្រួលប្រៀបធៀប
+                const curMinutes = now.getHours() * 60 + now.getMinutes();
+
+                for (let slot of slots) {
+                    if (slot && slot.days && slot.days[dayIndex]) {
+                        const timeText = slot.timeName || '';
+                        // ព្យាយាមទាញយកម៉ោងចាប់ផ្តើម និងបញ្ចប់ (ឧ. "07:00 - 07:50")
+                        const matches = timeText.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+                        if (matches) {
+                            let startH = parseInt(matches[1]);
+                            const startM = parseInt(matches[2]);
+                            let endH = parseInt(matches[3]);
+                            const endM = parseInt(matches[4]);
+
+                            // សម្រួលម៉ោងរសៀល/ព្រឹក ប្រសិនបើក្នុង timetable ដាក់ជាម៉ោង 1-12
+                            if (slot.shift === 'afternoon' && startH < 12) startH += 12;
+                            if (slot.shift === 'afternoon' && endH < 12) endH += 12;
+
+                            const startMin = startH * 60 + startM;
+                            const endMin = endH * 60 + endM;
+
+                            if (curMinutes >= startMin && curMinutes <= endMin) {
+                                currentSubjectSlot = `${slot.days[dayIndex]} (${timeText})`;
+                                break;
+                            }
+                        } else if (slot.days[dayIndex]) {
+                            // ប្រសិនបើគ្មានទ្រង់ទ្រាយម៉ោងប្រៀបធៀប យកមុខវិជ្ជានៅ slot នោះ
+                            currentSubjectSlot = `${slot.days[dayIndex]} (${timeText})`;
+                        }
+                    }
+                }
+            }
+
+            const newLog = {
+                targetId: code,
+                targetType: targetType,
+                name: name,
+                checkType: checkType,
+                status: status,
+                grade: gradeKey,
+                subjectSlot: currentSubjectSlot,
+                date: dateStr,
+                timestamp: timeStr
+            };
+
+            // បញ្ចូលក្នុង Local Array ភ្លាមៗ
+            scanLogsData.push(newLog);
+
+            // ផ្ញើសារទៅ Telegram Bot (រួមទាំងព័ត៌មានម៉ោងសិក្សាតាមកាលវិភាគ)
+            sendTelegramNotification(newLog, targetObj);
+
+            if (db && isConnected) {
+                db.ref('scanLogs').push(newLog);
+            } else {
+                renderLogs();
+                updateStats();
+            }
+            alert(`✅ ស្កេនជោគជ័យ:\n👤 ឈ្មោះ: ${name} (${code})\n🏫 ថ្នាក់/កាលវិភាគ: ${getGradeName(gradeKey)} - ${currentSubjectSlot}\n⏰ ម៉ោង: ${timeStr}\n📊 ស្ថានភាព: ${status}`);
+        }
+        function sendTelegramNotification(logData, targetObject) {
+            if (!telegramConfig || !telegramConfig.botToken) {
+                console.warn("Telegram Bot Token មិនទាន់បានកំណត់ទេ");
+                return;
+            }
+
+            // ស្វែងរក Chat ID តាមថ្នាក់រៀន
+            let chatId = "";
+            const gradeKey = logData.grade || (targetObject ? targetObject.grade : "");
+            if (gradeKey && telegramConfig.chatIds) {
+                chatId = telegramConfig.chatIds[gradeKey] || "";
+            }
+
+            // ប្រសិនបើគ្មាន Chat ID តាមថ្នាក់ ប្រើ Chat ID ដើម (ប្រសិនបើមាន)
+            if (!chatId && telegramConfig.chatIds) {
+                chatId = Object.values(telegramConfig.chatIds).find(id => id.trim() !== "") || "";
+            }
+
+            if (!chatId) {
+                console.warn("មិនមាន Chat ID សម្រាប់ថ្នាក់នេះទេ");
+                return;
+            }
+
+            const emoji = logData.status === 'មកវត្តមាន' ? '🟢' : (logData.status === 'ច្បាប់' ? '🟡' : '🔴');
+            const subjectInfo = logData.subjectSlot ? ` (${logData.subjectSlot})` : '';
+            const message = `${emoji} <b>ជូនដំណឹងវត្តមាន - វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</b>\n\n` +
+                            `👤 <b>ឈ្មោះ:</b> ${logData.name}\n` +
+                            `🆔 <b>អត្តលេខ:</b> <code>${logData.targetId}</code>\n` +
+                            `🏫 <b>ថ្នាក់/កាលវិភាគ:</b> ${getGradeName(gradeKey)}${subjectInfo}\n` +
+                            `📌 <b>ប្រភេទ:</b> ${logData.checkType}\n` +
+                            `📊 <b>ស្ថានភាព:</b> <b>${logData.status}</b>\n` +
+                            `⏰ <b>កាលបរិច្ឆេទ & ម៉ោង:</b> ${logData.date} - ${logData.timestamp}`;
+
+            const url = `https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.ok) {
+                    console.log("✅ ផ្ញើសារទៅ Telegram រួចរាល់!");
+                } else {
+                    console.error("❌ កំហុស Telegram:", data.description);
+                }
+            })
+            .catch(err => console.error("❌ Telegram Fetch Error:", err));
+        }
+
+        function updateClassSelects() {
+            const selects = [
+                document.getElementById('stuGrade'),
+                document.getElementById('timetableGradeSelect'),
+                document.getElementById('monthlyReportGradeFilter'),
+                document.getElementById('invoiceGradeFilter')
+            ];
+            const classKeys = Object.keys(classesData || {});
+            selects.forEach(sel => {
+                if (!sel) return;
+                const currentVal = sel.value;
+                let html = sel.id === 'monthlyReportGradeFilter' || sel.id === 'invoiceGradeFilter' 
+                    ? `<option value="all">-- គ្រប់ថ្នាក់រៀនទាំងអស់ --</option>` 
+                    : '';
+                classKeys.forEach(k => {
+                    html += `<option value="${k}">${classesData[k].name}</option>`;
+                });
+                sel.innerHTML = html;
+                if (currentVal) sel.value = currentVal;
+            });
+        }
+
+        function renderClasses() {
+            const container = document.getElementById('classesGrid');
+            if (!container) return;
+            const keys = Object.keys(classesData || {});
+            if (keys.length === 0) {
+                container.innerHTML = `<div class="text-slate-400 text-sm">មិនទាន់មានថ្នាក់រៀនទេ</div>`;
+                return;
+            }
+            container.innerHTML = keys.map(k => {
+                const cls = classesData[k];
+                return `
+                    <div class="bg-slate-50 border border-slate-200 p-5 rounded-3xl shadow-sm flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-base text-slate-800 mb-1">${cls.name}</h3>
+                            <p class="text-xs text-slate-500 mb-2"><i class="fa-solid fa-door-open mr-1"></i> ${cls.room || 'បន្ទប់ធម្មតា'}</p>
+                            <p class="text-xs text-emerald-700 font-medium"><i class="fa-solid fa-chalkboard-user mr-1"></i> ${cls.teacher || '-'}</p>
+                        </div>
+                        <div class="mt-4 pt-3 border-t flex justify-end space-x-2">
+                            <button onclick="openClassModal('${k}')" class="text-sky-600 hover:text-sky-800 px-3 py-1.5 bg-sky-50 rounded-xl text-xs font-bold"><i class="fa-solid fa-pen mr-1"></i> កែប្រែ</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function openClassModal(key = null) {
+            const modal = document.getElementById('classModal');
+            if (!modal) return;
             document.getElementById('clsKey').value = key || '';
+            document.getElementById('classModalTitle').textContent = key ? "កែប្រែថ្នាក់រៀន" : "បន្ថែមថ្នាក់រៀន";
             if (key && classesData[key]) {
-                titleEl.textContent = "កែប្រែព័ត៌មានថ្នាក់រៀន";
-                document.getElementById('clsName').value = classesData[key].name;
+                document.getElementById('clsName').value = classesData[key].name || '';
                 document.getElementById('clsRoom').value = classesData[key].room || '';
                 document.getElementById('clsTeacher').value = classesData[key].teacher || '';
             } else {
-                titleEl.textContent = "បន្ថែមថ្នាក់រៀនថ្មី";
-                document.getElementById('classForm').reset();
+                document.getElementById('clsName').value = '';
+                document.getElementById('clsRoom').value = '';
+                document.getElementById('clsTeacher').value = '';
             }
             modal.classList.remove('hidden');
         }
@@ -1900,40 +2048,21 @@
 
         function saveClass(e) {
             e.preventDefault();
-            const keyInput = document.getElementById('clsKey').value;
+            const keyEl = document.getElementById('clsKey').value;
             const name = document.getElementById('clsName').value.trim();
             const room = document.getElementById('clsRoom').value.trim();
             const teacher = document.getElementById('clsTeacher').value.trim();
+            const key = keyEl ? keyEl : ('cls_' + Date.now());
 
-            const key = keyInput || 'cls_' + Date.now();
-            const clsObj = { name, room, teacher };
-
+            classesData[key] = { name, room, teacher };
             if (db && isConnected) {
-                db.ref('classes/' + key).set(clsObj);
+                db.ref(`classes/${key}`).set({ name, room, teacher });
             } else {
-                classesData[key] = clsObj;
-                updateClassSelects();
                 renderClasses();
-                updateStats();
+                updateClassSelects();
             }
             closeClassModal();
-        }
-
-        function deleteClass(key) {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => deleteClass(key));
-                return;
-            }
-            if (confirm("តើអ្នកពិតជាចង់លុបថ្នាក់រៀននេះមែនទេ?")) {
-                if (db && isConnected) {
-                    db.ref('classes/' + key).remove();
-                } else {
-                    delete classesData[key];
-                    updateClassSelects();
-                    renderClasses();
-                    updateStats();
-                }
-            }
+            alert("✅ រក្សាទុកថ្នាក់រៀនបានជោគជ័យ!");
         }
 
         function confirmResetAllData() {
@@ -1941,290 +2070,123 @@
                 openAdminAuthModal(() => confirmResetAllData());
                 return;
             }
-            if (confirm("⚠️ តើអ្នកពិតជាចង់លុបទិន្នន័យថ្នាក់រៀនទាំងអស់ចេញពីប្រព័ន្ធមែនទេ? Action នេះមិនអាចត្រឡប់វិញបានទេ!")) {
+            if (confirm("តើអ្នកពិតជាចង់លុបទិន្នន័យថ្នាក់ទាំងអស់មែនទេ?")) {
+                classesData = {};
                 if (db && isConnected) {
                     db.ref('classes').remove();
                 } else {
-                    classesData = {};
-                    updateClassSelects();
                     renderClasses();
+                    updateClassSelects();
+                }
+                alert("✅ បានលុបថ្នាក់ទាំងអស់រួចរាល់!");
+            }
+        }
+
+        function openStudentModal() {
+            const modal = document.getElementById('studentModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeStudentModal() {
+            const modal = document.getElementById('studentModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function saveStudent(e) {
+            e.preventDefault();
+            const id = document.getElementById('stuId').value.trim();
+            const name = document.getElementById('stuName').value.trim();
+            const gender = document.getElementById('stuGender').value;
+            const grade = document.getElementById('stuGrade').value;
+            const phone = document.getElementById('stuPhone').value.trim();
+
+            studentsData[id] = { id, name, gender, grade, phone };
+            if (db && isConnected) {
+                db.ref(`students/${id}`).set({ id, name, gender, grade, phone });
+            } else {
+                renderStudents();
+                updateStats();
+            }
+            closeStudentModal();
+            alert("✅ រក្សាទុកព័ត៌មានសិស្សបានជោគជ័យ!");
+        }
+
+        function deleteStudent(id) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => deleteStudent(id));
+                return;
+            }
+            if (confirm("តើអ្នកពិតជាចង់លុបសិស្សនេះមែនទេ?")) {
+                delete studentsData[id];
+                if (db && isConnected) {
+                    db.ref(`students/${id}`).remove();
+                } else {
+                    renderStudents();
                     updateStats();
                 }
+                alert("✅ បានលុបសិស្សរួចរាល់!");
             }
         }
 
-        function loadTelegramConfigUI() {
-            const tokenInput = document.getElementById('telegramBotToken');
-            if (tokenInput) tokenInput.value = telegramConfig.botToken || "";
-            renderTelegramChatInputs();
+        function openTeacherModal() {
+            const modal = document.getElementById('teacherModal');
+            if (modal) modal.classList.remove('hidden');
         }
 
-        function renderTelegramChatInputs() {
-            const container = document.getElementById('telegramChatIdContainer');
-            if (!container) return;
-            const keys = Object.keys(classesData);
-            if (keys.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-slate-400 text-xs">មិនទាន់មានថ្នាក់រៀនសម្រាប់កំណត់ Chat ID ទេ</div>`;
-                return;
-            }
-            container.innerHTML = keys.map(k => `
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">${classesData[k].name}</label>
-                    <input type="text" id="tg_chat_${k}" value="${(telegramConfig.chatIds && telegramConfig.chatIds[k]) || ''}" placeholder="Telegram Chat ID" class="w-full border-2 border-slate-200 rounded-xl px-3 py-2 text-xs">
-                </div>
-            `).join('');
-        }
-
-        function saveTelegramConfig() {
-            const botToken = document.getElementById('telegramBotToken').value.trim();
-            const chatIds = {};
-            Object.keys(classesData).forEach(k => {
-                const el = document.getElementById(`tg_chat_${k}`);
-                if (el) chatIds[k] = el.value.trim();
-            });
-
-            telegramConfig = { botToken, chatIds };
-            if (db && isConnected) {
-                db.ref('telegramConfig').set(telegramConfig);
-                alert("បានរក្សាទុកការកំណត់ Telegram តាមថ្នាក់រៀនដោយជោគជ័យ!");
-            } else {
-                alert("បានរក្សាទុកក្នុង Local Mode!");
-            }
-        }
-
-        function sendTelegramNotification(student, statusText, checkType, timestamp, scheduleInfo) {
-            if (!telegramConfig.botToken) return;
-            const chatId = telegramConfig.chatIds ? telegramConfig.chatIds[student.grade] : null;
-            if (!chatId) return;
-
-            const checkIcon = checkType === 'ចេញពីសាលា' ? '🔴' : '🟢';
-            const gradeName = classesData[student.grade] ? classesData[student.grade].name : student.grade;
-
-            const msg = `🔔 *ជូនដំណឹងវត្តមានសិស្ស (ស្កេនជោគជ័យ)*\n\n` +
-                        `👤 *ឈ្មោះសិស្ស:* ${student.name} (${student.id})\n` +
-                        `🏫 *ថ្នាក់រៀន:* ${gradeName}\n` +
-                        `📌 *ស្ថានភាព:* ${statusText} (${checkIcon} ${checkType})\n` +
-                        `📚 *មុខវិជ្ជា:* ${scheduleInfo.subject} (${scheduleInfo.period})\n` +
-                        `👨‍🏫 *គ្រូបន្ទុក:* ${scheduleInfo.teacher}\n` +
-                        `⏰ *វេលាម៉ោង:* ${timestamp}`;
-
-            fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: msg,
-                    parse_mode: 'Markdown'
-                })
-            }).catch(err => console.error("Telegram Notification Error:", err));
-        }
-
-        function sendTeacherTelegramNotification(teacher, checkType, timestamp) {
-            if (!telegramConfig.botToken) return;
-            // Send teacher logs to general or first configured chat ID
-            const chatIdsList = Object.values(telegramConfig.chatIds || {});
-            const chatId = chatIdsList.length > 0 ? chatIdsList[0] : null;
-            if (!chatId) return;
-
-            const checkIcon = checkType === 'ចេញពីសាលា' ? '🔴' : '🟢';
-
-            const msg = `🔔 *ជូនដំណឹងវត្តមានគ្រូបង្រៀន*\n\n` +
-                        `👩‍🏫 *ឈ្មោះគ្រូ:* ${teacher.name} (${teacher.id})\n` +
-                        `📚 *មុខវិជ្ជាបង្រៀន:* ${teacher.subject}\n` +
-                        `📌 *ស្ថានភាព:* មកវត្តមាន (${checkIcon} ${checkType})\n` +
-                        `⏰ *វេលាម៉ោង:* ${timestamp}`;
-
-            fetch(`https://api.telegram.org/bot${telegramConfig.botToken}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: msg,
-                    parse_mode: 'Markdown'
-                })
-            }).catch(err => console.error("Teacher Telegram Notification Error:", err));
-        }
-
-        function openAdminAuthModal(callback = null) {
-            if (isAdminAuthenticated) {
-                if (callback) callback();
-                return;
-            }
-            pendingAdminAction = callback;
-            const modal = document.getElementById('adminAuthModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    const pwdInput = document.getElementById('adminPasswordInput');
-                    if (pwdInput) pwdInput.focus();
-                }, 100);
-            }
-        }
-
-        function closeAdminAuthModal() {
-            const modal = document.getElementById('adminAuthModal');
+        function closeTeacherModal() {
+            const modal = document.getElementById('teacherModal');
             if (modal) modal.classList.add('hidden');
-            const pwdInput = document.getElementById('adminPasswordInput');
-            if (pwdInput) pwdInput.value = "";
-            pendingAdminAction = null;
         }
 
-        let pendingAdminAction = null;
-        function verifyAdminPassword() {
-            const pwd = document.getElementById('adminPasswordInput').value;
-            if (pwd === adminPasswordHash) {
-                isAdminAuthenticated = true;
-                const adminLabel = document.getElementById('adminAuthLabel');
-                if (adminLabel) adminLabel.textContent = "Admin (កែពាក្យសម្ងាត់)";
-                const tabAdmin = document.getElementById('tab-admin');
-                const logoutBtn = document.getElementById('tab-admin-logout');
+        function saveTeacher(e) {
+            e.preventDefault();
+            const id = document.getElementById('teaId').value.trim();
+            const name = document.getElementById('teaName').value.trim();
+            const subject = document.getElementById('teaSubject').value.trim();
+            const phone = document.getElementById('teaPhone').value.trim();
 
-                if (tabAdmin) {
-                    tabAdmin.classList.remove('text-amber-300');
-                    tabAdmin.classList.add('bg-white', 'text-emerald-900', 'shadow-sm');
-                }
-                if (logoutBtn) logoutBtn.classList.remove('hidden');
-
-                alert("✅ ផ្ទៀងផ្ទាត់ពាក្យសម្ងាត់ Admin បានជោគជ័យ!");
-                closeAdminAuthModal();
-                setupAutoLockActivityListener();
-
-                if (pendingAdminAction) {
-                    pendingAdminAction();
-                    pendingAdminAction = null;
-                }
+            teachersData[id] = { id, name, subject, phone };
+            if (db && isConnected) {
+                db.ref(`teachers/${id}`).set({ id, name, subject, phone });
             } else {
-                alert("❌ ពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ!");
+                renderTeachers();
+                updateStats();
             }
+            closeTeacherModal();
+            alert("✅ រក្សាទុកព័ត៌មានគ្រូបានជោគជ័យ!");
         }
 
-        function printAllStudentQRs() {
-            const list = Object.values(studentsData);
-            if (list.length === 0) {
-                alert("មិនទាន់មានទិន្នន័យសិស្សសម្រាប់បោះពុម្ពទេ!");
+        function deleteTeacher(id) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => deleteTeacher(id));
                 return;
             }
-
-            const printWindow = window.open('', '_blank');
-            let cardsHtml = list.map(s => {
-                const gradeName = classesData[s.grade] ? classesData[s.grade].name : (s.grade || '-');
-                return `
-                    <div style="border: 2px solid #059669; border-radius: 12px; padding: 12px; text-align: center; background: #ffffff; page-break-inside: avoid; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px;">
-                        <div style="font-weight: bold; font-size: 14px; color: #065f46; margin-bottom: 2px;">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</div>
-                        <div style="font-size: 11px; color: #475569; margin-bottom: 6px;">កាតសម្គាល់សិស្ស</div>
-                        <div id="qr_${s.id}" style="margin: 6px auto;"></div>
-                        <div style="font-weight: bold; font-size: 13px; color: #1e293b; margin-top: 4px;">${s.name}</div>
-                        <div style="font-size: 11px; color: #059669; font-weight: bold;">អត្តលេខ: ${s.id} | ថ្នាក់: ${gradeName}</div>
-                    </div>
-                `;
-            }).join('');
-
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>បោះពុម្ព QR Code សិស្សទាំងអស់</title>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-                    <style>
-                        body { font-family: 'Kantumruy Pro', sans-serif; padding: 10px; background: #fff; }
-                        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-                        @media print {
-                            body { padding: 0; }
-                            .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2 style="text-align: center; color: #065f46; margin-bottom: 15px;">បញ្ជី QR Code សិស្សសរុប (${list.length} នាក់)</h2>
-                    <div class="grid">${cardsHtml}</div>
-                    <script>
-                        const students = ${JSON.stringify(list)};
-                        students.forEach(s => {
-                            new QRCode(document.getElementById('qr_' + s.id), {
-                                text: s.id,
-                                width: 110,
-                                height: 110
-                            });
-                        });
-                        setTimeout(() => { window.print(); }, 800);
-                    <\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-        }
-
-        function printAllTeacherQRs() {
-            const list = Object.values(teachersData);
-            if (list.length === 0) {
-                alert("មិនទាន់មានទិន្នន័យគ្រូបង្រៀនសម្រាប់បោះពុម្ពទេ!");
-                return;
+            if (confirm("តើអ្នកពិតជាចង់លុបគ្រូបង្រៀននេះមែនទេ?")) {
+                delete teachersData[id];
+                if (db && isConnected) {
+                    db.ref(`teachers/${id}`).remove();
+                } else {
+                    renderTeachers();
+                    updateStats();
+                }
+                alert("✅ បានលុបគ្រូបង្រៀនរួចរាល់!");
             }
-
-            const printWindow = window.open('', '_blank');
-            let cardsHtml = list.map(t => `
-                <div style="border: 2px solid #0284c7; border-radius: 12px; padding: 12px; text-align: center; background: #ffffff; page-break-inside: avoid; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px;">
-                    <div style="font-weight: bold; font-size: 14px; color: #075985; margin-bottom: 2px;">វិទ្យាល័យឥស្លាមស្ទឹងត្រែង</div>
-                    <div style="font-size: 11px; color: #475569; margin-bottom: 6px;">កាតសម្គាល់គ្រូបង្រៀន</div>
-                    <div id="qr_${t.id}" style="margin: 6px auto;"></div>
-                    <div style="font-weight: bold; font-size: 13px; color: #1e293b; margin-top: 4px;">លោកគ្រូ/អ្នកគ្រូ: ${t.name}</div>
-                    <div style="font-size: 11px; color: #0284c7; font-weight: bold;">អត្តលេខ: ${t.id} | មុខវិជ្ជា: ${t.subject}</div>
-                </div>
-            `).join('');
-
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>បោះពុម្ព QR Code គ្រូបង្រៀនទាំងអស់</title>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
-                    <style>
-                        body { font-family: 'Kantumruy Pro', sans-serif; padding: 10px; background: #fff; }
-                        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-                        @media print {
-                            body { padding: 0; }
-                            .grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2 style="text-align: center; color: #075985; margin-bottom: 15px;">បញ្ជី QR Code គ្រូបង្រៀនសរុប (${list.length} នាក់)</h2>
-                    <div class="grid">${cardsHtml}</div>
-                    <script>
-                        const teachers = ${JSON.stringify(list)};
-                        teachers.forEach(t => {
-                            new QRCode(document.getElementById('qr_' + t.id), {
-                                text: t.id,
-                                width: 110,
-                                height: 110
-                            });
-                        });
-                        setTimeout(() => { window.print(); }, 800);
-                    <\/script>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
         }
 
-        function showQrModal(id, titleText) {
+        function showQrModal(id, name) {
             const modal = document.getElementById('qrModal');
-            const container = document.getElementById('qrcodeContainer');
             const title = document.getElementById('qrModalTitle');
-            if (!modal || !container || !title) return;
+            const container = document.getElementById('qrcodeContainer');
+            if (!modal || !container) return;
 
+            title.textContent = `QR Code: ${name} (${id})`;
             container.innerHTML = "";
-            title.textContent = titleText + " (" + id + ")";
-            modal.classList.remove('hidden');
-
             new QRCode(container, {
                 text: id,
                 width: 200,
-                height: 200,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
-                correctLevel: QRCode.CorrectLevel.H
+                height: 200
             });
+            modal.classList.remove('hidden');
         }
 
         function closeQrModal() {
@@ -2232,17 +2194,198 @@
             if (modal) modal.classList.add('hidden');
         }
 
-        function updateStats() {
-            const totalStu = Object.keys(studentsData).length;
-            const totalTea = Object.keys(teachersData).length;
-            const todayCount = scanLogsData.length;
+        function printAllStudentQRs() {
+            window.print();
+        }
 
-            if (document.getElementById('statTotalStudents')) document.getElementById('statTotalStudents').textContent = totalStu;
-            if (document.getElementById('statTotalTeachers')) document.getElementById('statTotalTeachers').textContent = totalTea;
-            if (document.getElementById('statTodayAttendance')) document.getElementById('statTodayAttendance').textContent = todayCount;
-            if (document.getElementById('statTotalClasses')) document.getElementById('statTotalClasses').textContent = Object.keys(classesData).length;
-            
-            renderClasses();
+        function printAllTeacherQRs() {
+            window.print();
+        }
+
+        function renderFinanceTable() {
+            const tbody = document.getElementById('financeTableBody');
+            if (!tbody) return;
+            const list = Object.values(financeData || {});
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">មិនទាន់មានទិន្នន័យចំណូល-ចំណាយទេ</td></tr>`;
+                document.getElementById('financeTotalIncome').textContent = "$0.00";
+                document.getElementById('financeTotalExpense').textContent = "$0.00";
+                document.getElementById('financeNetBalance').textContent = "$0.00";
+                return;
+            }
+
+            let totalInc = 0, totalExp = 0;
+            tbody.innerHTML = list.map(f => {
+                if (f.type === 'income') totalInc += Number(f.amount || 0);
+                else totalExp += Number(f.amount || 0);
+
+                return `
+                    <tr class="border-b hover:bg-slate-50 transition">
+                        <td class="py-3.5 px-4 font-bold text-slate-700">${f.date}</td>
+                        <td class="py-3.5 px-4 font-bold ${f.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}">${f.type === 'income' ? '🟢 ចំណូល' : '🔴 ចំណាយ'}</td>
+                        <td class="py-3.5 px-4">${f.category || '-'}</td>
+                        <td class="py-3.5 px-4">${f.note || '-'}</td>
+                        <td class="py-3.5 px-4 text-right font-black ${f.type === 'income' ? 'text-emerald-600' : 'text-rose-600'}">$${Number(f.amount || 0).toFixed(2)}</td>
+                        <td class="py-3.5 px-4 text-center no-print">
+                            <button onclick="deleteFinanceRecord('${f.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            document.getElementById('financeTotalIncome').textContent = `$${totalInc.toFixed(2)}`;
+            document.getElementById('financeTotalExpense').textContent = `$${totalExp.toFixed(2)}`;
+            document.getElementById('financeNetBalance').textContent = `$${(totalInc - totalExp).toFixed(2)}`;
+        }
+
+        function openFinanceModal() {
+            const modal = document.getElementById('financeModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeFinanceModal() {
+            const modal = document.getElementById('financeModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function saveFinanceRecord(e) {
+            e.preventDefault();
+            const id = 'fin_' + Date.now();
+            const type = document.getElementById('finType').value;
+            const amount = document.getElementById('finAmount').value;
+            const category = document.getElementById('finCategory').value.trim();
+            const date = document.getElementById('finDate').value;
+            const note = document.getElementById('finNote').value.trim();
+
+            financeData[id] = { id, type, amount, category, date, note };
+            if (db && isConnected) {
+                db.ref(`finance/${id}`).set({ id, type, amount, category, date, note });
+            } else {
+                renderFinanceTable();
+            }
+            closeFinanceModal();
+            alert("✅ រក្សាទុកប្រតិបត្តិការហិរញ្ញវត្ថុបានជោគជ័យ!");
+        }
+
+        function deleteFinanceRecord(id) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => deleteFinanceRecord(id));
+                return;
+            }
+            if (confirm("តើអ្នកពិតជាចង់លុបទិន្នន័យនេះមែនទេ?")) {
+                delete financeData[id];
+                if (db && isConnected) {
+                    db.ref(`finance/${id}`).remove();
+                } else {
+                    renderFinanceTable();
+                }
+                alert("✅ បានលុបរួចរាល់!");
+            }
+        }
+
+        function exportFinanceCSV() {
+            window.print();
+        }
+
+        function updateTeacherCustomRate(teacherId, val) {
+            teacherCustomRates[teacherId] = parseFloat(val) || 0;
+            renderTeacherPayroll();
+        }
+
+        function renderStudentInvoices() {
+            const tbody = document.getElementById('studentInvoiceTableBody');
+            const selectEl = document.getElementById('invStudentId');
+            if (!tbody) return;
+
+            const studentsList = Object.values(studentsData || {});
+            if (selectEl) {
+                selectEl.innerHTML = studentsList.map(s => `<option value="${s.id}">${s.name} (${s.id})</option>`).join('');
+            }
+
+            const list = Object.values(studentInvoicesData || {});
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">មិនទាន់មានវិក្កយបត្រត្រូវបានបង្កើតទេ</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(inv => {
+                const stu = studentsData[inv.studentId] || { name: 'សិស្សមិនស្គាល់' };
+                return `
+                    <tr class="border-b hover:bg-slate-50 transition">
+                        <td class="py-3.5 px-4 font-bold text-emerald-800">${inv.id}</td>
+                        <td class="py-3.5 px-4 font-semibold text-slate-800">${stu.name}</td>
+                        <td class="py-3.5 px-4">${getGradeName(stu.grade)}</td>
+                        <td class="py-3.5 px-4">${inv.month || '-'}</td>
+                        <td class="py-3.5 px-4 text-right font-black text-emerald-600">$${Number(inv.amount || 0).toFixed(2)}</td>
+                        <td class="py-3.5 px-4 text-center">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold ${inv.status === 'បានបង់ប្រាក់រួច' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">${inv.status}</span>
+                        </td>
+                        <td class="py-3.5 px-4 text-center no-print space-x-1">
+                            <button onclick="window.print()" class="text-emerald-700 hover:text-emerald-900 p-1.5 bg-emerald-50 rounded-lg" title="បោះពុម្ពវិក្កយបត្រ"><i class="fa-solid fa-print"></i></button>
+                            <button onclick="deleteStudentInvoice('${inv.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg" title="លុប"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function openStudentInvoiceModal() {
+            const modal = document.getElementById('studentInvoiceModal');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeStudentInvoiceModal() {
+            const modal = document.getElementById('studentInvoiceModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function saveStudentInvoice(e) {
+            e.preventDefault();
+            const id = 'inv_' + Date.now();
+            const studentId = document.getElementById('invStudentId').value;
+            const month = document.getElementById('invMonth').value;
+            const amount = document.getElementById('invAmount').value;
+            const paidAmount = document.getElementById('invPaidAmount').value;
+            const status = document.getElementById('invStatus').value;
+            const installment = document.getElementById('invInstallment').value;
+
+            studentInvoicesData[id] = { id, studentId, month, amount, paidAmount, status, installment };
+            if (db && isConnected) {
+                db.ref(`studentInvoices/${id}`).set({ id, studentId, month, amount, paidAmount, status, installment });
+            } else {
+                renderStudentInvoices();
+            }
+            closeStudentInvoiceModal();
+            alert("✅ រក្សាទុកវិក្កយបត្របានជោគជ័យ!");
+        }
+
+        function deleteStudentInvoice(id) {
+            if (!isAdminAuthenticated) {
+                openAdminAuthModal(() => deleteStudentInvoice(id));
+                return;
+            }
+            if (confirm("តើអ្នកពិតជាចង់លុបវិក្កយបត្រនេះមែនទេ?")) {
+                delete studentInvoicesData[id];
+                if (db && isConnected) {
+                    db.ref(`studentInvoices/${id}`).remove();
+                } else {
+                    renderStudentInvoices();
+                }
+                alert("✅ បានលុបវិក្កយបត្ររួចរាល់!");
+            }
+        }
+
+        function closeChangePasswordModal() {
+            const modal = document.getElementById('changePasswordModal');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function saveNewAdminPassword(e) {
+            e.preventDefault();
+            const newPwd = document.getElementById('newAdminPassword').value;
+            adminPasswordHash = newPwd;
+            closeChangePasswordModal();
+            alert("✅ ពាក្យសម្ងាត់ Admin ត្រូវបានផ្លាស់ប្តូរដោយជោគជ័យ!");
         }
     </script>
 </body>
