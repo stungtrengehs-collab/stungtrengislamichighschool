@@ -1618,7 +1618,8 @@
                         <button onclick="showQrModal('${s.id}', '${s.name}')" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-3 py-1.5 rounded-xl font-bold text-xs transition"><i class="fa-solid fa-qrcode mr-1"></i> QR</button>
                     </td>
                     <td class="py-3.5 px-4 text-center no-print space-x-1">
-                        <button onclick="deleteStudent('${s.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="openStudentModal('${s.id}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg" title="កែប្រែ"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteStudent('${s.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg" title="លុប"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -1642,7 +1643,8 @@
                         <button onclick="showQrModal('${t.id}', '${t.name}')" class="bg-sky-100 hover:bg-sky-200 text-sky-800 px-3 py-1.5 rounded-xl font-bold text-xs transition"><i class="fa-solid fa-qrcode mr-1"></i> QR</button>
                     </td>
                     <td class="py-3.5 px-4 text-center no-print space-x-1">
-                        <button onclick="deleteTeacher('${t.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="openTeacherModal('${t.id}')" class="text-sky-600 hover:text-sky-800 p-1.5 bg-sky-50 rounded-lg" title="កែប្រែ"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="deleteTeacher('${t.id}')" class="text-rose-500 hover:text-rose-700 p-1.5 bg-rose-50 rounded-lg" title="លុប"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
@@ -2066,31 +2068,41 @@
             } else {
                 renderClasses();
                 updateClassSelects();
+                updateStats();
             }
             closeClassModal();
             alert("✅ រក្សាទុកថ្នាក់រៀនបានជោគជ័យ!");
         }
 
-        function confirmResetAllData() {
-            if (!isAdminAuthenticated) {
-                openAdminAuthModal(() => confirmResetAllData());
-                return;
-            }
-            if (confirm("តើអ្នកពិតជាចង់លុបទិន្នន័យថ្នាក់ទាំងអស់មែនទេ?")) {
-                classesData = {};
-                if (db && isConnected) {
-                    db.ref('classes').remove();
-                } else {
-                    renderClasses();
-                    updateClassSelects();
-                }
-                alert("✅ បានលុបថ្នាក់ទាំងអស់រួចរាល់!");
-            }
-        }
-
-        function openStudentModal() {
+        function openStudentModal(id = null) {
             const modal = document.getElementById('studentModal');
-            if (modal) modal.classList.remove('hidden');
+            if (!modal) return;
+            
+            const titleEl = document.getElementById('studentModalTitle');
+            const idInput = document.getElementById('stuId');
+            const nameInput = document.getElementById('stuName');
+            const genderInput = document.getElementById('stuGender');
+            const gradeInput = document.getElementById('stuGrade');
+            const phoneInput = document.getElementById('stuPhone');
+
+            if (id && studentsData[id]) {
+                titleEl.textContent = "កែប្រែព័ត៌មានសិស្ស";
+                idInput.value = studentsData[id].id;
+                idInput.readOnly = true; // មិនអនុញ្ញាតឱ្យកែប្រែអត្តលេខពេល Edit
+                nameInput.value = studentsData[id].name || '';
+                genderInput.value = studentsData[id].gender || 'ប្រុស';
+                gradeInput.value = studentsData[id].grade || '';
+                phoneInput.value = studentsData[id].phone || '';
+            } else {
+                titleEl.textContent = "បញ្ចូលព័ត៌មានសិស្សថ្មី";
+                idInput.value = '';
+                idInput.readOnly = false;
+                nameInput.value = '';
+                genderInput.value = 'ប្រុស';
+                gradeInput.value = Object.keys(classesData)[0] || '';
+                phoneInput.value = '';
+            }
+            modal.classList.remove('hidden');
         }
 
         function closeStudentModal() {
@@ -2134,9 +2146,32 @@
             }
         }
 
-        function openTeacherModal() {
+        function openTeacherModal(id = null) {
             const modal = document.getElementById('teacherModal');
-            if (modal) modal.classList.remove('hidden');
+            if (!modal) return;
+            
+            const titleEl = document.getElementById('teacherModalTitle');
+            const idInput = document.getElementById('teaId');
+            const nameInput = document.getElementById('teaName');
+            const subjectInput = document.getElementById('teaSubject');
+            const phoneInput = document.getElementById('teaPhone');
+
+            if (id && teachersData[id]) {
+                titleEl.textContent = "កែប្រែព័ត៌មានគ្រូបង្រៀន";
+                idInput.value = teachersData[id].id;
+                idInput.readOnly = true; // មិនអនុញ្ញាតឱ្យប្តូរអត្តលេខពេលកែប្រែ
+                nameInput.value = teachersData[id].name || '';
+                subjectInput.value = teachersData[id].subject || '';
+                phoneInput.value = teachersData[id].phone || '';
+            } else {
+                titleEl.textContent = "បន្ថែមគ្រូបង្រៀន";
+                idInput.value = '';
+                idInput.readOnly = false;
+                nameInput.value = '';
+                subjectInput.value = '';
+                phoneInput.value = '';
+            }
+            modal.classList.remove('hidden');
         }
 
         function closeTeacherModal() {
